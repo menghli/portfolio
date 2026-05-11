@@ -1,1 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asher Kalele</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Design tokens ── */
+    :root {
+      --dark-1:     #1a1a1a;
+      --dark-2:     #2e2e2e;
+      --dark-3:     #666666;
+      --gray:       #c4c4c4;
+      --background: #fafafa;
+      --white:      #ffffff;
+      --primary:    #487089;
+    }
 
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Base ── */
+    html { font-size: 16px; }
+    body {
+      background-color: var(--background);
+      background-image:
+        radial-gradient(ellipse 60% 50% at 0% 0%,   #e8f5f0 0%, transparent 70%),
+        radial-gradient(ellipse 50% 45% at 100% 0%,  #fce8f0 0%, transparent 70%),
+        radial-gradient(ellipse 55% 50% at 100% 100%, #ebe8fc 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 50% 50%,  #fafafa 0%, transparent 80%);
+      color: var(--dark-2);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      min-height: 100vh;
+    }
+
+    /* ── Layout wrapper ── */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 48px;
+    }
+
+    /* ── Floating Nav ── */
+    nav {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+      border-radius: 100px;
+      padding: 12px 32px;
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+    nav a {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 24px;
+      color: var(--dark-2);
+    }
+    nav a:hover { color: var(--primary); }
+
+    /* ── Hero ── */
+    .hero {
+      padding-top: 140px;
+      padding-bottom: 80px;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      font-size: 36px;
+      line-height: 48px;
+      color: var(--dark-1);
+      margin-bottom: 12px;
+    }
+    .hero p {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 18px;
+      color: var(--dark-3);
+      max-width: 520px;
+    }
+
+    /* ── Projects ── */
+    .projects {
+      padding-bottom: 80px;
+    }
+    .project-row {
+      display: grid;
+      grid-template-columns: 45% 55%;
+      gap: 48px;
+      align-items: center;
+      padding: 64px 0;
+      border-top: 1px solid var(--gray);
+    }
+    .project-row:last-child { border-bottom: 1px solid var(--gray); }
+
+    /* Left column */
+    .project-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .project-tag {
+      font-family: 'DM Mono', monospace;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .project-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 500;
+      font-size: 26px;
+      line-height: 32px;
+      color: var(--dark-1);
+    }
+    .project-desc {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 24px;
+      color: var(--dark-3);
+    }
+
+    /* Right column — placeholder image */
+    .project-image {
+      width: 100%;
+      aspect-ratio: 480 / 320;
+      background-color: var(--gray);
+      border-radius: 4px;
+    }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: 80px;
+      padding-bottom: 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    footer, footer a {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 18px;
+      color: var(--dark-3);
+    }
+    footer a:hover { color: var(--primary); }
+    .footer-links { display: flex; gap: 24px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .container { padding: 0 24px; }
+      .project-row {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      footer { flex-direction: column; align-items: flex-start; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Nav -->
+  <nav>
+    <a href="#work">Work</a>
+    <a href="#about">About</a>
+  </nav>
+
+  <main class="container">
+
+    <!-- Hero -->
+    <section class="hero" id="about">
+      <h1>Asher Kalele</h1>
+      <p>Researching and designing meaningful, enjoyable experiences — driven by data, grounded in empathy.</p>
+    </section>
+
+    <!-- Projects -->
+    <section class="projects" id="work">
+
+      <div class="project-row">
+        <div class="project-meta">
+          <span class="project-tag">UX Research</span>
+          <h2 class="project-title">Project Title One</h2>
+          <p class="project-desc">A one-line description of the project and its impact on users.</p>
+        </div>
+        <div class="project-image" role="img" aria-label="Project one preview"></div>
+      </div>
+
+      <div class="project-row">
+        <div class="project-meta">
+          <span class="project-tag">Product Design</span>
+          <h2 class="project-title">Project Title Two</h2>
+          <p class="project-desc">A one-line description of the project and its impact on users.</p>
+        </div>
+        <div class="project-image" role="img" aria-label="Project two preview"></div>
+      </div>
+
+      <div class="project-row">
+        <div class="project-meta">
+          <span class="project-tag">Data &amp; Design</span>
+          <h2 class="project-title">Project Title Three</h2>
+          <p class="project-desc">A one-line description of the project and its impact on users.</p>
+        </div>
+        <div class="project-image" role="img" aria-label="Project three preview"></div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="container">
+    <div class="footer-links">
+      <a href="#">LinkedIn</a>
+      <a href="#">Resume</a>
+      <a href="#">Email</a>
+    </div>
+    <span>Seattle, WA</span>
+  </footer>
+
+</body>
+</html>
