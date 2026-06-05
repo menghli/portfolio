@@ -105,6 +105,8 @@ No shadows. Ever.
 | Pill gap | `10px` |
 | Nav link gap | `32px` |
 
+Paragraph spacing between any two consecutive body paragraphs is `8px`.
+
 ---
 
 ## What to Avoid
