@@ -15,6 +15,13 @@ function typewriter(el, text, speed, onDone) {
   }, speed)
 }
 
+const DESIGN_PROJECTS = [
+  { title: 'Redesigning the Experiential Learning of Interview Skills through Role-play' },
+  { title: 'Fitting Room — Rethinking how people discover personal style online' },
+  { title: 'Amazon Fresh — Streamlining the grocery pickup experience' },
+  { title: 'ExpertVoice — Improving advocate activation and onboarding rate' },
+]
+
 const HERO_TEXTS = [
   'Mixed Method Researcher',
   'UX/Product Designer',
@@ -62,6 +69,24 @@ function App() {
     let rafId = null
 
     const onWheel = e => {
+      const cardsRow = document.querySelector('.design-cards-row')
+      const section = document.querySelector('.section-design')
+      if (cardsRow && section) {
+        const rect = section.getBoundingClientRect()
+        const researchRect = document.querySelector('.section-research')?.getBoundingClientRect()
+        const researchOverlaying = researchRect && researchRect.top <= 0
+        const inSection = rect.top <= 0 && rect.bottom > 0 && !researchOverlaying
+        if (inSection) {
+          const maxScroll = cardsRow.scrollWidth - cardsRow.clientWidth
+          const atEnd = cardsRow.scrollLeft >= maxScroll - 1
+          const atStart = cardsRow.scrollLeft <= 0
+          if ((e.deltaY > 0 && !atEnd) || (e.deltaY < 0 && !atStart)) {
+            e.preventDefault()
+            cardsRow.scrollLeft += e.deltaY
+            return
+          }
+        }
+      }
       e.preventDefault()
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight
       lerpTargetRef.current = Math.max(0, Math.min(maxScroll, lerpTargetRef.current + e.deltaY))
@@ -266,26 +291,16 @@ function App() {
                 </svg>
               </button>
             </div>
-            <button className="pill ghost pagination-pill">
-              <ArrowSvg deg={90} />
-              1/4
-              <ArrowSvg deg={-90} />
-            </button>
           </div>
-          <div className="design-card">
-            <div className="design-card-image"></div>
-            <div className="design-card-info">
-              <div className="design-card-text">
-                <p className="card-tag">UX Design | Web Audit | Usability Testing</p>
-                <h3 className="card-title">Redesigning the Experiential Learning of Interview Skills through Role-play</h3>
-                <p className="card-desc">Pirate ipsum aye chandler gangway driver chain topgallant poop gold sail black. Pirate ipsum aye chandler gangway driver chain topgallant poop gold sail black.</p>
+          <div className="design-cards-row">
+            {DESIGN_PROJECTS.map((project, i) => (
+              <div className="project-card-wrap" key={i}>
+                <div className="project-card">
+                  <div className="project-card-img" />
+                </div>
+                <p className="project-card-title">{project.title}</p>
               </div>
-              <div className="card-cta">
-                <button className="btn-arrow"><ArrowSvg deg={90} /></button>
-                <button className="pill filled">Read case study</button>
-                <button className="btn-arrow"><ArrowSvg deg={-90} /></button>
-              </div>
-            </div>
+            ))}
           </div>
         </section>
 
