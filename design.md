@@ -109,6 +109,16 @@ Paragraph spacing between any two consecutive body paragraphs is `8px`.
 
 ---
 
+## Writing Style and Tone
+
+Writing is calm, direct, and specific. Sentences are kept short. No filler phrases, no restatements of the same point across consecutive sentences. Findings and outcomes lead with the concrete result, followed by the evidence or context. Personal stories (methodology rationale, challenges, learnings) are written in first person and focus on what changed as a result of an action, not just the action itself.
+
+Avoid: em dashes, "straightforward", "genuinely", hyperbolic qualifiers, closing sentences that summarize what the paragraph already showed, and passive constructions where the author's agency is clear.
+
+Tone is confident but not self-promotional. The reader is assumed to be a hiring manager scanning quickly. Every sentence should earn its place.
+
+---
+
 ## What to Avoid
 
 - No drop shadows
