@@ -258,12 +258,12 @@
   margin-top: 0;
 }
 
-/* Body paragraph — Body-Regular: DM Sans Regular 16px, normal line-height, Text/Default */
+/* Body paragraph — Body-Regular: DM Sans Regular 16px, 24px line-height, Text/Default */
 .rp-para {
   font-family: 'DM Sans', sans-serif;
   font-size: 16px;
   font-weight: 400;
-  line-height: normal;
+  line-height: 24px;
   color: var(--text);
   margin-bottom: 12px;
 }

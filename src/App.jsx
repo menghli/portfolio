@@ -2,10 +2,11 @@ import { useState, useRef, useCallback, useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import TextType from './components/TextType/TextType.jsx'
 import ResearchPage from './pages/ResearchPage.jsx'
-import amazonSmall     from './img/homepage/Amazon-small.svg'
+import amazonSmall      from './img/homepage/Amazon-small.svg'
 import expertvoiceSmall from './img/homepage/ExpertVoice-small.svg'
-import negotiumSmall   from './img/homepage/Negotium-small.svg'
-import moomooSmall     from './img/homepage/Moomoo-small.svg'
+import negotiumSmall    from './img/homepage/Negotium-small.svg'
+import moomooSmall      from './img/homepage/Moomoo-small.svg'
+import chatMd           from './content/chat-responses.md?raw'
 
 const TYPEWRITER_SPEED = 18
 
@@ -19,6 +20,46 @@ function typewriter(el, text, speed, onDone) {
       if (onDone) onDone()
     }
   }, speed)
+}
+
+// ── Parse chat-responses.md ────────────────────────────────────────────────
+function parseChatResponses(raw) {
+  const responses = {}
+  const sections = raw.split(/\n## /)
+  for (let i = 1; i < sections.length; i++) {
+    const section = sections[i]
+    const nl = section.indexOf('\n')
+    const heading = section.slice(0, nl).trim()
+    const body = section.slice(nl).replace(/\n---\s*$/, '').trim()
+    responses[heading] = body
+  }
+  return responses
+}
+
+const CHAT_RESPONSES = parseChatResponses(chatMd)
+
+// Maps each pill's onClick text to its markdown heading
+const PILL_RESPONSE_KEYS = {
+  'What researcher are you?':  'WHAT RESEARCHER ARE YOU?',
+  'Tell me about you':         'TELL ME ABOUT YOU',
+  'Book a Chat with me!':      'Book a Chat with me!',
+  'What do you Design?':       'WHAT DO YOU DESIGN?',
+  'How do you use AI in work?':'HOW DO YOU USE AI IN YOUR WORK?',
+}
+
+const PILLS_WITH_CARDS = new Set(['What researcher are you?', 'What do you Design?'])
+
+const CHAT_PROJECT_CARDS = {
+  'What researcher are you?': [
+    'Amazon IT: PeripheralPulse Research',
+    'ExpertVoice Product Review',
+    'Testing Moomoo Earning Report',
+  ],
+  'What do you Design?': [
+    'Interview Role-play Redesign',
+    'Fitting Room',
+    'Amazon Fresh Grocery Pickup',
+  ],
 }
 
 const DESIGN_PROJECTS = [
@@ -40,34 +81,111 @@ function HomePage() {
   const [isChat, setIsChat] = useState(false)
   const threadRef = useRef(null)
   const lerpTargetRef = useRef(0)
+  const chatInitiatedRef = useRef(false)
 
   const resetChat = useCallback(() => {
     setIsChat(false)
+    chatInitiatedRef.current = false
     if (threadRef.current) threadRef.current.innerHTML = ''
   }, [])
 
   const enterChat = useCallback((pillText) => {
-    if (isChat) return
     setIsChat(true)
     const thread = threadRef.current
-    const msg = document.createElement('div')
-    msg.className = 'chat-msg chat-msg--you'
-    msg.innerHTML =
-      '<div class="chat-avatar"></div>' +
-      '<div class="chat-body">' +
-        '<span class="chat-label">YOU</span>' +
-        '<p class="chat-text"></p>' +
-      '</div>'
-    thread.appendChild(msg)
-    const textEl = msg.querySelector('.chat-text')
-    const handler = (e) => {
-      if (e.target === thread && e.propertyName === 'opacity') {
-        thread.removeEventListener('transitionend', handler)
-        typewriter(textEl, pillText, TYPEWRITER_SPEED, null)
-      }
+
+    const addMessages = () => {
+      // YOU bubble
+      const youMsg = document.createElement('div')
+      youMsg.className = 'chat-msg chat-msg--you'
+      youMsg.innerHTML =
+        '<div class="chat-avatar"></div>' +
+        '<div class="chat-body">' +
+          '<span class="chat-label">YOU</span>' +
+          '<p class="chat-text"></p>' +
+        '</div>'
+      thread.appendChild(youMsg)
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        youMsg.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }))
+
+      const textEl = youMsg.querySelector('.chat-text')
+      const displayText = pillText.charAt(0).toUpperCase() + pillText.slice(1).toLowerCase()
+      typewriter(textEl, displayText, TYPEWRITER_SPEED, () => {
+        const key = PILL_RESPONSE_KEYS[pillText]
+        const responseText = key ? CHAT_RESPONSES[key] : null
+        if (!responseText) return
+
+        // 700ms pause, then MENGHAN shell + typing indicator fade in
+        setTimeout(() => {
+          const menghanMsg = document.createElement('div')
+          menghanMsg.className = 'chat-msg'
+          menghanMsg.style.opacity = '0'
+          menghanMsg.style.transition = 'opacity 300ms ease'
+          menghanMsg.innerHTML =
+            '<div class="chat-avatar"></div>' +
+            '<div class="chat-body">' +
+              '<span class="chat-label chat-label--menghan">MENGHAN</span>' +
+              '<span class="chat-typing">_</span>' +
+            '</div>'
+          thread.appendChild(menghanMsg)
+          menghanMsg.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            menghanMsg.style.opacity = '1'
+          }))
+
+          // 1.5s later: swap typing indicator for full response
+          setTimeout(() => {
+            const typingEl = menghanMsg.querySelector('.chat-typing')
+            if (!typingEl) return
+
+            const showCards = PILLS_WITH_CARDS.has(pillText)
+            const paragraphs = responseText
+              .split('\n\n')
+              .filter(p => p.trim())
+              .map(p => `<p class="chat-text">${p.trim()}</p>`)
+              .join('')
+            const cardTitles = showCards ? (CHAT_PROJECT_CARDS[pillText] || []) : []
+            const cardsHtml = cardTitles.map(title =>
+              `<div class="chat-project-card">` +
+                `<div class="chat-project-img"></div>` +
+                `<p class="chat-project-title">${title}</p>` +
+              `</div>`
+            ).join('')
+
+            const content = document.createElement('div')
+            content.className = 'chat-response-content'
+            content.style.opacity = '0'
+            content.style.transform = 'translateY(10px)'
+            content.style.transition = 'opacity 400ms ease, transform 400ms ease'
+            content.innerHTML =
+              `<div class="chat-response-text">${paragraphs}</div>` +
+              (showCards ? `<div class="chat-project-row">${cardsHtml}</div>` : '')
+
+            typingEl.replaceWith(content)
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+              content.style.opacity = '1'
+              content.style.transform = 'translateY(0)'
+              menghanMsg.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            }))
+          }, 1500)
+        }, 700)
+      })
     }
-    thread.addEventListener('transitionend', handler)
-  }, [isChat])
+
+    if (!chatInitiatedRef.current) {
+      chatInitiatedRef.current = true
+      const onTransition = e => {
+        if (e.target === thread && e.propertyName === 'opacity') {
+          thread.removeEventListener('transitionend', onTransition)
+          addMessages()
+        }
+      }
+      thread.addEventListener('transitionend', onTransition)
+    } else {
+      addMessages()
+    }
+  }, [])
 
   useEffect(() => {
     const EASE = 0.1
@@ -76,6 +194,18 @@ function HomePage() {
     let rafId = null
 
     const onWheel = e => {
+      // Let chat thread scroll independently
+      const thread = threadRef.current
+      if (thread && thread.contains(e.target)) {
+        const canScrollDown = thread.scrollTop < thread.scrollHeight - thread.clientHeight - 1
+        const canScrollUp = thread.scrollTop > 0
+        if ((e.deltaY > 0 && canScrollDown) || (e.deltaY < 0 && canScrollUp)) {
+          e.preventDefault()
+          thread.scrollTop += e.deltaY
+          return
+        }
+      }
+
       const cardsRow = document.querySelector('.design-cards-row')
       const section = document.querySelector('.section-design')
       if (cardsRow && section) {
