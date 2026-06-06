@@ -2,6 +2,10 @@ import { useState, useRef, useCallback, useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import TextType from './components/TextType/TextType.jsx'
 import ResearchPage from './pages/ResearchPage.jsx'
+import amazonSmall     from './img/homepage/Amazon-small.svg'
+import expertvoiceSmall from './img/homepage/ExpertVoice-small.svg'
+import negotiumSmall   from './img/homepage/Negotium-small.svg'
+import moomooSmall     from './img/homepage/Moomoo-small.svg'
 
 const TYPEWRITER_SPEED = 18
 
@@ -30,6 +34,7 @@ const HERO_TEXTS = [
   'Problem Solver',
   'Market Research Analyst',
 ]
+
 
 function HomePage() {
   const [isChat, setIsChat] = useState(false)
@@ -164,8 +169,7 @@ function HomePage() {
 
   const handlePillClick = useCallback((text) => {
     if (text === 'MY WORK') {
-      const el = document.querySelector('#projects')
-      if (el) lerpTargetRef.current = el.getBoundingClientRect().top + window.scrollY
+      lerpTargetRef.current = window.innerHeight
       return
     }
     if (text.toLowerCase() === 'back to homepage') {
@@ -286,7 +290,9 @@ function HomePage() {
           <div className="section-head">
             <div className="section-head-left">
               <h2 className="h2">Design Projects</h2>
-              <button className="pill ghost">
+              <button className="pill ghost" onClick={() => {
+                lerpTargetRef.current = window.innerHeight * 2
+              }}>
                 Skip to Research
                 <svg className="pill-icon" width="6" height="10" viewBox="0 0 6 10" fill="none">
                   <path d="M3 0V8M3 8L1 6M3 8L5 6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="square" strokeLinejoin="miter"/>
@@ -312,7 +318,9 @@ function HomePage() {
           <div className="section-head">
             <div className="section-head-left">
               <h2 className="h2">Research Projects</h2>
-              <button className="pill ghost">
+              <button className="pill ghost" onClick={() => {
+                lerpTargetRef.current = window.innerHeight
+              }}>
                 Checkout Design
                 <svg className="pill-icon" width="6" height="10" viewBox="0 0 6 10" fill="none" style={{ transform: 'rotate(180deg)' }}>
                   <path d="M3 0V8M3 8L1 6M3 8L5 6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="square" strokeLinejoin="miter"/>
@@ -321,7 +329,8 @@ function HomePage() {
             </div>
           </div>
           <div className="research-grid">
-            <div className="r-card r-card--large">
+            <div className="r-card r-card--large r-card--light-text">
+              <img src={amazonSmall} alt="" className="r-card-bg" />
               <div className="r-card-overlay r-card-overlay--spread">
                 <p className="r-card-title r-card-title--tr">Amazon IT: PeripheralPulse Research</p>
                 <button className="pill ghost">OPEN PROJECT</button>
@@ -329,19 +338,22 @@ function HomePage() {
             </div>
             <div className="r-cards-stack">
               <div className="r-card r-card--small">
+                <img src={expertvoiceSmall} alt="" className="r-card-bg" />
                 <div className="r-card-overlay r-card-overlay--spread">
                   <p className="r-card-title r-card-title--tr">ExpertVoice</p>
                   <button className="pill ghost">OPEN PROJECT</button>
                 </div>
               </div>
-              <div className="r-card r-card--small">
+              <div className="r-card r-card--small r-card--light-text">
+                <img src={negotiumSmall} alt="" className="r-card-bg" />
                 <div className="r-card-overlay r-card-overlay--spread">
                   <p className="r-card-title r-card-title--tr">Negotium</p>
                   <button className="pill ghost">OPEN PROJECT</button>
                 </div>
               </div>
             </div>
-            <div className="r-card r-card--arch">
+            <div className="r-card r-card--arch r-card--light-text r-card--gradient-hover">
+              <img src={moomooSmall} alt="" className="r-card-bg" />
               <div className="r-card-overlay">
                 <p className="r-card-title">Testing Moomoo Earning Report</p>
                 <button className="pill ghost">OPEN PROJECT</button>
