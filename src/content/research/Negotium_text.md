@@ -9,6 +9,8 @@ Subtitle: Evaluating User Engagement and Content Quality
 
 Eyebrow: UX Researcher · 2024 Spring
 
+Cover: ../../img/research/Negotium-page-cover.svg
+
 ## Project Meta
 
 | Field | Details |

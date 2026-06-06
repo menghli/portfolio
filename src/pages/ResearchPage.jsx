@@ -3,6 +3,18 @@ import { Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import './ResearchPage.css'
 
+import amazonCover    from '../img/research/Amazon-page-cover.svg'
+import evCover        from '../img/research/EV-page-cover.svg'
+import moomooCover    from '../img/research/Moomoo-page-cover.svg'
+import negotiumCover  from '../img/research/Negotium-page-cover.svg'
+
+const COVER_IMAGES = {
+  amazon:      amazonCover,
+  expertvoice: evCover,
+  moomoo:      moomooCover,
+  negotium:    negotiumCover,
+}
+
 // ── Slug → dynamic import map ──────────────────────────────────────────────
 const LOADERS = {
   amazon:      () => import('../content/research/Amazon_text.md?raw'),
@@ -31,7 +43,7 @@ const SECTION_MAP = {
 // ── Markdown utilities ──────────────────────────────────────────────────────
 function parseMarkdown(raw) {
   const lines = raw.split('\n')
-  let title = '', subtitle = '', eyebrow = ''
+  let title = '', subtitle = '', eyebrow = '', cover = ''
   let h1Count = 0
   const sections = {}
   let currentSection = null
@@ -45,6 +57,7 @@ function parseMarkdown(raw) {
     }
     if (line.startsWith('Subtitle:')) { subtitle = line.replace('Subtitle:', '').trim(); continue }
     if (line.startsWith('Eyebrow:'))  { eyebrow  = line.replace('Eyebrow:', '').trim();  continue }
+    if (line.startsWith('Cover:'))    { cover    = line.replace('Cover:', '').trim();    continue }
     if (line.startsWith('Status:') || line.startsWith('tag:')) continue
 
     if (line.startsWith('## ')) {
@@ -59,7 +72,7 @@ function parseMarkdown(raw) {
   }
   if (currentSection !== null) sections[currentSection] = currentLines.join('\n').trim()
 
-  return { title, subtitle, eyebrow, sections }
+  return { title, subtitle, eyebrow, cover, sections }
 }
 
 function parseMetaTable(text = '') {
@@ -246,8 +259,10 @@ export default function ResearchPage({ slug }) {
 
           {/* Hero Image */}
           <div className="rp-hero">
-            <div className="rp-hero-rect" />
-            <p className="rp-hero-caption">Figure 1 — [Caption placeholder]</p>
+            {COVER_IMAGES[slug]
+              ? <img src={COVER_IMAGES[slug]} alt={`${parsed.title} cover`} className="rp-hero-img" />
+              : <div className="rp-hero-rect" />
+            }
           </div>
 
           {/* Project Meta */}

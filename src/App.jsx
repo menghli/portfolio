@@ -322,28 +322,29 @@ function HomePage() {
           </div>
           <div className="research-grid">
             <div className="r-card r-card--large">
-              <p className="r-card-title">Designing for Trust</p>
-              <div className="r-card-footer">
-                <button className="pill ghost thick">Research</button>
-                <button className="pill filled">OPEN PROJECT</button>
+              <div className="r-card-overlay r-card-overlay--spread">
+                <p className="r-card-title r-card-title--tr">Amazon IT: PeripheralPulse Research</p>
+                <button className="pill ghost">OPEN PROJECT</button>
               </div>
             </div>
             <div className="r-cards-stack">
               <div className="r-card r-card--small">
-                <div className="r-card-footer">
-                  <button className="pill ghost thick">Research</button>
+                <div className="r-card-overlay r-card-overlay--spread">
+                  <p className="r-card-title r-card-title--tr">ExpertVoice</p>
+                  <button className="pill ghost">OPEN PROJECT</button>
                 </div>
               </div>
               <div className="r-card r-card--small">
-                <div className="r-card-footer">
-                  <button className="pill ghost thick">Research</button>
+                <div className="r-card-overlay r-card-overlay--spread">
+                  <p className="r-card-title r-card-title--tr">Negotium</p>
+                  <button className="pill ghost">OPEN PROJECT</button>
                 </div>
               </div>
             </div>
             <div className="r-card r-card--arch">
-              <div className="r-card-footer">
-                <button className="pill ghost thick">Research</button>
-                <button className="pill filled">OPEN PROJECT</button>
+              <div className="r-card-overlay">
+                <p className="r-card-title">Testing Moomoo Earning Report</p>
+                <button className="pill ghost">OPEN PROJECT</button>
               </div>
             </div>
           </div>

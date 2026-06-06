@@ -599,16 +599,14 @@ body {
 .r-card--large {
   border-radius: 20px;
   height: 452px;
-  justify-content: space-between;
 }
 
 .r-card-title {
   font-family: 'DM Sans', sans-serif;
-  font-weight: 500;
-  font-size: 22px;
+  font-weight: 400;
+  font-size: 20px;
   line-height: 28px;
-  color: var(--dark);
-  text-align: right;
+  color: var(--text);
 }
 
 .r-card--small {
@@ -622,10 +620,27 @@ body {
   height: 452px;
 }
 
-.r-card-footer {
+.r-card-overlay {
   display: flex;
-  align-items: center;
-  gap: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+.r-card:hover .r-card-overlay {
+  opacity: 1;
+}
+
+.r-card-overlay--spread {
+  height: 100%;
+  justify-content: space-between;
+}
+
+.r-card-title--tr {
+  align-self: flex-end;
+  text-align: right;
 }
 
 /* ============================================================

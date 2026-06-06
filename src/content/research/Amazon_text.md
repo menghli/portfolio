@@ -9,6 +9,8 @@ Subtitle: Gamifying IT Returns for Sustainable Impact
 
 Eyebrow: Intern Research Project · 2025 Summer
 
+Cover: ../../img/research/Amazon-page-cover.svg
+
 ## Project Meta
 
 | Field | Details |

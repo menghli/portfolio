@@ -9,6 +9,8 @@ Subtitle: Enhancing Earnings Reports for Smarter Investor Decisions
 
 Eyebrow: Intern Research Project · 2023 Summer
 
+Cover: ../../img/research/Moomoo-page-cover.svg
+
 ## Project Meta
 
 | Field | Details |

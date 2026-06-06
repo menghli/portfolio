@@ -9,6 +9,8 @@ Subtitle: Enhancing Product Reviews to Strengthen Community Engagement
 
 Eyebrow: Intern Research Project · 2024 Summer
 
+Cover: ../../img/research/EV-page-cover.svg
+
 ## Project Meta
 
 | Field | Details |
