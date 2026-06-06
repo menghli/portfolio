@@ -18,7 +18,7 @@ I'm Menghan (pronounced "Mong-han"), a UX researcher and product designer based 
 
 I've worked at Amazon, FUTU Holdings, ExpertVoice, Fundhomes, and Meyocks across enterprise IT, FinTech, e-commerce, real estate, and market research.
 
-Outside of work, I bake, crochet, hunt for good boba, and sing. Choirs and a cappella since middle school.
+Outside of work, I bake, crochet, hunt for good boba, and sing. I‘ve in choirs and a cappella since middle school!
 
 ---
 
