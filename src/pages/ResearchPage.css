@@ -1,0 +1,327 @@
+/* ============================================================
+   RESEARCH PAGE — layout, typography, section styles
+   All values from design.md tokens (shared via styles.css :root)
+   ============================================================ */
+
+.rp-page {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+/* Nav background on the research page (homepage nav is transparent) */
+.rp-nav-bar {
+  background: var(--bg);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* ── Body wrapper ──────────────────────────────────────────── */
+.rp-body {
+  padding: 72px 0 120px;
+}
+
+/* ── Sidebar ───────────────────────────────────────────────── */
+.rp-sidebar {
+  position: fixed;
+  top: 136px;                /* 64px nav + 72px rp-body padding-top */
+  left: 48px;
+  width: 200px;
+}
+
+.rp-back {
+  display: block;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: -0.36px;   /* Button tracking: -3% of 12px */
+  text-transform: uppercase;
+  color: var(--text-sec);
+  text-decoration: none;
+  line-height: normal;
+  transition: color 180ms ease;
+}
+
+.rp-back:hover {
+  color: var(--text);
+}
+
+/* Progress nav — hidden by default, revealed on left-zone mousemove */
+.rp-sidebar-nav {
+  position: relative;
+  margin-top: 48px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+
+/* Vertical track line */
+.rp-track {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: #DCDCDC;
+}
+
+/* Nav labels — Nav style: DM Mono Regular 12px, 18px line-height, +1.5px */
+.rp-nav-item {
+  display: flex;
+  align-items: center;
+  height: 48px;              /* items 48px apart per Figma spec */
+  padding-left: 12px;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-sec);
+  text-decoration: none;
+  position: relative;
+  transition: color 180ms ease;
+}
+
+.rp-nav-item:hover {
+  color: var(--text);
+}
+
+.rp-nav-item.is-active {
+  color: var(--text);
+}
+
+/* Active state dot — single element, slides between sections */
+.rp-dot {
+  position: absolute;
+  left: -2px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  z-index: 1;
+  transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Content column ────────────────────────────────────────── */
+.rp-content {
+  width: 58.3%;
+  margin: 0 auto;
+}
+
+/* ── Header ───────────────────────────────────────────────── */
+.rp-header {
+  margin-bottom: 48px;   /* gap to hero image */
+}
+
+/* Eyebrow — Label style: DM Mono Medium 12px, AUTO, +2px, UPPER, Text/Secondary */
+.rp-eyebrow {
+  display: block;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-sec);
+  line-height: normal;
+  margin-bottom: 20px;
+}
+
+/* Title — H2: DM Sans Medium 44px, 58px line-height, -0.5px */
+.rp-title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 44px;
+  font-weight: 500;
+  line-height: 58px;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+/* Subtitle — Body-Regular: DM Sans Regular 16px, AUTO, Text/Secondary */
+.rp-subtitle {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: normal;
+  color: var(--text-sec);
+  margin-bottom: 24px;
+}
+
+/* Divider line below subtitle — 1px, Text/Default color */
+.rp-header-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--text);
+}
+
+/* ── Hero Image ───────────────────────────────────────────── */
+.rp-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 48px;
+}
+
+.rp-hero-rect {
+  width: 100%;
+  aspect-ratio: 840 / 375;
+  background: #F0ECE8;
+  border-radius: 4px;
+}
+
+.rp-hero-caption {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0.27px;
+  color: var(--text-sec);
+}
+
+/* ── Project Meta Grid ────────────────────────────────────── */
+.rp-meta-grid {
+  display: flex;
+  gap: 16px;
+  padding: 20px 0;
+  margin-bottom: 48px;
+}
+
+.rp-meta-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 4px;
+}
+
+.rp-meta-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: normal;
+  color: var(--text);
+}
+
+.rp-meta-value {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0.27px;
+  color: var(--text-sec);
+}
+
+/* ── Sections ─────────────────────────────────────────────── */
+.rp-section {
+  scroll-margin-top: 100px;  /* offset for sticky nav */
+}
+
+/* Anchor label — Label style: DM Mono Regular 12px, AUTO, +2px, UPPER */
+.rp-anchor {
+  display: block;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  line-height: normal;
+  color: var(--text-sec);
+  margin-bottom: 16px;
+}
+
+/* Overview anchor uses Accent/Default per Figma spec */
+.rp-anchor--active {
+  color: var(--accent);
+}
+
+/* H3 — DM Sans Regular 20px, 28px line-height */
+.rp-h3 {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 28px;
+  letter-spacing: 0;
+  color: var(--text);
+  margin-top: 28px;
+  margin-bottom: 16px;
+}
+
+/* First H3 in a section sits 12px below the anchor label (margin collapses with anchor's 12px mb) */
+.rp-section .rp-anchor + .rp-h3 {
+  margin-top: 0;
+}
+
+/* Body paragraph — Body-Regular: DM Sans Regular 16px, normal line-height, Text/Default */
+.rp-para {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: normal;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.rp-para:last-child {
+  margin-bottom: 0;
+}
+
+/* Pull quote — left border 3px Accent/Default, 20px padding, H3 style */
+.rp-pullquote {
+  border-left: 3px solid var(--accent);
+  padding-left: 20px;
+  margin: 32px 0;
+  max-width: 580px;
+}
+
+.rp-pullquote p,
+.rp-pullquote .rp-para {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 28px;
+  color: var(--text);
+  margin-bottom: 0;
+}
+
+/* Lists */
+.rp-list {
+  padding-left: 20px;
+  margin-bottom: 12px;
+}
+
+.rp-list--ol {
+  list-style-type: decimal;
+}
+
+.rp-list-item {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: normal;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.rp-list-item:last-child {
+  margin-bottom: 0;
+}
+
+.rp-strong {
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ── Footer CTA ───────────────────────────────────────────── */
+.rp-footer-cta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 96px;
+}
+
+.rp-footer-cta .pill {
+  background: transparent;
+  border: 1px solid #333333;
+  color: var(--text);
+}

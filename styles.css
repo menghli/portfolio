@@ -47,6 +47,7 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.01em;
   min-width: 1129px;
   height: 100%;
 }

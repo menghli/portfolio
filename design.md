@@ -50,7 +50,7 @@
 |---|---|---|---|---|---|---|
 | `Hero` | DM Serif Display | 52px | Regular | 72px | 0 | — |
 | `H2` | DM Sans | 44px | Medium | 58px | −0.5px | — |
-| `H3` | DM Sans | 22px | Medium | 28px | 0 | — |
+| `H3` | DM Sans | 20px | Regular | 28px | 0 | — |
 | `Body-Regular` | DM Sans | 16px | Regular | AUTO | 0 | — |
 | `Body-Small` | DM Sans | 14px | Regular | 18px | +0.27px | — |
 | `Nav` | DM Mono | 12px | Medium | 18px | +1.5px | — |

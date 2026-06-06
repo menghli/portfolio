@@ -1,5 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
+import { Routes, Route } from 'react-router-dom'
 import TextType from './components/TextType/TextType.jsx'
+import ResearchPage from './pages/ResearchPage.jsx'
 
 const TYPEWRITER_SPEED = 18
 
@@ -29,7 +31,7 @@ const HERO_TEXTS = [
   'Market Research Analyst',
 ]
 
-function App() {
+function HomePage() {
   const [isChat, setIsChat] = useState(false)
   const threadRef = useRef(null)
   const lerpTargetRef = useRef(0)
@@ -419,6 +421,18 @@ function App() {
         </div>
       </footer>
     </>
+  )
+}
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/research/amazon"      element={<ResearchPage slug="amazon" />} />
+      <Route path="/research/expertvoice" element={<ResearchPage slug="expertvoice" />} />
+      <Route path="/research/moomoo"      element={<ResearchPage slug="moomoo" />} />
+      <Route path="/research/negotium"    element={<ResearchPage slug="negotium" />} />
+    </Routes>
   )
 }
 
