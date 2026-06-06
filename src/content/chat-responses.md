@@ -30,6 +30,12 @@ Here are some projects I've worked on:
 
 ---
 
+## Book a Chat with me!
+
+I'm always happy to connect, whether it's about a project, an opportunity, or just a conversation. Feel free to book a coffee chat or reach out on LinkedIn.
+
+---
+
 ## HOW DO YOU USE AI IN YOUR WORK?
 
 I think of AI as a collaborator, and I've integrated it across my whole workflow: drafting research protocols, building agentic tools for survey data cleaning and visualization, generating design concepts for concept testing, and writing research reports.
