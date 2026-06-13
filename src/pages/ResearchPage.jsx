@@ -144,6 +144,22 @@ const mdComponents = {
   hr: () => null,
   h3: ({ children }) => <h3 className="rp-h3">{children}</h3>,
   p: ({ children }) => {
+    // Detect special marker for LinkedIn button
+    const arr = Children.toArray(children)
+    if (arr.length === 1 && arr[0] === '[linkedin-button]') {
+      return (
+        <div className="rp-inline-action">
+          <a
+            href="https://www.linkedin.com/in/menghl/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="pill ghost"
+          >
+            Read about specific findings here if you are interested!
+          </a>
+        </div>
+      )
+    }
     // Detect image-only paragraphs and render the Figma image templates
     const nodes = Children.toArray(children).filter(
       c => !(typeof c === 'string' && !c.trim())

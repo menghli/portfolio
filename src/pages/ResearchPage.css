@@ -333,6 +333,11 @@
   color: var(--text);
 }
 
+/* ── Inline action button (e.g. LinkedIn pill after a section) ─ */
+.rp-inline-action {
+  margin-top: 16px;
+}
+
 /* ── Article image components ───────────────────────────────── */
 .rp-img-one-col {
   display: flex;
