@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, Children, isValidElement } from 'react'
 import { Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import './ResearchPage.css'
@@ -7,6 +7,16 @@ import amazonCover    from '../img/research/Amazon-page-cover.svg'
 import evCover        from '../img/research/EV-page-cover.svg'
 import moomooCover    from '../img/research/Moomoo-page-cover.svg'
 import negotiumCover  from '../img/research/Negotium-page-cover.svg'
+
+// Resolve article image paths from markdown (e.g. ../../img/research/Amazon-img1.svg)
+const _imgModules = import.meta.glob('../img/research/*.svg', { eager: true })
+const RESEARCH_IMG = Object.fromEntries(
+  Object.entries(_imgModules).map(([path, mod]) => [path.split('/').pop(), mod.default])
+)
+function resolveImgSrc(src) {
+  const basename = src?.split('/').pop()
+  return (basename && RESEARCH_IMG[basename]) || src
+}
 
 const COVER_IMAGES = {
   amazon:      amazonCover,
@@ -101,6 +111,31 @@ function clean(text) {
     .trim()
 }
 
+// ── Article image components (from Figma Article/Image-one-column & two-column) ──
+function ArticleImageOneColumn({ src, alt }) {
+  return (
+    <div className="rp-img-one-col">
+      <img src={src} alt={alt || ''} className="rp-img" />
+      {alt && <p className="rp-img-caption">{alt}</p>}
+    </div>
+  )
+}
+
+function ArticleImageTwoColumn({ leftSrc, leftAlt, rightSrc, rightAlt }) {
+  return (
+    <div className="rp-img-two-col">
+      <div className="rp-img-col">
+        <img src={leftSrc} alt={leftAlt || ''} className="rp-img" />
+        {leftAlt && <p className="rp-img-caption">{leftAlt}</p>}
+      </div>
+      <div className="rp-img-col">
+        <img src={rightSrc} alt={rightAlt || ''} className="rp-img" />
+        {rightAlt && <p className="rp-img-caption">{rightAlt}</p>}
+      </div>
+    </div>
+  )
+}
+
 // ── ReactMarkdown custom renderers ─────────────────────────────────────────
 const mdComponents = {
   // H1/H2 are structural — don't render them inside sections
@@ -108,7 +143,27 @@ const mdComponents = {
   h2: () => null,
   hr: () => null,
   h3: ({ children }) => <h3 className="rp-h3">{children}</h3>,
-  p:  ({ children }) => <p  className="rp-para">{children}</p>,
+  p: ({ children }) => {
+    // Detect image-only paragraphs and render the Figma image templates
+    const nodes = Children.toArray(children).filter(
+      c => !(typeof c === 'string' && !c.trim())
+    )
+    const imgs = nodes.filter(el => isValidElement(el) && el.type === 'img')
+    if (imgs.length > 0 && imgs.length === nodes.length) {
+      if (imgs.length === 1) {
+        const { src, alt } = imgs[0].props
+        return <ArticleImageOneColumn src={resolveImgSrc(src)} alt={alt} />
+      }
+      if (imgs.length === 2) {
+        const [l, r] = imgs
+        return <ArticleImageTwoColumn
+          leftSrc={resolveImgSrc(l.props.src)}  leftAlt={l.props.alt}
+          rightSrc={resolveImgSrc(r.props.src)} rightAlt={r.props.alt}
+        />
+      }
+    }
+    return <p className="rp-para">{children}</p>
+  },
   blockquote: ({ children }) => (
     <blockquote className="rp-pullquote">{children}</blockquote>
   ),

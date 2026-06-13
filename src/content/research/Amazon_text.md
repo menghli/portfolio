@@ -44,7 +44,7 @@ I delivered topline findings across three phases and a final org-level report an
 
 ### Multi-Phasic Approach
 
-[📎 Insert methodology diagram here]
+![](../../img/research/Amazon-img1.svg)
 
 ### Story 1: Uncovering the Complexity Behind Peripheral Management
 
@@ -68,15 +68,15 @@ Acceptance of refurbished peripherals depends on the type, with quality being th
 
 ### Defaulting to Refurbished Peripherals
 
-[📎 Insert chart image here]
+![](../../img/research/Amazon-img2.svg)
 
 ### 3 Customer Segments
 
-[📎 Insert segments diagram here]
+![](../../img/research/Amazon-img3.svg)
 
 ### Example Segment: The Sustainability Enthusiasts
 
-[📎 Insert persona image here]
+![](../../img/research/Amazon-img4.svg)
 
 ---
 
@@ -89,6 +89,8 @@ While the surveys provided valuable insights at scale, they could not fully expl
 ### For the Program
 
 The PeripheralPulse program is moving forward with pilot testing. Additional progress includes advancement on third-party certifications, new efforts to educate customers in partnership with the marketing team, and ongoing strategy discussions to guide future IT sustainability initiatives.
+
+![](../../img/research/Amazon-img5.svg)
 
 ---
 
