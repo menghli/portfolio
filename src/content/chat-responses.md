@@ -32,7 +32,7 @@ Here are some projects I've worked on:
 
 ## Book a Chat with me!
 
-I'm always happy to connect, whether it's about a project, an opportunity, or just a conversation. Feel free to book a coffee chat or reach out on LinkedIn.
+I'm always happy to connect, whether it's about a project, an opportunity, or just a conversation. Feel free to [book a coffee chat](https://calendar.app.google/3CFhkSX9jtyvoPiW6) or reach out on [LinkedIn](https://www.linkedin.com/in/menghl/).
 
 ---
 

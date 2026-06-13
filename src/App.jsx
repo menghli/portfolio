@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Link } from 'react-router-dom'
 import TextType from './components/TextType/TextType.jsx'
 import ResearchPage from './pages/ResearchPage.jsx'
 import amazonSmall      from './img/homepage/Amazon-small.svg'
@@ -37,6 +37,14 @@ function parseChatResponses(raw) {
 }
 
 const CHAT_RESPONSES = parseChatResponses(chatMd)
+
+function parseInlineMarkdown(text) {
+  return text.replace(
+    /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g,
+    (_, label, href) =>
+      `<a href="${href}" target="_blank" rel="noopener noreferrer" class="chat-link">${label}</a>`
+  )
+}
 
 // Maps each pill's onClick text to its markdown heading
 const PILL_RESPONSE_KEYS = {
@@ -143,7 +151,7 @@ function HomePage() {
             const paragraphs = responseText
               .split('\n\n')
               .filter(p => p.trim())
-              .map(p => `<p class="chat-text">${p.trim()}</p>`)
+              .map(p => `<p class="chat-text">${parseInlineMarkdown(p.trim())}</p>`)
               .join('')
             const cardTitles = showCards ? (CHAT_PROJECT_CARDS[pillText] || []) : []
             const cardsHtml = cardTitles.map(title =>
@@ -463,7 +471,7 @@ function HomePage() {
               <img src={amazonSmall} alt="" className="r-card-bg" />
               <div className="r-card-overlay r-card-overlay--spread">
                 <p className="r-card-title r-card-title--tr">Amazon IT: PeripheralPulse Research</p>
-                <button className="pill ghost">OPEN PROJECT</button>
+                <Link to="/research/amazon" className="pill ghost">OPEN PROJECT</Link>
               </div>
             </div>
             <div className="r-cards-stack">
@@ -471,14 +479,14 @@ function HomePage() {
                 <img src={expertvoiceSmall} alt="" className="r-card-bg" />
                 <div className="r-card-overlay r-card-overlay--spread">
                   <p className="r-card-title r-card-title--tr">ExpertVoice</p>
-                  <button className="pill ghost">OPEN PROJECT</button>
+                  <Link to="/research/expertvoice" className="pill ghost">OPEN PROJECT</Link>
                 </div>
               </div>
               <div className="r-card r-card--small r-card--light-text">
                 <img src={negotiumSmall} alt="" className="r-card-bg" />
                 <div className="r-card-overlay r-card-overlay--spread">
                   <p className="r-card-title r-card-title--tr">Negotium</p>
-                  <button className="pill ghost">OPEN PROJECT</button>
+                  <Link to="/research/negotium" className="pill ghost">OPEN PROJECT</Link>
                 </div>
               </div>
             </div>
@@ -486,7 +494,7 @@ function HomePage() {
               <img src={moomooSmall} alt="" className="r-card-bg" />
               <div className="r-card-overlay">
                 <p className="r-card-title">Testing Moomoo Earning Report</p>
-                <button className="pill ghost">OPEN PROJECT</button>
+                <Link to="/research/moomoo" className="pill ghost">OPEN PROJECT</Link>
               </div>
             </div>
           </div>

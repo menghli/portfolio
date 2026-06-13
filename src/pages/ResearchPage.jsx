@@ -151,6 +151,9 @@ export default function ResearchPage({ slug }) {
   const sectionRefs = useRef({})
   const contentRef  = useRef(null)
   const navRef      = useRef(null)
+  const headerRef   = useRef(null)
+  const heroRef     = useRef(null)
+  const metaRef     = useRef(null)
 
   // Load + parse markdown
   useEffect(() => {
@@ -159,8 +162,14 @@ export default function ResearchPage({ slug }) {
     loader().then(mod => setParsed(parseMarkdown(mod.default)))
   }, [slug])
 
-  // Scroll to top on slug change
-  useEffect(() => { window.scrollTo(0, 0) }, [slug])
+  // Scroll to top + reset animations on slug change
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    headerRef.current?.classList.remove('is-visible')
+    heroRef.current?.classList.remove('is-visible')
+    metaRef.current?.classList.remove('is-visible')
+    NAV_ITEMS.forEach(({ id }) => sectionRefs.current[id]?.classList.remove('is-visible'))
+  }, [slug])
 
   // Section nav: show when cursor is in the left zone, hide otherwise
   useEffect(() => {
@@ -176,6 +185,37 @@ export default function ResearchPage({ slug }) {
     window.addEventListener('mousemove', onMouseMove)
     return () => window.removeEventListener('mousemove', onMouseMove)
   }, [])
+
+  // Fade in header + meta immediately, hero 150ms later
+  useEffect(() => {
+    if (!parsed.title) return
+    requestAnimationFrame(() => {
+      headerRef.current?.classList.add('is-visible')
+      metaRef.current?.classList.add('is-visible')
+      heroRef.current?.classList.add('is-visible')
+    })
+  }, [parsed.title])
+
+  // Scroll-triggered section fade-in
+  useEffect(() => {
+    if (!parsed.title) return
+    const obs = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible')
+            obs.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0.1 }
+    )
+    NAV_ITEMS.forEach(({ id }) => {
+      const el = sectionRefs.current[id]
+      if (el) obs.observe(el)
+    })
+    return () => obs.disconnect()
+  }, [parsed])
 
   // IntersectionObserver: update active nav as sections enter viewport
   useEffect(() => {
@@ -244,7 +284,7 @@ export default function ResearchPage({ slug }) {
         <main className="rp-content" ref={contentRef}>
 
           {/* Header */}
-          <header className="rp-header">
+          <header className="rp-header" ref={headerRef}>
             {parsed.eyebrow && (
               <span className="rp-eyebrow">{parsed.eyebrow}</span>
             )}
@@ -258,7 +298,7 @@ export default function ResearchPage({ slug }) {
           </header>
 
           {/* Hero Image */}
-          <div className="rp-hero">
+          <div className="rp-hero" ref={heroRef}>
             {COVER_IMAGES[slug]
               ? <img src={COVER_IMAGES[slug]} alt={`${parsed.title} cover`} className="rp-hero-img" />
               : <div className="rp-hero-rect" />
@@ -266,7 +306,7 @@ export default function ResearchPage({ slug }) {
           </div>
 
           {/* Project Meta */}
-          <div className="rp-meta-grid">
+          <div className="rp-meta-grid" ref={metaRef}>
             {['Role', 'Keywords', 'Timeline', 'Team'].filter(f => meta[f]).map(field => (
               <div key={field} className="rp-meta-col">
                 <p className="rp-meta-label">{field}</p>
