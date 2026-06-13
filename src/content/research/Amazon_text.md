@@ -78,6 +78,8 @@ Acceptance of refurbished peripherals depends on the type, with quality being th
 
 ![](../../img/research/Amazon-img4.svg)
 
+[linkedin-button:Interested in Learning More? Reach Out!]
+
 ---
 
 ## Next Steps

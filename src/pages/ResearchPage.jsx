@@ -111,6 +111,12 @@ function clean(text) {
     .trim()
 }
 
+// Expand :::two-col\n![alt](src)\n![alt](src)\n::: into consecutive image lines
+// ReactMarkdown groups them into one <p>, which the custom p renderer maps to ArticleImageTwoColumn
+function expandTwoColBlocks(text) {
+  return text.replace(/:::two-col\n([\s\S]*?)\n:::/g, (_, inner) => inner.trim())
+}
+
 // ── Article image components (from Figma Article/Image-one-column & two-column) ──
 function ArticleImageOneColumn({ src, alt }) {
   return (
@@ -144,21 +150,25 @@ const mdComponents = {
   hr: () => null,
   h3: ({ children }) => <h3 className="rp-h3">{children}</h3>,
   p: ({ children }) => {
-    // Detect special marker for LinkedIn button
+    // Detect special marker for LinkedIn button: [linkedin-button] or [linkedin-button:Custom text]
     const arr = Children.toArray(children)
-    if (arr.length === 1 && arr[0] === '[linkedin-button]') {
-      return (
-        <div className="rp-inline-action">
-          <a
-            href="https://www.linkedin.com/in/menghl/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="pill ghost"
-          >
-            Read about specific findings here if you are interested!
-          </a>
-        </div>
-      )
+    if (arr.length === 1 && typeof arr[0] === 'string') {
+      const match = arr[0].match(/^\[linkedin-button(?::(.+))?\]$/)
+      if (match) {
+        const label = match[1] || 'Read about specific findings here if you are interested!'
+        return (
+          <div className="rp-inline-action">
+            <a
+              href="https://www.linkedin.com/in/menghl/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="pill ghost"
+            >
+              {label}
+            </a>
+          </div>
+        )
+      }
     }
     // Detect image-only paragraphs and render the Figma image templates
     const nodes = Children.toArray(children).filter(
@@ -401,7 +411,7 @@ export default function ResearchPage({ slug }) {
                 <span className="rp-anchor">
                   {label}
                 </span>
-                <ReactMarkdown components={mdComponents}>{content}</ReactMarkdown>
+                <ReactMarkdown components={mdComponents}>{expandTwoColBlocks(content)}</ReactMarkdown>
               </section>
             )
           })}
@@ -409,7 +419,7 @@ export default function ResearchPage({ slug }) {
           {/* Footer CTA */}
           <div className="rp-footer-cta" style={{ marginTop: '120px' }}>
             <Link to="/" className="pill ghost">← BACK TO PROJECTS</Link>
-            <button className="pill ghost">VIEW NEXT CASE STUDY →</button>
+            <Link to={({ amazon: '/research/expertvoice', expertvoice: '/research/moomoo', moomoo: '/research/negotium', negotium: '/research/amazon' })[slug]} className="pill ghost">VIEW NEXT CASE STUDY →</Link>
           </div>
 
         </main>

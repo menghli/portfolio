@@ -40,7 +40,7 @@ Improve the review system to enhance product understanding, boost user engagemen
 - Affected **302k+ users**
 - Features like AI-generated product summaries entered internal testing within weeks of completion
 
-[📎 Insert impact metrics image here]
+![](../../img/research/EV-img1.svg)
 
 ---
 
@@ -48,7 +48,7 @@ Improve the review system to enhance product understanding, boost user engagemen
 
 ### Research Goals and Questions
 
-[📎 Insert research goals diagram here]
+![](../../img/research/EV-img2.svg)
 
 ### Detailed Methods
 

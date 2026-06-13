@@ -50,11 +50,11 @@ Three core questions guided the work: How do investors use earnings reports for 
 
 Getting to these questions required working closely with designers and the PM to reframe what they actually needed to know. For example, instead of asking "Where do you think the feature should be?", we observed users' natural behavior as they tried to find it — a small but important methodological distinction.
 
-[📎 Insert research methods diagram here]
+![](../../img/research/Moomoo-img1.svg)
 
 ### Methods
 
-[📎 Insert detailed methods diagram here]
+![](../../img/research/Moomoo-img2.svg)
 
 ### Recruiting
 
@@ -65,36 +65,40 @@ We recruited 9 participants — 6 advanced traders and 3 novices — screening f
 ## Key Takeaways
 
 ### Finding 1: Investors only want reports for companies they're already tracking
-
-Half of participants don't want a full earnings calendar — they only care about companies on their watchlists. They're interested in a company first, then seek its earnings report. The feature should let users filter to what's relevant to them.
+Half of participants don't want a calendar with all earnings reports; they only care about companies on their watchlists. They're interested in a company first, then seek out its earnings report. Since investors don't recognize stock symbols for companies outside their interests, they may lose interest in the feature entirely.
 
 ### Finding 2: Text-based reports from trusted sources, with reminders, work best
+Most participants prefer reading reports after release rather than watching live, cross-referencing Google Finance, Google News, the SEC, and Yahoo Finance. Key metrics (PE ratio, revenue, estimates) matter most. Timely reminders to review reports were also valued.
 
-Most participants prefer reading reports after release rather than watching live, cross-referencing Google Finance, Google News, the SEC, and Yahoo Finance. Key metrics — PE ratio, revenue, estimates — matter most. Timely reminders to review reports were also valued.
+### Finding 3: Users can't find the feature due to an information architecture problem
+The earnings report is currently under the Market page, but most participants expected to find it under a specific company/stock or in the News section. People associate earnings reports with individual companies or news updates. They typically care about a company first, then look for its earnings report, finding it easier on the company page even with more steps. Many also check News and use search to find features.
 
-### Finding 3: Users can't find the feature — it's an information architecture problem
-
-The report lives under the Market page, but most participants looked under a specific company or News. They associate earnings reports with individual companies, not a market-wide calendar.
-
-- **Quick fix:** Surface reports on company pages and improve Search
-- **Long-term:** Tree test to restructure the Market page hierarchy
+- Quick fix: Surface reports on company pages and improve Search
+- Long-term: Tree test to restructure the Market page hierarchy
 
 ### Finding 4: Investors mentally group financial information into 4 categories
 
-1. **Financial data** — revenue, earnings, estimates
-2. **Institutional** — shareholders, institutions, funds
-3. **Dividends**
-4. **Company overview**
+1. Financial data (revenue, earnings, estimates)
+2. Institutional (shareholders, institutions, funds)
+3. Dividends
+4. Company overview
 
 ---
 
 ## Next Steps
 
-We delivered a prioritized pain points and feature feedback list to designers and PMs — including videos, images, and severity ratings — used directly for the next design iteration.
+### Recommended Design Changes
 
-Beyond the deliverables, I ran a workshop helping designers build awareness of U.S. market mental models, and shared a simple UX research guide during the report meeting to improve how the team uses research to make design decisions.
+After conducting the research, we provided the designers and PMs with detailed pain points and feature feedback list, including videos, images, and the level of importance for each issue. This information was used for the next iteration of the design. We also wanted to monitor how much of the feedback the development teams acted on, as well as to track progress following discussions with the designers and product managers.
 
-[📎 Insert design recommendations image here]
+:::two-col
+![Users don't understand the abbreviation because they don't know the companies](../../img/research/Moomoo-img3.svg)
+![Design changes](../../img/research/Moomoo-img4.svg)
+:::
+
+### Research Practice Workshop and Sharing Knowledge to Greater Audience
+
+Based on the experience the research team gained in this project, we participated in a workshop that helped designers to a better awareness & understanding of the U.S. market mental models and user habits. Beside the group workshop, I found that many designers were not aware of how to use research to solve design problems, so I shared a simple UX research guide in the report meeting as a way to better facilitate cross-team communication.
 
 ---
 
