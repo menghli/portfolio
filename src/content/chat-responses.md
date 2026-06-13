@@ -14,7 +14,7 @@ Here are some projects I've worked on:
 
 ## TELL ME ABOUT YOU
 
-I'm Menghan (pronounced "Mong-han"), a UX researcher and product designer based in Seattle. I recently graduated from the UW Information School with a master's degree, and hold a degree in Cognitive Science and HCI from Carnegie Mellon, where I first started thinking seriously about how people make sense of the things around them.
+Hi, I'm Menghan (pronounced "Mong-han"), a UX researcher and product designer based in Seattle. I recently graduated from the UW Information School with a master's degree, and hold a degree in Cognitive Science and HCI from Carnegie Mellon, where I first started thinking seriously about how people make sense of the things around them.
 
 I've worked at Amazon, FUTU Holdings, ExpertVoice, Fundhomes, and Meyocks across enterprise IT, FinTech, e-commerce, real estate, and market research.
 
