@@ -274,8 +274,6 @@
 
 /* Pull quote — left border 3px Accent/Default, 20px padding, H3 style */
 .rp-pullquote {
-  border-left: 3px solid var(--accent);
-  padding-left: 20px;
   margin: 40px 0;
   width: 100%;
 }

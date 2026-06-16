@@ -328,7 +328,7 @@ export default function ResearchPage({ slug }) {
         </div>
         <div className="nav-links">
           <Link to="/">PROJECTS</Link>
-          <Link to="/">ABOUT</Link>
+          <Link to="/about">ABOUT</Link>
           <a href="#">LINKEDIN</a>
         </div>
       </nav>
@@ -430,7 +430,7 @@ export default function ResearchPage({ slug }) {
         <span className="footer-credit">Created by MENGHAN</span>
         <div className="nav-links">
           <Link to="/">PROJECTS</Link>
-          <Link to="/">ABOUT</Link>
+          <Link to="/about">ABOUT</Link>
           <a href="#">LINKEDIN</a>
         </div>
       </footer>

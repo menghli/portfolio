@@ -1,0 +1,397 @@
+/* ============================================================
+   ABOUT PAGE
+   ============================================================ */
+
+.ap-page {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+/* ── Main content column ── */
+.ap-main {
+  padding: 80px 48px 0;
+}
+
+.ap-col {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+/* ── Page opening ── */
+.ap-opening {
+  padding-bottom: 80px;
+}
+
+.ap-title {
+  font-family: 'DM Serif Display', serif;
+  font-weight: 400;
+  font-size: 64px;
+  line-height: 1.05;
+  color: var(--text);
+  margin-bottom: 20px;
+  text-wrap: balance;
+}
+
+.ap-subtitle {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 26px;
+  color: var(--text-sec);
+  max-width: 56ch;
+}
+
+/* ── Portrait ── */
+.ap-portrait {
+  display: block;
+  width: 280px;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 4px;
+  margin-top: 40px;
+}
+
+/* ── Sections ── */
+.ap-section {
+  position: relative;
+  padding-top: 48px;
+  padding-bottom: 68px;
+}
+
+/* Default visible line — overridden by .js-anim when JS is ready */
+.ap-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: var(--border);
+  transform-origin: left;
+}
+
+/* No divider — Industry and Academic Research run flush with what's above */
+.ap-section--plain::before,
+.js-anim .ap-section--plain::before {
+  display: none;
+}
+
+/* Tighter vertical rhythm for the grouped sections */
+.ap-section--plain {
+  padding-top: 24px;
+  padding-bottom: 44px;
+}
+
+/* Reduce the bottom of whatever precedes a plain section */
+.ap-section:has(+ .ap-section--plain) {
+  padding-bottom: 40px;
+}
+
+.ap-label {
+  display: block;
+  font-family: 'DM Mono', monospace;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-sec);
+  margin-bottom: 20px;
+}
+
+.ap-body {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--text);
+  max-width: 65ch;
+}
+
+.ap-body + .ap-body {
+  margin-top: 20px;
+}
+
+.ap-strong {
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ── Industry rows ── */
+.ap-rows {
+  margin-bottom: 36px;
+}
+
+.ap-row {
+  padding: 12px 0;
+  border-bottom: 1px solid #E0DDDA;
+}
+
+.ap-row:first-child {
+  border-top: 1px solid #E0DDDA;
+}
+
+.ap-row-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.ap-row-role {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: var(--text);
+}
+
+.ap-row-date {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-sec);
+  flex-shrink: 0;
+}
+
+.ap-row-company {
+  display: block;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  color: var(--text-sec);
+  margin-top: 4px;
+}
+
+/* ── Pull quote ── */
+.ap-pullquote {
+  margin-top: 52px;
+  border: none;
+  padding: 0;
+}
+
+.ap-quote-mark {
+  display: block;
+  font-family: 'DM Serif Display', serif;
+  font-size: 52px;
+  line-height: 40px;
+  color: var(--text-sec);
+  margin-bottom: 10px;
+  user-select: none;
+}
+
+.ap-quote-text {
+  font-family: 'DM Serif Display', serif;
+  font-weight: 400;
+  font-size: 21px;
+  line-height: 30px;
+  color: var(--text);
+  text-wrap: balance;
+}
+
+/* ── Music / Gallery section ── */
+.ap-section--music {
+  padding-bottom: 12px;
+}
+
+.ap-gallery-wrap {
+  height: 320px;
+  position: relative;
+  margin-top: 0;
+}
+
+/* ── Outside Work image placeholders ── */
+.ap-img-grid {
+  display: flex;
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.ap-img-ph {
+  flex: 1;
+  min-width: 0;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  background: #F0ECE8;
+  border-radius: 4px;
+  display: block;
+}
+
+/* ── CTA ── */
+.ap-cta {
+  position: relative;
+  padding: 72px 0 120px;
+}
+
+.ap-cta::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: var(--border);
+  transform-origin: left;
+}
+
+.ap-cta-text {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: var(--text-sec);
+  margin-bottom: 20px;
+}
+
+.ap-cta-pills {
+  display: flex;
+  gap: 10px;
+}
+
+/* ── Active nav link ── */
+.nav-links a.active {
+  color: var(--text);
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+
+:root {
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Page title entrance (CSS animation, always runs) ── */
+@keyframes ap-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.ap-title {
+  animation: ap-rise 950ms var(--ease-expo) both;
+}
+
+.ap-subtitle {
+  animation: ap-rise 700ms var(--ease-expo) 250ms both;
+}
+
+/* ── Section divider wipe ── */
+/* Default: line visible. js-anim collapses it; .is-visible wipes it in. */
+.js-anim [data-reveal="section"]::before,
+.js-anim [data-reveal="cta"]::before {
+  transform: scaleX(0);
+  transition: transform 900ms var(--ease-expo);
+}
+
+.js-anim [data-reveal="section"].is-visible::before,
+.js-anim [data-reveal="cta"].is-visible::before {
+  transform: scaleX(1);
+}
+
+/* ── Section label: fades in after the line finishes ── */
+.js-anim [data-reveal="section"] .ap-label {
+  opacity: 0;
+  transition: opacity 550ms var(--ease-expo) 500ms;
+}
+
+.js-anim [data-reveal="section"].is-visible .ap-label {
+  opacity: 1;
+}
+
+/* ── Body text: opacity-only, custom delay via --d (ms) ── */
+.js-anim [data-reveal="fade"] {
+  opacity: 0;
+  transition: opacity 650ms var(--ease-expo) calc(var(--d, 0) * 1ms + 120ms);
+}
+
+.js-anim [data-reveal="fade"].is-visible {
+  opacity: 1;
+}
+
+/* ── Industry rows: translateX stagger via --i ── */
+.js-anim [data-reveal="row"] {
+  opacity: 0;
+  transform: translateX(-10px);
+  transition:
+    opacity   550ms var(--ease-expo) calc(var(--i, 0) * 80ms + 280ms),
+    transform 550ms var(--ease-expo) calc(var(--i, 0) * 80ms + 280ms);
+}
+
+.js-anim [data-reveal="row"].is-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Pull quote mark: scale + opacity ── */
+.js-anim [data-reveal="scale"] {
+  opacity: 0;
+  transform: scale(0.75);
+  transition:
+    opacity   800ms var(--ease-expo) 350ms,
+    transform 800ms var(--ease-expo) 350ms;
+}
+
+.js-anim [data-reveal="scale"].is-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ── Music names: clip-path wipe, custom delay via --d ── */
+.js-anim [data-reveal="wipe"] {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 1000ms var(--ease-expo) calc(var(--d, 0) * 1ms + 100ms);
+}
+
+.js-anim [data-reveal="wipe"].is-visible {
+  clip-path: inset(0 0% 0 0);
+}
+
+/* ── CTA text + pills ── */
+.js-anim [data-reveal="cta"] .ap-cta-text {
+  opacity: 0;
+  transition: opacity 650ms var(--ease-expo) 480ms;
+}
+
+.js-anim [data-reveal="cta"].is-visible .ap-cta-text {
+  opacity: 1;
+}
+
+.js-anim [data-reveal="cta"] .ap-cta-pills .pill {
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity   500ms var(--ease-expo),
+    transform 500ms var(--ease-expo);
+}
+
+.js-anim [data-reveal="cta"] .ap-cta-pills .pill:nth-child(1) { transition-delay: 620ms; }
+.js-anim [data-reveal="cta"] .ap-cta-pills .pill:nth-child(2) { transition-delay: 800ms; }
+
+.js-anim [data-reveal="cta"].is-visible .ap-cta-pills .pill {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Reduced motion: disable all, keep content visible ── */
+@media (prefers-reduced-motion: reduce) {
+  .ap-title,
+  .ap-subtitle {
+    animation: none;
+  }
+
+  .js-anim [data-reveal="section"]::before,
+  .js-anim [data-reveal="cta"]::before,
+  .js-anim [data-reveal="section"] .ap-label,
+  .js-anim [data-reveal="fade"],
+  .js-anim [data-reveal="scale"],
+  .js-anim [data-reveal="row"],
+  .js-anim [data-reveal="cta"] .ap-cta-text,
+  .js-anim [data-reveal="cta"] .ap-cta-pills .pill {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .js-anim [data-reveal="wipe"] {
+    clip-path: none !important;
+    transition: none !important;
+  }
+}

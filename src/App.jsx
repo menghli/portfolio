@@ -2,11 +2,15 @@ import { useState, useRef, useCallback, useEffect } from 'react'
 import { Routes, Route, Link } from 'react-router-dom'
 import TextType from './components/TextType/TextType.jsx'
 import ResearchPage from './pages/ResearchPage.jsx'
+import AboutPage from './pages/AboutPage.jsx'
 import amazonSmall      from './img/homepage/Amazon-small.svg'
 import expertvoiceSmall from './img/homepage/ExpertVoice-small.svg'
 import negotiumSmall    from './img/homepage/Negotium-small.svg'
 import moomooSmall      from './img/homepage/Moomoo-small.svg'
 import chatMd           from './content/chat-responses.md?raw'
+import backgroundImg    from './img/homepage/background.svg'
+import designImg        from './img/homepage/design.png'
+import outsideWorkImg   from './img/homepage/outside-of-work.avif'
 
 const TYPEWRITER_SPEED = 18
 
@@ -336,6 +340,7 @@ function HomePage() {
       {/* Navigation */}
       <nav className="nav">
         <div className="nav-logo">
+          <Link to="/">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Menghan">
             <g transform="translate(4.36, 2.18)">
               <path d="M11.648 14.8189C11.4386 14.8189 11.2582 14.7258 11.1069 14.5396C10.9673 14.3535 10.8975 14.0276 10.8975 13.5622C10.8975 13.2945 10.9499 12.9804 11.0546 12.6196C11.2873 11.8865 11.5259 11.1011 11.7702 10.2633C12.0262 9.42546 12.2648 8.57018 12.4859 7.69746C12.7186 6.82473 12.9048 5.98109 13.0444 5.16655C13.184 4.34036 13.2539 3.584 13.2539 2.89745C13.2539 2.66473 13.2422 2.43782 13.2189 2.21673C13.2073 1.99564 13.1782 1.78618 13.1317 1.58836C11.9564 2.70545 10.8684 4.224 9.86767 6.144C8.87858 8.05236 7.97676 10.2749 7.16222 12.8116C7.02258 13.1956 6.84804 13.4633 6.63858 13.6145C6.42913 13.7658 6.23131 13.8415 6.04513 13.8415C5.88222 13.8415 5.72513 13.7775 5.57386 13.6495C5.42258 13.5098 5.34695 13.3004 5.34695 13.0211C5.34695 12.8349 5.39349 12.5731 5.48658 12.2356C5.57967 11.8865 5.74258 11.5665 5.97531 11.2756C6.10331 10.5076 6.20804 9.69309 6.28949 8.832C6.38258 7.97091 6.42913 7.17382 6.42913 6.44073C6.42913 6.10327 6.41167 5.78909 6.37676 5.49818C6.35349 5.19564 6.31276 4.93382 6.25458 4.71273C5.64949 5.35273 5.08513 6.15564 4.56149 7.12146C4.04949 8.07564 3.59567 9.10546 3.20004 10.2109C2.8044 11.3047 2.47276 12.3753 2.20513 13.4225C1.99567 14.1789 1.65822 14.5571 1.19276 14.5571C1.00658 14.5571 0.849491 14.4582 0.721491 14.2604C0.605127 14.0625 0.546945 13.7658 0.546945 13.3702C0.546945 12.9862 0.640036 12.4684 0.826218 11.8167C1.0124 11.1651 1.26258 10.4495 1.57676 9.66982C1.90258 8.89018 2.26331 8.11636 2.65895 7.34836C3.06622 6.56873 3.48513 5.85891 3.91567 5.21891C4.35785 4.56727 4.7884 4.04364 5.20731 3.648C5.62622 3.25236 6.0044 3.05455 6.34186 3.05455C6.56295 3.05455 6.76076 3.09527 6.93531 3.17673C7.10986 3.25818 7.26113 3.42691 7.38913 3.68291C7.51713 3.92727 7.61022 4.30546 7.6684 4.81745C7.73822 5.31782 7.77313 5.98691 7.77313 6.82473C7.77313 6.976 7.77313 7.15055 7.77313 7.34836C8.11058 6.41745 8.5004 5.51564 8.94258 4.64291C9.3964 3.75855 9.87349 2.96727 10.3739 2.26909C10.8742 1.57091 11.3746 1.01818 11.8749 0.61091C12.3753 0.203637 12.8466 0 13.2888 0C13.7891 0 14.1964 0.273455 14.5106 0.820364C14.8248 1.35564 14.9819 2.19927 14.9819 3.35127C14.9819 4.44509 14.8946 5.50982 14.72 6.54546C14.5455 7.58109 14.3244 8.55855 14.0568 9.47782C13.8008 10.3971 13.5331 11.2349 13.2539 11.9913C12.9862 12.736 12.7535 13.376 12.5557 13.9113C12.4277 14.2371 12.2939 14.4698 12.1542 14.6095C12.0146 14.7491 11.8459 14.8189 11.648 14.8189Z" fill="url(#logo-grad-m)"/>
@@ -357,11 +362,12 @@ function HomePage() {
               </linearGradient>
             </defs>
           </svg>
+          </Link>
         </div>
         <div className="nav-links">
           <a href="#projects">PROJECTS</a>
-          <a href="#about">ABOUT</a>
-          <a href="#">LINKEDIN</a>
+          <Link to="/about">ABOUT</Link>
+          <a href="https://www.linkedin.com/in/menghl/" target="_blank" rel="noopener noreferrer">LINKEDIN</a>
         </div>
       </nav>
 
@@ -524,40 +530,44 @@ function HomePage() {
           <div className="about-head-left">
             <h2 className="h2">About Me</h2>
             <div className="about-ctas">
-              <button className="pill ghost">Learn More</button>
-              <button className="pill filled">Read case study</button>
-              <button className="pill icon-only pill--white">
+              <Link to="/about" className="pill ghost">Learn More</Link>
+              <a href="https://www.linkedin.com/in/menghl/" target="_blank" rel="noopener noreferrer" className="pill filled">COME SAY HI :)</a>
+              <Link to="/about" className="pill icon-only pill--white">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter"/>
                 </svg>
-              </button>
+              </Link>
             </div>
           </div>
         </div>
         <div className="about-grid">
           <div className="about-col about-col--border">
-            <span className="col-label">01 — BACKGROUND</span>
-            <div className="col-img col-img--taupe"></div>
-            <h3 className="col-title">Title Title Title Title Title Title Title Title Title Title</h3>
-            <p className="col-body">Studied at UW. Previously at [Role, Company]. Believe great design starts with understanding people.</p>
+            <span className="col-label">01. BACKGROUND</span>
+            <div className="col-img-wrap">
+              <img src={backgroundImg} alt="" className="col-img" style={{ objectPosition: 'center 71%' }} />
+            </div>
+            <p className="col-body">I studied cognitive science at CMU, then got my master&apos;s from the UW iSchool. Along the way I&apos;ve worked across enterprise IT, fintech, e-commerce, and education technology.</p>
           </div>
           <div className="about-col about-col--border">
-            <span className="col-label">02 — DESIGN APPROACH</span>
-            <div className="col-img col-img--light"></div>
-            <h3 className="col-title">Title Title Title Title Title Title Title Title Title Title</h3>
-            <p className="col-body">Studied at UW. Previously at [Role, Company]. Believe great design starts with understanding people.</p>
+            <span className="col-label">02. DESIGN APPROACH</span>
+            <div className="col-img-wrap">
+              <img src={designImg} alt="" className="col-img" />
+            </div>
+            <p className="col-body">I started out as a researcher and got curious about why findings don&apos;t always change what gets built. That&apos;s what pulled me into design.</p>
           </div>
           <div className="about-col about-col--border">
-            <span className="col-label">03 — OUTSIDE WORK</span>
-            <div className="col-img col-img--warm"></div>
-            <h3 className="col-title">Title Title Title Title Title Title Title Title Title Title</h3>
-            <p className="col-body">Studied at UW. Previously at [Role, Company]. Believe great design starts with understanding people.</p>
+            <span className="col-label">03. OUTSIDE OF WORK</span>
+            <div className="col-img-wrap">
+              <img src={outsideWorkImg} alt="" className="col-img" />
+            </div>
+            <p className="col-body">I&apos;ve been singing in choirs and a cappella groups since middle school. Outside of that I&apos;m usually baking, crocheting, or hunting for the best boba in town.</p>
           </div>
           <div className="about-col">
-            <span className="col-label">04 — MUSIC</span>
-            <div className="col-img col-img--cool"></div>
-            <h3 className="col-title">Title Title Title Title Title Title Title Title Title Title</h3>
-            <p className="col-body">Studied at UW. Previously at [Role, Company]. Believe great design starts with understanding people.</p>
+            <span className="col-label">04. PLAYGROUND</span>
+            <div className="col-img-wrap">
+              <div className="col-img col-img--cool"></div>
+            </div>
+            <p className="col-body">Stuff I make when there&apos;s no brief: visual experiments, small tools, and typographic detours. More to come.</p>
           </div>
         </div>
       </section>
@@ -567,8 +577,8 @@ function HomePage() {
         <span className="footer-credit">Created by MENGHAN</span>
         <div className="nav-links">
           <a href="#projects">PROJECTS</a>
-          <a href="#about">ABOUT</a>
-          <a href="#">LINKEDIN</a>
+          <Link to="/about">ABOUT</Link>
+          <a href="https://www.linkedin.com/in/menghl/" target="_blank" rel="noopener noreferrer">LINKEDIN</a>
         </div>
       </footer>
     </>
@@ -579,6 +589,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/about"               element={<AboutPage />} />
       <Route path="/research/amazon"      element={<ResearchPage slug="amazon" />} />
       <Route path="/research/expertvoice" element={<ResearchPage slug="expertvoice" />} />
       <Route path="/research/moomoo"      element={<ResearchPage slug="moomoo" />} />

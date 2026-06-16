@@ -841,7 +841,7 @@ body {
    ============================================================ */
 .section-about {
   background: var(--bg);
-  padding: 48px 0 96px;
+  padding: 72px 0 120px;
 }
 
 .about-head {
@@ -852,7 +852,7 @@ body {
 .about-head-left {
   display: flex;
   align-items: flex-end;
-  gap: 16px;
+  gap: 20px;
 }
 
 .about-ctas {
@@ -871,10 +871,10 @@ body {
 }
 
 .about-col {
-  padding: 28px 24px 40px;
+  padding: 36px 28px 52px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
 }
 
 .about-col--border {
@@ -891,10 +891,26 @@ body {
   white-space: nowrap;
 }
 
-.col-img {
-  height: 260px;
-  width: 100%;
+.col-img-wrap {
   flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 2px;
+  transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.col-img-wrap:hover {
+  transform: translateY(-5px) scale(1.02);
+}
+
+.col-img {
+  height: 280px;
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .col-img-wrap { transition: none; transform: none; }
 }
 
 .col-img--taupe { background: #EEECE8; }
@@ -904,18 +920,17 @@ body {
 
 .col-title {
   font-family: 'DM Sans', sans-serif;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 20px;
   line-height: 26px;
   color: var(--dark);
 }
 
 .col-body {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
-  line-height: 18px;
-  letter-spacing: 0.27px;
-  color: var(--text-sec);
+  line-height: 26px;
+  color: var(--dark);
 }
 
 /* ============================================================
