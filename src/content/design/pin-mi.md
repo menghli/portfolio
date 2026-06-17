@@ -1,6 +1,13 @@
-# Redesign Pin-MI: A Platform for Training Communication Skills through Peer Feedback
+# Pin-MI
 
-📋 Approximately 7 min read | Design Project
+Status: In progress
+tag: Design
+
+# Redesigning the Experiential Learning of Interview Skills through Role-play
+
+Subtitle: Expanding Pin-MI's usability and scope for broader communication skills training
+Eyebrow: CMU COEX LAB · 2024 Summer
+Cover: ../../img/design/PinMI-page-cover.svg
 
 ## Project Meta
 
@@ -19,13 +26,11 @@
 
 In fields like counseling, customer service, and user research, strong communication skills are essential but hard to train without regular practice. Pin-MI is a video-call tool that solves this with interactive role-playing, quick notes ("Pins"), structured self-reflection, and real-time peer feedback, making training easier and more effective.
 
-[📎 PinMI-img1 — The Original "Pin", which is a short note during interview]
-
 ### Project Goal
 
 Pin-MI has shown value in training for motivational interviewing, but now we're exploring broader uses, like user interview training or suicide hotline counseling. However, users often find Pin-MI confusing and difficult to use, so it's also important to improve usability to make Pin-MI more user-friendly and intuitive.
 
-The key question was: **How might we expand Pin-MI to support broader communication skills training while improving usability for a more intuitive, accessible experience?**
+**How might we expand Pin-MI to support broader communication skills training while improving usability for a more intuitive, accessible experience?**
 
 **Target Users:** Students learning user interviews and customer service representatives looking to practice communication skills.
 
@@ -33,11 +38,11 @@ The key question was: **How might we expand Pin-MI to support broader communicat
 
 ### Impact
 
-| Metric | Result |
-|---|---|
-| Perceived usefulness | +23% |
-| Pinning effectiveness | +20% |
-| Success Rate | 75% |
+:::metrics
++23% · Perceived usefulness
++20% · Pinning effectiveness
+75% · Success Rate
+:::
 
 In final prototype testing, perceived usefulness for learning interview skills rose from 4.39 to 5.78 (out of 7). 3 out of 4 users completed the session and created at least one Pin without help, with Pinning scores increasing from 4.32 to 5.23.
 
@@ -47,41 +52,27 @@ In final prototype testing, perceived usefulness for learning interview skills r
 
 ### Framing the Problem
 
-Using Pin-MI is very challenging and confusing...
-
-[📎 PinMI-img2 — Framing the problem]
+Using Pin-MI is very challenging and confusing for new users — the interface lacks clear entry points, the role-play flow is cognitively demanding, and the reflection phase feels disconnected from the practice session.
 
 ### 01: A Central Hub for Structured and Continuous Learning
 
 The "My Practice" page is a central hub where learners understand how Pin-MI works and view past practice. Learners can also start new sessions directly from this page or receive invitations from the hosts.
 
-[📎 PinMI-img3 — Home]
-[📎 PinMI-img4 — Resuming a Session]
-[📎 PinMI-img5 — Past Sessions]
-[📎 PinMI-img6 — New Users]
-
 ### 02: Make a Reflective Pin with Simple Tags for Focused Sessions
 
 Introduced tags for learners to quickly mark reflection points, helping hosts stay focused. Added a "Trainer" role with tailored interfaces for each role to reduce cognitive load.
-
-[📎 PinMI-img7 — Video: Pin with tags demo]
 
 ### 03: Simplified Collaborative Reflection and Feedback
 
 Reflection is simplified with clear, feedback-focused questions. All Pins appear in a single, editable list with checkmarks for completed items, reducing extra navigation.
 
-[📎 PinMI-img8 — Original reflection phase]
-[📎 PinMI-img9 — Video: Revamped reflection phase]
-
 ---
 
-## Initial Research
+## Research
 
 ### Understanding Current User Flow and Design Audit
 
 We started with a **heuristic evaluation** to uncover bugs, usability issues, and design opportunities. Before diving into usability testing with our new audience (a group of students learning how to conduct user interviews), I took the chance to fix those bugs and technical issues with the engineer. Once that was done, we were ready to test how effective Pin-MI could be for teaching general interview skills.
-
-[📎 PinMI-img10 — Heuristic Evaluation]
 
 ### Usability Testing: Identify User Pain Points
 
@@ -89,51 +80,40 @@ We ran an **unmoderated usability test** with 60 participants comparing Pin-MI w
 
 ### Overall, we learned 4 key insights to drive our design direction
 
-1. Pinning while having a back-and-forth conversation is too cognitively demanding.
-2. Users are confused and frustrated about using Pin-MI because of a lack of clarity and undo functionality.
-3. Students skip reflections because they didn't make Pins during role-play and instructions are unclear.
-4. Lack of access to previous sessions hinders continuous learning and peer support.
+:::findings
+COGNITIVE LOAD | Pinning while having a back-and-forth conversation is too cognitively demanding.
+CLARITY & UNDO | Users are confused and frustrated about using Pin-MI because of a lack of clarity and undo functionality.
+REFLECTION GAPS | Students skip reflections because they didn't make Pins during role-play and instructions are unclear.
+SESSION ACCESS | Lack of access to previous sessions hinders continuous learning and peer support.
+:::
 
 ---
 
-## Iteration 1
+## Exploration
 
 ### From Findings to Insights
 
 After the testing, I believed users were confused by Pin-MI due to vague instructions and an unintuitive layout. Therefore, clear guidance at each step — through direct cues or subtle hints — would help them navigate better. In this iteration, I focused on tutorials, contextual guidance, and a clearer layout with visual reminders to clarify each feature.
 
-**Design Goal:** Help users understand Pin-MI's functions and flow through clearer guidance, reduced confusion, and lighter cognitive load during role-play.
+:::callout Design Goal
+Help users understand Pin-MI's functions and flow through clearer guidance, reduced confusion, and lighter cognitive load during role-play.
+:::
 
-### Concept/Feature 1: Provide Better Guidance to Reduce Confusion
+### Concept 1: Provide Better Guidance to Reduce Confusion
 
 To resolve the problem of user confusion and frustration (e.g. not knowing how to proceed, mis-clicks on Pins, confusion with what the tool is for), I decided to use tutorials and contextual guidance to provide clearer explanation.
 
-[📎 PinMI-img11 — Card-tutorial to introduce Pin-MI before users start]
-[📎 PinMI-img12 — Contextual help for specific features]
-
-### Concept/Feature 2: Encourage Users to Engage with Pin Reflections Using Nudges
+### Concept 2: Encourage Users to Engage with Pin Reflections Using Nudges
 
 Currently, students skip reflections due to multiple reasons: they don't make Pins during interviews, lack of clear instruction causes confusion, and there's no clear indicator that they can move on to the next Pin.
 
-[📎 PinMI-img13 — Before: Users don't click on the next Pin because it doesn't seem clickable]
-[📎 PinMI-img14 — After: Visual differences between "filled" and "unfilled" Pins, and navigation buttons]
-[📎 PinMI-img15 — Before: Doesn't tell users what to complete in the instruction]
-[📎 PinMI-img16 — After: Action-based instruction that clearly indicates what content is expected]
-
-### Concept/Feature 3: How Might We Reduce the Cognitive Load During Role-play?
+### Concept 3: How Might We Reduce the Cognitive Load During Role-play?
 
 Students faced significant cognitive challenges during the Role-play Session. I tested two approaches: one offering full context and informative Pins for reflection, and the other focused on quick actions to lighten the mental load.
 
 A key testing question: is text-based Pins truly helpful for learners to reflect later?
 
-[📎 PinMI-img17 — Idea 1: Provide full context and information]
-[📎 PinMI-img18 — Idea 2: Quick feedback through buttons]
-
----
-
-## User Testing
-
-### Oops...it's even more confusing
+### Oops... it's even more confusing
 
 I conducted Think-Aloud usability tests with 4 participants acting as the "Host" in Pin-MI, and learned the following:
 
@@ -141,17 +121,19 @@ I conducted Think-Aloud usability tests with 4 participants acting as the "Host"
 - Sessions ran longer than expected, leading to fatigue; the tutorials added cognitive load rather than improving understanding.
 - While users preferred the simpler Role-play V2 and valued making Pins, they still found it hard to write reflective content during the session.
 
-### A Pivot Towards Removing Unnecessary Instruction and Reducing Cognitive Load
+### A Pivot Towards Removing Unnecessary Instruction
 
-After not-so-good results from user testing, I stepped back to think about why users need Pins, what their main goals are, and how Pins could truly support reflection. I realized the core issue was that we were asking users to handle too much at once: absorbing information before the session, processing more during role-play, reflecting in real time, and trying to hold meaningful discussions. This overloaded experience ended abruptly after each interview, without giving users a reason to return or continue learning.
+After not-so-good results from user testing, I stepped back to think about why users need Pins, what their main goals are, and how Pins could truly support reflection. I realized the core issue was that we were asking users to handle too much at once: absorbing information before the session, processing more during role-play, reflecting in real time, and trying to hold meaningful discussions.
 
-Instead of fixing surface-level issues, I decided to rethink the entire experience. The goal should be removing barriers and reducing cognitive load for students to continuously learn, instead of making more Pins or just having a better understanding of the tool. Although this required major changes to the design, strategy, and technical setup, the shift was worthwhile because it created a more focused and sustainable learning process.
+Instead of fixing surface-level issues, I decided to rethink the entire experience. The goal should be removing barriers and reducing cognitive load for students to continuously learn, instead of making more Pins or just having a better understanding of the tool.
 
-**Revised Design Goal:** Streamline workflows across roles, simplify note-taking and reflection, and promote continuous learning so that users can enjoy a smoother experience and complete tasks more efficiently for higher-quality learning.
+:::callout Revised Design Goal
+Streamline workflows across roles, simplify note-taking and reflection, and promote continuous learning so that users can enjoy a smoother experience and complete tasks more efficiently for higher-quality learning.
+:::
 
 ---
 
-## Final Iteration
+## Design
 
 ### DESIGN FEATURE 1: Introduce a "My Practice Page" for Structured and Continuous Learning
 
@@ -159,21 +141,15 @@ Instead of fixing surface-level issues, I decided to rethink the entire experien
 
 **Solution:** The "My Practice" page is where learners understand how Pin-MI works, see session prep steps, and access past practice history. The host can easily start new sessions here, gaining ownership of the process.
 
-[📎 PinMI-img19 — My Practice page overview]
-
-**Before:**
+:::compare Before | After
 - Users can't access previous sessions
 - Need to pre-assign room and role before joining
 - Start session and resume on the same page
-
-[📎 PinMI-img20 — Before state]
-
-**After:**
+---
 1. Directly starting or joining a session.
 2. Only hosts can start a session; Participants and Trainers receive invitation.
 3. Check previous session and download notes.
-
-[📎 PinMI-img21 — After state]
+:::
 
 ### DESIGN FEATURE 2: Quality Feedback vs Focused Session — Introducing the 3rd Role "Trainer"
 
@@ -181,17 +157,9 @@ Instead of fixing surface-level issues, I decided to rethink the entire experien
 
 **Solution:** I introduced a third role: Trainer. By having the Trainer solely focus on listening and giving objective feedback, the host and participant can concentrate on their roles without the added burden. In the future, AI could take over, offering personalized and accessible feedback.
 
-[📎 PinMI-img22 — Adding a new role to split the work]
-
 Based on insights from user testing, I explored several ways for users to create Pins, including icon tags, text-based tags, and direct text input. Through iteration, I found that combining icons and text tags provided the best clarity. I also added an optional field for users who wanted to include additional descriptions.
 
-[📎 PinMI-img23 — Pin tag exploration]
-
 The frames should also be tailored to each person's role. Participants don't need to provide much feedback, so their interface can be simpler. Trainers are expected to give detailed, informative feedback, so it's important to design a layout that makes inputting feedback easy and efficient.
-
-[📎 PinMI-img24 — Host: Pin with tags and session notes]
-[📎 PinMI-img25 — Host: Only quick Pins]
-[📎 PinMI-img26 — Trainer: Informative feedback]
 
 ### DESIGN FEATURE 3: Simplified Collaborative Reflection and Feedback
 
@@ -199,20 +167,15 @@ The frames should also be tailored to each person's role. Participants don't nee
 
 **Solution:** Reflection questions should be simple and focused on feedback. A list of Pins makes more sense than navigating through each one individually.
 
-In the original reflection phase, users were confused about what they were supposed to do. They also ignored other Pins because they didn't realize they could switch to the next one.
-
-[📎 PinMI-img27 — Original reflection phase]
-
 **Self Reflection Key Features:**
+
 1. Users can click on the Pins (or create more) to see the content.
 2. A list of all the Pins made in the same view.
 3. Ask clear and direct questions.
 4. Visual indicators for whether a Pin is completed and whether Host wants to share.
 
-[📎 PinMI-img28 — Self reflection redesign]
-[📎 PinMI-img29 — Peer feedback redesign]
-
 **Peer-feedback Key Features:**
+
 1. Color indicating Pin ownership.
 2. Each Pin has tags that indicate who pinned it and the tag type.
 3. Ask clear and direct questions.

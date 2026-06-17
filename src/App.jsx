@@ -1,12 +1,25 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { Routes, Route, Link } from 'react-router-dom'
 import TextType from './components/TextType/TextType.jsx'
+import LogoLoop from './components/LogoLoop/LogoLoop.jsx'
 import ResearchPage from './pages/ResearchPage.jsx'
+import DesignPage from './pages/DesignPage.jsx'
 import AboutPage from './pages/AboutPage.jsx'
+import avatar1Img       from './img/homepage/avatar1.png'
+import avatar2Img       from './img/homepage/avatar2.png'
 import amazonSmall      from './img/homepage/Amazon-small.svg'
 import expertvoiceSmall from './img/homepage/ExpertVoice-small.svg'
 import negotiumSmall    from './img/homepage/Negotium-small.svg'
 import moomooSmall      from './img/homepage/Moomoo-small.svg'
+import pinMiSmall       from './img/homepage/Pin-MI-small.svg'
+import dubjamSmall      from './img/homepage/Dubjam-small.svg'
+import doryVRSmall      from './img/homepage/DoryVR-small.svg'
+import logo1            from './img/homepage/logo1.svg'
+import logo2            from './img/homepage/logo2.svg'
+import logo3            from './img/homepage/logo3.svg'
+import logo4            from './img/homepage/logo4.svg'
+import logo5            from './img/homepage/logo5.svg'
+import logo6            from './img/homepage/logo6.svg'
 import chatMd           from './content/chat-responses.md?raw'
 import backgroundImg    from './img/homepage/background.svg'
 import designImg        from './img/homepage/design.png'
@@ -63,22 +76,31 @@ const PILLS_WITH_CARDS = new Set(['What researcher are you?', 'What do you Desig
 
 const CHAT_PROJECT_CARDS = {
   'What researcher are you?': [
-    'Amazon IT: PeripheralPulse Research',
-    'ExpertVoice Product Review',
-    'Testing Moomoo Earning Report',
+    { img: amazonSmall,      title: 'PeripheralPulse Research' },
+    { img: expertvoiceSmall, title: 'ExpertVoice' },
+    { img: negotiumSmall,    title: 'Negotium' },
+    { img: moomooSmall,      title: 'Moomoo Earning Report' },
   ],
   'What do you Design?': [
-    'Interview Role-play Redesign',
-    'Fitting Room',
-    'Amazon Fresh Grocery Pickup',
+    { img: pinMiSmall,  title: 'Pin-MI' },
+    { img: dubjamSmall, title: 'DubJam' },
+    { img: doryVRSmall, title: 'DoryVR' },
   ],
 }
 
+const LOGOS = [
+  { src: logo1, alt: 'Logo 1' },
+  { src: logo2, alt: 'Logo 2' },
+  { src: logo3, alt: 'Logo 3' },
+  { src: logo4, alt: 'Logo 4' },
+  { src: logo5, alt: 'Logo 5' },
+  { src: logo6, alt: 'Logo 6' },
+]
+
 const DESIGN_PROJECTS = [
-  { title: 'Redesigning the Experiential Learning of Interview Skills through Role-play' },
-  { title: 'Fitting Room — Rethinking how people discover personal style online' },
-  { title: 'Amazon Fresh — Streamlining the grocery pickup experience' },
-  { title: 'ExpertVoice — Improving advocate activation and onboarding rate' },
+  { title: 'Redesigning the Experiential Learning of Interview Skills through Role-play', img: pinMiSmall,  slug: '/design/pin-mi'  },
+  { title: 'DubJam: How I Led a 0-to-1 Design to Foster Local Music Community',          img: dubjamSmall, slug: '/design/dubjam'  },
+  { title: 'DoryVR: Data Storytelling and Learning Tool in Mixed Reality',                img: doryVRSmall, slug: '/design/dory-vr' },
 ]
 
 const HERO_TEXTS = [
@@ -110,7 +132,7 @@ function HomePage() {
       const youMsg = document.createElement('div')
       youMsg.className = 'chat-msg chat-msg--you'
       youMsg.innerHTML =
-        '<div class="chat-avatar"></div>' +
+        `<img class="chat-avatar" src="${avatar2Img}" alt="You" />` +
         '<div class="chat-body">' +
           '<span class="chat-label">YOU</span>' +
           '<p class="chat-text"></p>' +
@@ -134,7 +156,7 @@ function HomePage() {
           menghanMsg.style.opacity = '0'
           menghanMsg.style.transition = 'opacity 300ms ease'
           menghanMsg.innerHTML =
-            '<div class="chat-avatar"></div>' +
+            `<img class="chat-avatar" src="${avatar1Img}" alt="Menghan" />` +
             '<div class="chat-body">' +
               '<span class="chat-label chat-label--menghan">MENGHAN</span>' +
               '<span class="chat-typing">_</span>' +
@@ -157,11 +179,11 @@ function HomePage() {
               .filter(p => p.trim())
               .map(p => `<p class="chat-text">${parseInlineMarkdown(p.trim())}</p>`)
               .join('')
-            const cardTitles = showCards ? (CHAT_PROJECT_CARDS[pillText] || []) : []
-            const cardsHtml = cardTitles.map(title =>
+            const cards = showCards ? (CHAT_PROJECT_CARDS[pillText] || []) : []
+            const cardsHtml = cards.map(card =>
               `<div class="chat-project-card">` +
-                `<div class="chat-project-img"></div>` +
-                `<p class="chat-project-title">${title}</p>` +
+                `<img src="${card.img}" alt="" class="chat-project-img" />` +
+                `<p class="chat-project-title">${card.title}</p>` +
               `</div>`
             ).join('')
 
@@ -172,9 +194,10 @@ function HomePage() {
             content.style.transition = 'opacity 400ms ease, transform 400ms ease'
             content.innerHTML =
               `<div class="chat-response-text">${paragraphs}</div>` +
-              (showCards ? `<div class="chat-project-row">${cardsHtml}</div>` : '')
+              (cards.length ? `<div class="chat-project-row">${cardsHtml}</div>` : '')
 
             typingEl.replaceWith(content)
+
             requestAnimationFrame(() => requestAnimationFrame(() => {
               content.style.opacity = '1'
               content.style.transform = 'translateY(0)'
@@ -447,9 +470,9 @@ function HomePage() {
           <div className="design-cards-row">
             {DESIGN_PROJECTS.map((project, i) => (
               <div className="project-card-wrap" key={i}>
-                <div className="project-card">
-                  <div className="project-card-img" />
-                </div>
+                <Link to={project.slug} className="project-card">
+                  <img src={project.img} alt="" className="project-card-img" />
+                </Link>
                 <p className="project-card-title">{project.title}</p>
               </div>
             ))}
@@ -514,14 +537,27 @@ function HomePage() {
           <h2 className="h2">How is it like to work with me?</h2>
         </div>
         <div className="testimonials-body">
-          <div className="testimonial-glow"></div>
-          <button className="carousel-btn">←</button>
+          <div className="testimonial-glow" />
           <div className="testimonial-content">
-            <blockquote className="testimonial-quote">"Working with Menghan is rare — she brings both sharp strategic thinking and the craft to execute it. She makes every team around her better."</blockquote>
-            <p className="testimonial-attr">SARAH CHEN, SENIOR PM · MICROSOFT</p>
+            <blockquote className="testimonial-quote">
+              I am a mixed-method UX researcher and product designer based in Seattle. I build thoughtful digital experiences across research and design, with contributions at Amazon, Work 365, ExpertVoice, and more.
+            </blockquote>
           </div>
-          <button className="carousel-btn">→</button>
         </div>
+        <div className="logo-marquee-wrapper">
+          <LogoLoop
+            logos={LOGOS}
+            speed={55}
+            direction="left"
+            logoHeight={56}
+            gap={72}
+            hoverSpeed={0}
+            fadeOut
+            fadeOutColor="#F7F6F4"
+            ariaLabel="Companies I've worked with"
+          />
+        </div>
+        <div className="testimonials-bottom-line" />
       </section>
 
       {/* About Me */}
@@ -594,6 +630,9 @@ function App() {
       <Route path="/research/expertvoice" element={<ResearchPage slug="expertvoice" />} />
       <Route path="/research/moomoo"      element={<ResearchPage slug="moomoo" />} />
       <Route path="/research/negotium"    element={<ResearchPage slug="negotium" />} />
+      <Route path="/design/pin-mi"        element={<DesignPage slug="pin-mi" />} />
+      <Route path="/design/dubjam"        element={<DesignPage slug="dubjam" />} />
+      <Route path="/design/dory-vr"       element={<DesignPage slug="dory-vr" />} />
     </Routes>
   )
 }

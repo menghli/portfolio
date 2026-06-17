@@ -56,6 +56,7 @@ function Logo() {
 
 export default function AboutPage() {
   useEffect(() => {
+    window.scrollTo(0, 0)
     const page = document.querySelector('.ap-page')
     if (page) page.classList.add('js-anim')
 
@@ -91,7 +92,7 @@ export default function AboutPage() {
           <Link to="/"><Logo /></Link>
         </div>
         <div className="nav-links">
-          <NavLink to="/" end>PROJECTS</NavLink>
+          <a href="/#projects">PROJECTS</a>
           <NavLink to="/about">ABOUT</NavLink>
           <a href="https://www.linkedin.com/in/menghl/" target="_blank" rel="noopener noreferrer">LINKEDIN</a>
         </div>
@@ -240,7 +241,7 @@ export default function AboutPage() {
       <footer className="footer">
         <span className="footer-credit">Created by MENGHAN</span>
         <div className="nav-links">
-          <Link to="/">PROJECTS</Link>
+          <a href="/#projects">PROJECTS</a>
           <Link to="/about">ABOUT</Link>
           <a href="https://www.linkedin.com/in/menghl/" target="_blank" rel="noopener noreferrer">LINKEDIN</a>
         </div>

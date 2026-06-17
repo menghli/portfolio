@@ -26,7 +26,7 @@ Cover: ../../img/research/Moomoo-page-cover.svg
 
 ### Why Study Earnings Reports?
 
-Earnings reports are crucial for stock investors — they help identify trading opportunities and support informed decisions. While the product team believed providing earnings reports was essential, there was no understanding of how users actually interacted with the feature or whether it met their needs.
+Earnings reports are crucial for stock investors — they help identify trading opportunities and support informed decisions. While the product team believed providing earnings reports was essential, there was ==no understanding of how users actually interacted with the feature or whether it met their needs==.
 
 ### Project Goal
 
@@ -48,7 +48,7 @@ Understand how investors use earnings reports to enhance the feature's trading u
 
 Three core questions guided the work: How do investors use earnings reports for financial decisions? What specific information do they need? Do users find the current feature easy to navigate?
 
-Getting to these questions required working closely with designers and the PM to reframe what they actually needed to know. For example, instead of asking "Where do you think the feature should be?", we observed users' natural behavior as they tried to find it — a small but important methodological distinction.
+Getting to these questions required working closely with designers and the PM to reframe what they actually needed to know. For example, instead of asking "Where do you think the feature should be?", we observed users' natural behavior as they tried to find it — ==a small but important methodological distinction==.
 
 ![](../../img/research/Moomoo-img1.svg)
 
@@ -58,14 +58,14 @@ Getting to these questions required working closely with designers and the PM to
 
 ### Recruiting
 
-We recruited 9 participants — 6 advanced traders and 3 novices — screening for trading experience, strategies, and portfolios based on company personas. This naturally skewed toward advanced traders, aligning with the company's strategic focus on bridging the gap between advanced novices and experienced traders.
+We recruited 9 participants — 6 advanced traders and 3 novices — screening for trading experience, strategies, and portfolios based on company personas. This ==naturally skewed toward advanced traders, aligning with the company's strategic focus== on bridging the gap between advanced novices and experienced traders.
 
 ---
 
 ## Key Takeaways
 
 ### Finding 1: Investors only want reports for companies they're already tracking
-Half of participants don't want a calendar with all earnings reports; they only care about companies on their watchlists. They're interested in a company first, then seek out its earnings report. Since investors don't recognize stock symbols for companies outside their interests, they may lose interest in the feature entirely.
+Half of participants don't want a calendar with all earnings reports; ==they only care about companies on their watchlists==. They're interested in a company first, then seek out its earnings report. Since investors don't recognize stock symbols for companies outside their interests, they may lose interest in the feature entirely.
 
 ### Finding 2: Text-based reports from trusted sources, with reminders, work best
 Most participants prefer reading reports after release rather than watching live, cross-referencing Google Finance, Google News, the SEC, and Yahoo Finance. Key metrics (PE ratio, revenue, estimates) matter most. Timely reminders to review reports were also valued.
@@ -89,7 +89,7 @@ The earnings report is currently under the Market page, but most participants ex
 
 ### Recommended Design Changes
 
-After conducting the research, we provided the designers and PMs with detailed pain points and feature feedback list, including videos, images, and the level of importance for each issue. This information was used for the next iteration of the design. We also wanted to monitor how much of the feedback the development teams acted on, as well as to track progress following discussions with the designers and product managers.
+After conducting the research, we provided the designers and PMs with detailed pain points and feature feedback list, including videos, images, and the level of importance for each issue. This information was used for the next iteration of the design. We also wanted to ==monitor how much of the feedback the development teams acted on==, as well as to track progress following discussions with the designers and product managers.
 
 :::two-col
 ![Users don't understand the abbreviation because they don't know the companies](../../img/research/Moomoo-img3.svg)
@@ -110,4 +110,4 @@ Working with a large group of designers and PMs taught me that trust isn't autom
 
 ### Making Stakeholders True Partners
 
-Instead of presenting research plans to stakeholders, I brought them in from day one — brainstorming questions together, debating what we needed to know, and exploring insights as they emerged. When we presented findings, they were advocates rather than skeptics because they had been part of the journey.
+Instead of presenting research plans to stakeholders, I brought them in from day one — brainstorming questions together, debating what we needed to know, and exploring insights as they emerged. When we presented findings, ==they were advocates rather than skeptics because they had been part of the journey==.

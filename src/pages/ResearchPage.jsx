@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, Children, isValidElement } from 'react'
+import { useState, useEffect, useRef, Children, isValidElement, cloneElement } from 'react'
 import { Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import './ResearchPage.css'
@@ -142,6 +142,27 @@ function ArticleImageTwoColumn({ leftSrc, leftAlt, rightSrc, rightAlt }) {
   )
 }
 
+// ── Highlight sweep: processes ==phrase== markers into <mark> elements ──────
+function processHighlights(children) {
+  const result = []
+  Children.forEach(children, (child, i) => {
+    if (typeof child === 'string' && child.includes('==')) {
+      child.split(/(==.+?==)/g).forEach((part, j) => {
+        const m = part.match(/^==(.+?)==$/)
+        result.push(m
+          ? <mark key={`${i}-${j}`} className="rp-highlight">{m[1]}</mark>
+          : part
+        )
+      })
+    } else if (isValidElement(child) && child.props?.children != null) {
+      result.push(cloneElement(child, { key: child.key ?? i }, processHighlights(child.props.children)))
+    } else {
+      result.push(child)
+    }
+  })
+  return result
+}
+
 // ── ReactMarkdown custom renderers ─────────────────────────────────────────
 const mdComponents = {
   // H1/H2 are structural — don't render them inside sections
@@ -188,7 +209,7 @@ const mdComponents = {
         />
       }
     }
-    return <p className="rp-para">{children}</p>
+    return <p className="rp-para">{processHighlights(children)}</p>
   },
   blockquote: ({ children }) => (
     <blockquote className="rp-pullquote">{children}</blockquote>
@@ -295,6 +316,24 @@ export default function ResearchPage({ slug }) {
       const el = sectionRefs.current[id]
       if (el) obs.observe(el)
     })
+    return () => obs.disconnect()
+  }, [parsed])
+
+  // Per-highlight IntersectionObserver: trigger sweep animation when phrase is visible
+  useEffect(() => {
+    if (!parsed.title) return
+    const obs = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible')
+            obs.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0.8 }
+    )
+    document.querySelectorAll('.rp-highlight').forEach(el => obs.observe(el))
     return () => obs.disconnect()
   }, [parsed])
 
@@ -406,7 +445,6 @@ export default function ResearchPage({ slug }) {
                 id={`rp-${id}`}
                 ref={el => { sectionRefs.current[id] = el }}
                 className="rp-section"
-                style={i > 0 ? { marginTop: '64px' } : undefined}
               >
                 <span className="rp-anchor">
                   {label}
