@@ -26,6 +26,7 @@ const LOADERS = {
 
 const NAV_ITEMS = [
   { id: 'overview',    label: 'OVERVIEW' },
+  { id: 'solution',    label: 'SOLUTION PREVIEW' },
   { id: 'research',    label: 'RESEARCH' },
   { id: 'exploration', label: 'EXPLORATION' },
   { id: 'design',      label: 'DESIGN' },
@@ -34,7 +35,8 @@ const NAV_ITEMS = [
 ]
 
 const SECTION_MAP = {
-  overview:    ['Project Overview', 'Solution Overview'],
+  overview:    ['Project Overview'],
+  solution:    ['Solution Preview', 'Solution Overview', 'Solution'],
   research:    ['Research', 'Initial Research', 'How Might We'],
   exploration: ['Exploration', 'Iteration 1', 'User Testing',
                 'Defining the Experience and Ideation', 'Design System',
@@ -245,6 +247,101 @@ const mdComponents = {
   td: ({ children }) => <td className="dp-table-td">{processHighlights(children)}</td>,
 }
 
+// ── Before / After image toggle ───────────────────────────────────────────
+function ImageToggle({ previousSrc, newSrc, previousLabel, newLabel }) {
+  const [active, setActive] = useState('previous')
+  const label = active === 'previous' ? previousLabel : newLabel
+  return (
+    <div className="dp-img-toggle">
+      <div className="dp-img-toggle-controls" role="group" aria-label="Toggle design version">
+        <div className={`dp-img-toggle-indicator${active === 'new' ? ' is-right' : ''}`} aria-hidden="true" />
+        <button
+          className={`dp-img-toggle-btn${active === 'previous' ? ' is-active' : ''}`}
+          onClick={() => setActive('previous')}
+          aria-pressed={active === 'previous'}
+        >
+          Previous
+        </button>
+        <button
+          className={`dp-img-toggle-btn${active === 'new' ? ' is-active' : ''}`}
+          onClick={() => setActive('new')}
+          aria-pressed={active === 'new'}
+        >
+          New
+        </button>
+      </div>
+      <div className="dp-img-toggle-box">
+        <div className="dp-img-toggle-frame">
+          <img
+            src={resolveImgSrc(previousSrc)}
+            alt="Previous design"
+            className={`dp-img-toggle-img${active === 'previous' ? ' is-active' : ''}`}
+          />
+          <img
+            src={resolveImgSrc(newSrc)}
+            alt="New design"
+            className={`dp-img-toggle-img${active === 'new' ? ' is-active' : ''}`}
+          />
+        </div>
+        {label && <p className="dp-img-toggle-caption">{label}</p>}
+      </div>
+    </div>
+  )
+}
+
+// ── Image gallery ──────────────────────────────────────────────────────────
+function ImageGallery({ slides }) {
+  const [current, setCurrent] = useState(0)
+  const count = slides.length
+
+  function go(idx) {
+    setCurrent(((idx % count) + count) % count)
+  }
+
+  return (
+    <div className="dp-gallery">
+      <div className="dp-img-toggle-box">
+        <div className="dp-gallery-frame">
+          {slides.map((slide, i) => (
+            <img
+              key={i}
+              src={resolveImgSrc(slide.src)}
+              alt={slide.label || `Slide ${i + 1}`}
+              className={`dp-gallery-img${i === current ? ' is-active' : ''}`}
+            />
+          ))}
+        </div>
+        {slides[current]?.label && (
+          <p className="dp-img-toggle-caption">{slides[current].label}</p>
+        )}
+        <div className="dp-gallery-nav">
+          <button className="dp-gallery-arrow" onClick={() => go(current - 1)} aria-label="Previous">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M9 2L4 7L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+          <div className="dp-gallery-dots" role="group" aria-label="Gallery navigation">
+            {slides.map((_, i) => (
+              <button
+                key={i}
+                className={`dp-gallery-dot${i === current ? ' is-active' : ''}`}
+                onClick={() => go(i)}
+                aria-label={`Slide ${i + 1}`}
+                aria-pressed={i === current}
+              />
+            ))}
+          </div>
+          <button className="dp-gallery-arrow" onClick={() => go(current + 1)} aria-label="Next">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M5 2L10 7L5 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ── Section block renderer ─────────────────────────────────────────────────
 function SectionBlocks({ content }) {
   return parseBlocks(content).map((block, bi) => {
@@ -330,6 +427,84 @@ function SectionBlocks({ content }) {
             <span className="dp-compare-label dp-compare-label--after">{afterLabel}</span>
             <ReactMarkdown components={mdComponents}>{(parts[1] || '').trim()}</ReactMarkdown>
           </div>
+        </div>
+      )
+    }
+
+    if (block.type === 'gallery') {
+      const slides = block.content.split('\n').filter(Boolean).map(line => {
+        const idx = line.indexOf('|')
+        if (idx === -1) return { src: line.trim(), label: '' }
+        return { src: line.slice(0, idx).trim(), label: line.slice(idx + 1).trim() }
+      })
+      return <ImageGallery key={bi} slides={slides} />
+    }
+
+    if (block.type === 'before-after') {
+      const lines = block.content.split('\n')
+      let previousSrc = '', newSrc = '', previousLabel = '', newLabel = ''
+      for (const line of lines) {
+        if (line.startsWith('Previous:')) previousSrc = line.slice(9).trim()
+        if (line.startsWith('New:')) newSrc = line.slice(4).trim()
+        if (line.startsWith('PreviousLabel:')) previousLabel = line.slice(14).trim()
+        if (line.startsWith('NewLabel:')) newLabel = line.slice(9).trim()
+      }
+      return <ImageToggle key={bi} previousSrc={previousSrc} newSrc={newSrc} previousLabel={previousLabel} newLabel={newLabel} />
+    }
+
+    if (block.type === 'goal') {
+      const lines = block.content.split('\n')
+      let hmw = '', users = '', needs = ''
+      const hmwItems = []
+      let mode = null
+
+      for (const line of lines) {
+        if (line.startsWith('HMW:')) {
+          mode = 'hmw'
+          const rest = line.slice(4).trim()
+          if (rest) hmw = rest
+        } else if (line.startsWith('Users:')) {
+          mode = 'users'
+          users = line.slice(6).trim()
+        } else if (line.startsWith('Needs:')) {
+          mode = 'needs'
+          needs = line.slice(6).trim()
+        } else if (mode === 'hmw' && line.startsWith('- ')) {
+          hmwItems.push(line.slice(2).trim())
+        }
+      }
+
+      const hasAnnotations = users || needs
+
+      return (
+        <div key={bi} className={`dp-goal${hasAnnotations ? '' : ' dp-goal--solo'}`}>
+          <div className="dp-goal-hmw-col">
+            <span className="dp-goal-kicker">How might we</span>
+            <p className="dp-goal-hmw">{hmw}</p>
+            {hmwItems.length > 0 && (
+              <ul className="dp-goal-hmw-list">
+                {hmwItems.map((item, i) => (
+                  <li key={i} className="dp-goal-hmw-item">{item}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+          {hasAnnotations && (
+            <div className="dp-goal-meta">
+              {users && (
+                <div className="dp-goal-meta-col">
+                  <span className="dp-goal-kicker">Target Users</span>
+                  <p className="dp-goal-value">{users}</p>
+                </div>
+              )}
+              {needs && (
+                <div className="dp-goal-meta-col">
+                  <span className="dp-goal-kicker">Key User Needs</span>
+                  <p className="dp-goal-value">{needs}</p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )
     }
@@ -474,7 +649,7 @@ export default function DesignPage({ slug }) {
           <Link to="/"><Logo /></Link>
         </div>
         <div className="nav-links">
-          <a href="/#projects">PROJECTS</a>
+          <Link to="/">PROJECTS</Link>
           <Link to="/about">ABOUT</Link>
           <a href="https://www.linkedin.com/in/menghl/" target="_blank" rel="noopener noreferrer">LINKEDIN</a>
         </div>
@@ -483,7 +658,7 @@ export default function DesignPage({ slug }) {
       <div className="dp-body">
 
         <aside className="dp-sidebar">
-          <a href="/#projects" className="dp-back">← BACK TO PROJECTS</a>
+          <Link to="/" className="dp-back">← BACK TO PROJECTS</Link>
           <div className="dp-sidebar-nav" ref={navRef}>
             <div className="dp-track" />
             <span
@@ -550,7 +725,7 @@ export default function DesignPage({ slug }) {
           })}
 
           <div className="dp-footer-cta" style={{ marginTop: '120px' }}>
-            <a href="/#projects" className="pill ghost">← BACK TO PROJECTS</a>
+            <Link to="/" className="pill ghost">← BACK TO PROJECTS</Link>
             {NEXT_SLUG[slug] && (
               <Link to={NEXT_SLUG[slug]} className="pill ghost">VIEW NEXT CASE STUDY →</Link>
             )}
@@ -562,7 +737,7 @@ export default function DesignPage({ slug }) {
       <footer className="footer">
         <span className="footer-credit">Created by MENGHAN</span>
         <div className="nav-links">
-          <a href="/#projects">PROJECTS</a>
+          <Link to="/">PROJECTS</Link>
           <Link to="/about">ABOUT</Link>
           <a href="https://www.linkedin.com/in/menghl/" target="_blank" rel="noopener noreferrer">LINKEDIN</a>
         </div>

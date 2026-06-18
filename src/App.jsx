@@ -97,6 +97,12 @@ const LOGOS = [
   { src: logo6, alt: 'Logo 6' },
 ]
 
+const FALLBACK_RESPONSES = [
+  "That's a great question! I'm Menghan's AI assistant and can only answer questions about her work and experience. I'll make sure she sees this though — feel free to also reach out directly on LinkedIn!",
+  "Hmm, I'm not sure I have an answer for that one. I'm best at talking about Menghan's projects and background. I'll pass your question along to her!",
+  "Thanks for asking! I'm a limited version of Menghan here to share her work — for anything outside my knowledge, I'll let her know you stopped by.",
+]
+
 const DESIGN_PROJECTS = [
   { title: 'Redesigning the Experiential Learning of Interview Skills through Role-play', img: pinMiSmall,  slug: '/design/pin-mi'  },
   { title: 'DubJam: How I Led a 0-to-1 Design to Foster Local Music Community',          img: dubjamSmall, slug: '/design/dubjam'  },
@@ -114,6 +120,7 @@ const HERO_TEXTS = [
 function HomePage() {
   const [isChat, setIsChat] = useState(false)
   const threadRef = useRef(null)
+  const inputRef = useRef(null)
   const lerpTargetRef = useRef(0)
   const chatInitiatedRef = useRef(false)
 
@@ -344,6 +351,90 @@ function HomePage() {
     enterChat(text)
   }, [enterChat, resetChat])
 
+  const handleFreeTextSubmit = useCallback(() => {
+    const input = inputRef.current
+    if (!input) return
+    const text = input.value.trim()
+    if (!text) return
+    input.value = ''
+    input.blur()
+
+    const thread = threadRef.current
+
+    const addMessages = () => {
+      const youMsg = document.createElement('div')
+      youMsg.className = 'chat-msg chat-msg--you'
+      youMsg.innerHTML =
+        `<img class="chat-avatar" src="${avatar2Img}" alt="You" />` +
+        '<div class="chat-body">' +
+          '<span class="chat-label">YOU</span>' +
+          '<p class="chat-text"></p>' +
+        '</div>'
+      thread.appendChild(youMsg)
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        youMsg.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }))
+
+      const textEl = youMsg.querySelector('.chat-text')
+      typewriter(textEl, text, TYPEWRITER_SPEED, () => {
+        const responseText = FALLBACK_RESPONSES[Math.floor(Math.random() * FALLBACK_RESPONSES.length)]
+
+        setTimeout(() => {
+          const menghanMsg = document.createElement('div')
+          menghanMsg.className = 'chat-msg'
+          menghanMsg.style.opacity = '0'
+          menghanMsg.style.transition = 'opacity 300ms ease'
+          menghanMsg.innerHTML =
+            `<img class="chat-avatar" src="${avatar1Img}" alt="Menghan" />` +
+            '<div class="chat-body">' +
+              '<span class="chat-label chat-label--menghan">MENGHAN</span>' +
+              '<span class="chat-typing">_</span>' +
+            '</div>'
+          thread.appendChild(menghanMsg)
+          menghanMsg.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            menghanMsg.style.opacity = '1'
+          }))
+
+          setTimeout(() => {
+            const typingEl = menghanMsg.querySelector('.chat-typing')
+            if (!typingEl) return
+
+            const content = document.createElement('div')
+            content.className = 'chat-response-content'
+            content.style.opacity = '0'
+            content.style.transform = 'translateY(10px)'
+            content.style.transition = 'opacity 400ms ease, transform 400ms ease'
+            content.innerHTML = `<div class="chat-response-text"><p class="chat-text">${responseText}</p></div>`
+
+            typingEl.replaceWith(content)
+
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+              content.style.opacity = '1'
+              content.style.transform = 'translateY(0)'
+              menghanMsg.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            }))
+          }, 1500)
+        }, 700)
+      })
+    }
+
+    if (!chatInitiatedRef.current) {
+      chatInitiatedRef.current = true
+      setIsChat(true)
+      const onTransition = e => {
+        if (e.target === thread && e.propertyName === 'opacity') {
+          thread.removeEventListener('transitionend', onTransition)
+          addMessages()
+        }
+      }
+      thread.addEventListener('transitionend', onTransition)
+    } else {
+      addMessages()
+    }
+  }, [])
+
   const ArrowSvg = ({ deg }) => (
     <svg width="6" height="10" viewBox="0 0 6 10" fill="none" style={deg ? { transform: `rotate(${deg}deg)` } : undefined}>
       <path d="M3 0V8M3 8L1 6M3 8L5 6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="square" strokeLinejoin="miter"/>
@@ -437,11 +528,16 @@ function HomePage() {
                 <button className="pill ghost" onClick={() => handlePillClick('back to homepage')}>RESTART</button>
               </div>
               <div className="chat-bar">
-                <div className="chat-bar-left">
-                  <span className="chat-cursor">&gt;_</span>
-                  <span className="chat-hint">Ask me anything...</span>
-                </div>
-                <button className="chat-send">
+                <span className="chat-cursor">&gt;_</span>
+                <input
+                  ref={inputRef}
+                  className="chat-input"
+                  type="text"
+                  placeholder="Ask me anything..."
+                  maxLength={200}
+                  onKeyDown={e => { if (e.key === 'Enter') handleFreeTextSubmit() }}
+                />
+                <button className="chat-send" onClick={handleFreeTextSubmit}>
                   <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
                     <path d="M1 5H14M14 5L10 1M14 5L10 9" stroke="white" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter"/>
                   </svg>
@@ -567,12 +663,14 @@ function HomePage() {
             <h2 className="h2">About Me</h2>
             <div className="about-ctas">
               <Link to="/about" className="pill ghost">Learn More</Link>
-              <a href="https://www.linkedin.com/in/menghl/" target="_blank" rel="noopener noreferrer" className="pill filled">COME SAY HI :)</a>
-              <Link to="/about" className="pill icon-only pill--white">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter"/>
-                </svg>
-              </Link>
+              <div className="about-cta-pair">
+                <a href="https://www.linkedin.com/in/menghl/" target="_blank" rel="noopener noreferrer" className="pill filled">COME SAY HI :)</a>
+                <a href="https://www.linkedin.com/in/menghl/" target="_blank" rel="noopener noreferrer" className="pill icon-only pill--white">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter"/>
+                  </svg>
+                </a>
+              </div>
             </div>
           </div>
         </div>

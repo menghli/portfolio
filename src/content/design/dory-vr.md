@@ -32,7 +32,9 @@ Our team aims to create a custom XR experience to enhance data storytelling for 
 
 We plan to design an app that supports sharing a variety of media types, allowing students to explore, present, and discuss both 2D and 3D data. By leveraging VR's immersive capabilities, we hope to improve student engagement, promote interaction, and integrate a self-reflection process for presenters.
 
-**How might we create a custom VR environment that enhances data storytelling, promotes peer interaction, and improves student engagement and self-reflection?**
+:::goal
+HMW: Create a custom VR environment that enhances data storytelling, promotes peer interaction, and improves student engagement and self-reflection?
+:::
 
 ### Impact and Outcomes
 

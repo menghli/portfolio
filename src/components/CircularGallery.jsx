@@ -449,12 +449,14 @@ class App {
   onTouchUp(e) {
     this.isDown = false;
     const endX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+    const endY = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
     const dx = Math.abs(endX - this.start);
-    if (dx < 6) this.handleClick(endX);
+    if (dx < 6) this.handleClick(endX, endY);
     this.onCheck();
   }
-  handleClick(clientX) {
+  handleClick(clientX, clientY) {
     const rect = this.container.getBoundingClientRect();
+    if (clientY < rect.top || clientY > rect.bottom) return;
     const localX = clientX - rect.left;
     const normalized = (localX / this.screen.width) * 2 - 1;
     const worldX = normalized * (this.viewport.width / 2);

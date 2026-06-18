@@ -120,7 +120,7 @@ function expandTwoColBlocks(text) {
 // ── Article image components (from Figma Article/Image-one-column & two-column) ──
 function ArticleImageOneColumn({ src, alt }) {
   return (
-    <div className="rp-img-one-col">
+    <div className="rp-img-one-col" data-rp-reveal="">
       <img src={src} alt={alt || ''} className="rp-img" />
       {alt && <p className="rp-img-caption">{alt}</p>}
     </div>
@@ -129,7 +129,7 @@ function ArticleImageOneColumn({ src, alt }) {
 
 function ArticleImageTwoColumn({ leftSrc, leftAlt, rightSrc, rightAlt }) {
   return (
-    <div className="rp-img-two-col">
+    <div className="rp-img-two-col" data-rp-reveal="">
       <div className="rp-img-col">
         <img src={leftSrc} alt={leftAlt || ''} className="rp-img" />
         {leftAlt && <p className="rp-img-caption">{leftAlt}</p>}
@@ -169,7 +169,7 @@ const mdComponents = {
   h1: () => null,
   h2: () => null,
   hr: () => null,
-  h3: ({ children }) => <h3 className="rp-h3">{children}</h3>,
+  h3: ({ children }) => <h3 className="rp-h3" data-rp-reveal="">{children}</h3>,
   p: ({ children }) => {
     // Detect special marker for LinkedIn button: [linkedin-button] or [linkedin-button:Custom text]
     const arr = Children.toArray(children)
@@ -178,7 +178,7 @@ const mdComponents = {
       if (match) {
         const label = match[1] || 'Read about specific findings here if you are interested!'
         return (
-          <div className="rp-inline-action">
+          <div className="rp-inline-action" data-rp-reveal="">
             <a
               href="https://www.linkedin.com/in/menghl/"
               target="_blank"
@@ -209,13 +209,13 @@ const mdComponents = {
         />
       }
     }
-    return <p className="rp-para">{processHighlights(children)}</p>
+    return <p className="rp-para" data-rp-reveal="">{processHighlights(children)}</p>
   },
   blockquote: ({ children }) => (
-    <blockquote className="rp-pullquote">{children}</blockquote>
+    <blockquote className="rp-pullquote" data-rp-reveal="">{children}</blockquote>
   ),
-  ul: ({ children }) => <ul className="rp-list">{children}</ul>,
-  ol: ({ children }) => <ol className="rp-list rp-list--ol">{children}</ol>,
+  ul: ({ children }) => <ul className="rp-list" data-rp-reveal="">{children}</ul>,
+  ol: ({ children }) => <ol className="rp-list rp-list--ol" data-rp-reveal="">{children}</ol>,
   li: ({ children }) => <li className="rp-list-item">{children}</li>,
   strong: ({ children }) => <strong className="rp-strong">{children}</strong>,
   // Tables (Project Meta) — skip here; parsed separately
@@ -267,6 +267,8 @@ export default function ResearchPage({ slug }) {
   // Scroll to top + reset animations on slug change
   useEffect(() => {
     window.scrollTo(0, 0)
+    const page = document.querySelector('.rp-page')
+    if (page) page.classList.add('js-anim')
     headerRef.current?.classList.remove('is-visible')
     heroRef.current?.classList.remove('is-visible')
     metaRef.current?.classList.remove('is-visible')
@@ -316,6 +318,24 @@ export default function ResearchPage({ slug }) {
       const el = sectionRefs.current[id]
       if (el) obs.observe(el)
     })
+    return () => obs.disconnect()
+  }, [parsed])
+
+  // Per-element scroll reveals for paragraphs, headings, images, etc.
+  useEffect(() => {
+    if (!parsed.title) return
+    const obs = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible')
+            obs.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -24px 0px' }
+    )
+    document.querySelectorAll('.rp-content [data-rp-reveal]').forEach(el => obs.observe(el))
     return () => obs.disconnect()
   }, [parsed])
 
@@ -446,7 +466,7 @@ export default function ResearchPage({ slug }) {
                 ref={el => { sectionRefs.current[id] = el }}
                 className="rp-section"
               >
-                <span className="rp-anchor">
+                <span className="rp-anchor" data-rp-reveal="">
                   {label}
                 </span>
                 <ReactMarkdown components={mdComponents}>{expandTwoColBlocks(content)}</ReactMarkdown>

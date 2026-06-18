@@ -30,11 +30,11 @@ In fields like counseling, customer service, and user research, strong communica
 
 Pin-MI has shown value in training for motivational interviewing, but now we're exploring broader uses, like user interview training or suicide hotline counseling. However, users often find Pin-MI confusing and difficult to use, so it's also important to improve usability to make Pin-MI more user-friendly and intuitive.
 
-**How might we expand Pin-MI to support broader communication skills training while improving usability for a more intuitive, accessible experience?**
-
-**Target Users:** Students learning user interviews and customer service representatives looking to practice communication skills.
-
-**Key User Needs:** Finding resources, balancing life priorities, and a low-pressure environment to practice.
+:::goal
+HMW: Expand Pin-MI to support broader communication skills training while improving usability for a more intuitive, accessible experience?
+Users: Students learning user interviews and customer service representatives looking to practice communication skills.
+Needs: Finding resources, balancing life priorities, and a low-pressure environment to practice.
+:::
 
 ### Impact
 
@@ -48,35 +48,40 @@ In final prototype testing, perceived usefulness for learning interview skills r
 
 ---
 
-## Solution Overview
-
-### Framing the Problem
+## Solution Preview
 
 Using Pin-MI is very challenging and confusing for new users — the interface lacks clear entry points, the role-play flow is cognitively demanding, and the reflection phase feels disconnected from the practice session.
 
-### 01: A Central Hub for Structured and Continuous Learning
+The redesign introduces three key improvements: a centralized My Practice hub for session access and continuous learning, simplified icon-and-text Pinning to reduce cognitive load during role-play, and a streamlined reflection view with focused questions and a unified, editable Pin list.
 
-The "My Practice" page is a central hub where learners understand how Pin-MI works and view past practice. Learners can also start new sessions directly from this page or receive invitations from the hosts.
+:::before-after
+Previous: ../../img/design/Pin-mi-img2.svg
+New: ../../img/design/Pin-mi-img4.svg
+PreviousLabel: The previous host view makes it difficult to remove or edit Pins and take general notes during a session.
+NewLabel: The redesigned host view introduces icon-and-text tags, making it easy to mark thoughts without disrupting the conversation.
+:::
 
-### 02: Make a Reflective Pin with Simple Tags for Focused Sessions
+Alongside the session improvements, the reflection phase was redesigned to feel like a natural continuation of practice. Learners can now review all their Pins in one place, respond to direct prompts, and leave with actionable takeaways rather than incomplete notes.
 
-Introduced tags for learners to quickly mark reflection points, helping hosts stay focused. Added a "Trainer" role with tailored interfaces for each role to reduce cognitive load.
-
-### 03: Simplified Collaborative Reflection and Feedback
-
-Reflection is simplified with clear, feedback-focused questions. All Pins appear in a single, editable list with checkmarks for completed items, reducing extra navigation.
+:::before-after
+Previous: ../../img/design/Pin-mi-img3.svg
+New: ../../img/design/Pin-mi-img5.svg
+PreviousLabel: Users frequently skipped reflection, missed Pins, and had no clear guidance on what to write.
+NewLabel: Reflection is simplified with focused questions and a single editable Pin list — structured, clear, and easy to navigate.
+:::
 
 ---
 
 ## Research
 
-### Understanding Current User Flow and Design Audit
+### Understanding the Problem and Testing with Users
 
-We started with a **heuristic evaluation** to uncover bugs, usability issues, and design opportunities. Before diving into usability testing with our new audience (a group of students learning how to conduct user interviews), I took the chance to fix those bugs and technical issues with the engineer. Once that was done, we were ready to test how effective Pin-MI could be for teaching general interview skills.
+I started with a **heuristic evaluation** to surface usability bugs and design opportunities, then worked directly with the engineer to resolve technical issues before testing. Once the product was stable, I ran an **unmoderated usability test** with 60 participants to assess Pin-MI's effectiveness for teaching interview skills, comparing it against a control group of students practicing unbiased questioning and empathy.
 
-### Usability Testing: Identify User Pain Points
-
-We ran an **unmoderated usability test** with 60 participants comparing Pin-MI with a control group to identify usability issues and assess its impact on interview and customer service skills. Students from a User Research course trying to practice unbiased questioning and empathy participated as our target group.
+:::gallery
+../../img/design/Pin-mi-img6.svg | Heuristic Evaluation: Surfacing usability bugs and design gaps before testing with new users.
+../../img/design/Pin-mi-img7.svg | Idea Prioritization: Mapping concepts against user impact and feasibility to narrow our focus.
+:::
 
 ### Overall, we learned 4 key insights to drive our design direction
 

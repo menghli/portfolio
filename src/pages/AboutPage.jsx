@@ -92,7 +92,7 @@ export default function AboutPage() {
           <Link to="/"><Logo /></Link>
         </div>
         <div className="nav-links">
-          <a href="/#projects">PROJECTS</a>
+          <Link to="/">PROJECTS</Link>
           <NavLink to="/about">ABOUT</NavLink>
           <a href="https://www.linkedin.com/in/menghl/" target="_blank" rel="noopener noreferrer">LINKEDIN</a>
         </div>
@@ -241,7 +241,7 @@ export default function AboutPage() {
       <footer className="footer">
         <span className="footer-credit">Created by MENGHAN</span>
         <div className="nav-links">
-          <a href="/#projects">PROJECTS</a>
+          <Link to="/">PROJECTS</Link>
           <Link to="/about">ABOUT</Link>
           <a href="https://www.linkedin.com/in/menghl/" target="_blank" rel="noopener noreferrer">LINKEDIN</a>
         </div>

@@ -30,9 +30,14 @@ This project was part of **Design for America** at the University of Washington,
 
 Our goal was to design a mobile app that fosters collaboration and connection among musicians, starting with UW students and expanding to the broader Seattle music community. While there is no direct business goal, we were interested in validating this concept for exploring campus partnerships for launch and adoption, with potential for expansion to other universities or cities.
 
-**Target Users:** UW student musicians and emerging local Seattle artists looking for collaborators or performance opportunities.
-
-**Key User Needs:** Finding compatible musicians, navigating a busy schedule, and a low-stakes space to connect and grow.
+:::goal
+HMW: Help musicians to...
+- Find local events and groups of their interests
+- Access relevant information and communications
+- Casually connect with compatible collaborators
+Users: UW student musicians and emerging local Seattle artists looking for collaborators or performance opportunities.
+Needs: Finding compatible musicians, navigating a busy schedule, and a low-stakes space to connect and grow.
+:::
 
 ### Impact and Outcomes
 

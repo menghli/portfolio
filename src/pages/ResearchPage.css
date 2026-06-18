@@ -425,15 +425,26 @@
   transform: translateY(0);
 }
 
-.rp-section {
+/* ── Per-element scroll reveals ─────────────────────────────────── */
+.js-anim [data-rp-reveal] {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 600ms ease-out, transform 600ms ease-out;
+  transform: translateY(8px);
+  transition:
+    opacity   480ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 480ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.rp-section.is-visible {
+.js-anim [data-rp-reveal].is-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js-anim [data-rp-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
 
 /* ── Highlight sweep ─────────────────────────────────────────── */
