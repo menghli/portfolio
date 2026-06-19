@@ -5,6 +5,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  cursor: none;
 }
 
 button {
@@ -50,6 +51,7 @@ body {
   letter-spacing: 0.01em;
   min-width: 1129px;
   height: 100%;
+  cursor: none;
 }
 
 .serif {

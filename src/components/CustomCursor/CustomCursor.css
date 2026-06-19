@@ -1,0 +1,43 @@
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  background: #333333;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+}
+
+.cursor-target {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 28px;
+  height: 28px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  color: #333333;
+  transition: transform 200ms ease, color 200ms ease;
+}
+
+.cursor-target.is-hovering {
+  transform: translate(-50%, -50%) rotate(45deg) scale(1.3);
+}
+
+/* Four L-shaped corner brackets */
+.cursor-target span {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+}
+
+.ct-tl { top: 0;    left: 0;  border-top: 1.5px solid currentColor; border-left:  1.5px solid currentColor; }
+.ct-tr { top: 0;    right: 0; border-top: 1.5px solid currentColor; border-right: 1.5px solid currentColor; }
+.ct-bl { bottom: 0; left: 0;  border-bottom: 1.5px solid currentColor; border-left:  1.5px solid currentColor; }
+.ct-br { bottom: 0; right: 0; border-bottom: 1.5px solid currentColor; border-right: 1.5px solid currentColor; }

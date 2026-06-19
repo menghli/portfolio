@@ -2,6 +2,7 @@ import { useState, useRef, useCallback, useEffect } from 'react'
 import { Routes, Route, Link } from 'react-router-dom'
 import TextType from './components/TextType/TextType.jsx'
 import LogoLoop from './components/LogoLoop/LogoLoop.jsx'
+import CustomCursor from './components/CustomCursor/CustomCursor.jsx'
 import ResearchPage from './pages/ResearchPage.jsx'
 import DesignPage from './pages/DesignPage.jsx'
 import AboutPage from './pages/AboutPage.jsx'
@@ -721,7 +722,9 @@ function HomePage() {
 
 function App() {
   return (
-    <Routes>
+    <>
+      <CustomCursor />
+      <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/about"               element={<AboutPage />} />
       <Route path="/research/amazon"      element={<ResearchPage slug="amazon" />} />
@@ -732,6 +735,7 @@ function App() {
       <Route path="/design/dubjam"        element={<DesignPage slug="dubjam" />} />
       <Route path="/design/dory-vr"       element={<DesignPage slug="dory-vr" />} />
     </Routes>
+    </>
   )
 }
 
