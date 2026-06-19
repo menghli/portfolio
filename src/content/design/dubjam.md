@@ -6,7 +6,7 @@ tag: Design
 # DubJam: How I Led a 0-to-1 Design to Foster Local Music Community
 
 Subtitle: Designing a mobile platform to help UW student musicians find collaborators and connect
-Eyebrow: Lead Designer · 2024.10 – 2025.5
+Eyebrow: DFA Design project · 2024.10 – 2025.5
 Cover: ../../img/design/DubJam-page-cover.svg
 
 ## Project Meta
@@ -31,133 +31,119 @@ This project was part of **Design for America** at the University of Washington,
 Our goal was to design a mobile app that fosters collaboration and connection among musicians, starting with UW students and expanding to the broader Seattle music community. While there is no direct business goal, we were interested in validating this concept for exploring campus partnerships for launch and adoption, with potential for expansion to other universities or cities.
 
 :::goal
-HMW: Help musicians to...
-- Find local events and groups of their interests
-- Access relevant information and communications
-- Casually connect with compatible collaborators
+HMW: Help solo musicians connect with compatible collaborators, access relevant local resources and events, and build a supportive music community
 Users: UW student musicians and emerging local Seattle artists looking for collaborators or performance opportunities.
 Needs: Finding compatible musicians, navigating a busy schedule, and a low-stakes space to connect and grow.
 :::
 
 ### Impact and Outcomes
 
-**Final Presentation:** We presented DubJam at the DFA UW Spring Showcase, receiving strong feedback from a judging panel that included UX professionals from Qualtrics and design faculty from University of Washington.
+:::findings
+FINAL PRESENTATION | Presented at the DFA UW Spring Showcase to a panel of Qualtrics UX professionals and UW design faculty, receiving strong positive feedback.
+USER TESTING | Tested with 4 UW musicians; rated an average of 8.5/10 on "Would recommend to others," validating both usability and interest.
+NEXT STEP | Exploring partnerships with HuskyJam and UW's Student Activities Office to pilot DubJam for campus music events and student-led jam sessions.
+:::
 
-**User Testing:** We conducted usability testing with 4 UW musicians, gathering both qualitative feedback and usability ratings. Participants rated DubJam an average of 8.5/10 on "Would recommend to others", validating both interest and usability.
-
-**Next Step:** We're exploring partnerships with UW-based student organizations like HuskyJam and the Student Activities Office to pilot DubJam as a platform for campus music events and student-led jam sessions.
-
----
-
-## Solution Overview
-
-**01: A centralized hub of information and communications dedicated to local musicians**
-
-**02: Personalized recommendations for events, groups, and collaborators**
-
-**03: Support for real-life collaboration around shared interests**
+[ghost-button:Take me straight to the solution →:#dp-design]
 
 ---
 
 ## Research
 
-### Current Solutions Can't Fully Support Their Needs, Because...
+### What Existing Solutions Get Wrong — and What Musicians Actually Need
 
-We began by conducting a **competitive analysis** of existing music community apps, reviewing literature on music collaboration, and analyzing social media posts to understand how student musicians currently connect with others. Through this research, we uncovered key reasons why current solutions fall short and identified gaps that our design could address.
+We ran a **competitive analysis** of existing music apps, reviewed literature on music collaboration, and conducted **9 in-depth interviews** with UW students — including organization leaders, solo musicians, and band members. Five insights shaped our direction:
 
-- **Insight 1:** Reaching out is intimidating and takes effort, while many lack in-time responses.
-- **Insight 2:** Students rely on non-dedicated platforms like Facebook and Reddit, making information discovery fragmented.
-- **Insight 3:** Platforms often encourage self-promotion rather than fostering a sense of shared growth.
-- **Insight 4:** Most apps are designed for music career-building rather than casual or exploratory collaboration.
+:::findings
+FRAGMENTED DISCOVERY | Students rely on non-dedicated platforms like Facebook and Reddit, making information discovery fragmented.
+CAREER OVER COLLABORATION | Most apps are designed for music career-building and self-promotion rather than casual or exploratory collaboration.
+SOLVING FOR THE MISMATCH | Musicians struggle to find compatible musicians with similar interests or matching skills. This is especially hard for newcomers.
+BUSY MUSICIANS, BUSY LIFE | People often juggle between music and other life commitments, making it challenging to coordinate. In-person casual collaboration is key, but using digital tools to connect increases opportunities.
+:::
 
-### To Learn UW Student Musicians' Struggles, We Conducted 9 Interviews
-
-The interview findings not only validated our initial observations but also expanded our understanding through perspectives from student music organization leaders, solo musicians, and band members. From this, we identified 4 key insights as the universal needs among all musicians.
-
-- **Solving for the mismatch is important:** Musicians struggle to find compatible musicians with similar interests or matching skills.
-- **Connection is hard for newcomers:** New people in the city often find it challenging to find resources and reach out to people.
-- **Busy musicians, busy life:** People often juggle between music and other life commitments, making it challenging to coordinate.
-- **Desire for low-stakes in-person events:** In-person casual collaboration is key, but using digital tools to connect increases opportunities.
-
-We then conducted rounds of debriefs to identify student musicians' main challenges and design opportunities. After multiple discussions, we asked ourselves:
+[ghost-button:See more research artifacts]
 
 ## How Might We
 
-### How Might We Help Musicians to...
+After multiple rounds of debriefs with the team, we asked ourselves:
 
-- Find local events and groups of their interests
-- Access relevant information and communications
-- Casually connect with compatible collaborators
+:::callout How Might We
+Help solo musicians connect with compatible collaborators, access relevant local resources and events, and build a supportive music community
+:::
 
 ---
 
-## Exploration
+## Design Decisions
 
-### Decision 1: We Designed for Different Types of Musicians, but Focused on Making It Easy for the Casual Ones
+### Decision 1: We designed for different types of musicians, but focused on making it easy for the casual ones
 
 Our research showed that not all musicians are alike: some just want to jam for fun, while others are more goal-oriented or deeply passionate. Each type had different needs in terms of effort level, motivation, and how much information they could handle.
 
 **Our solution:** We prioritized the experience of the "casual guy." These users often felt excluded by more serious or complex platforms. By keeping things low-pressure and approachable, we made it easier for casual musicians to join in, browse groups, and connect without friction.
 
-### Here Are Part of the Detailed Findings
+![](../../img/design/dubjam/Dubjam-img1.svg)
+
+### Decision 2: We focused on the event experience and user flows first
 
 We noticed that most student musicians first show up as event attendees, not organizers. So instead of trying to design for everyone at once, we focused our efforts on creating a smooth and motivating experience for the everyday event-goer.
 
-That said, we also accounted for other user flows, such as group moderators, and began defining how features might scale — such as supporting both public groups (open live house) and private groups (bands).
+We also accounted for other user flows, such as group moderators, and began defining how features might scale to support both public groups (open live house) and private groups (bands).
 
-### Direction-Finding: Validating Our Wildly Different Hypotheses with Concept Testing
+![](../../img/design/dubjam/Dubjam-img2.svg)
 
-When we couldn't agree on a direction, users showed us what actually mattered. After narrowing down our personas and deciding to prioritize the event experience for casual musicians, we hit a wall. We had two drastically different concepts:
+### Decision 3: Validating our wildly different hypotheses with concept testing
 
-- **Concept 1:** A community-based app that centralizes event and group info for resources and knowledge learning
-- **Concept 2:** A gamified experience that encourages in-person connections and rewards collaborations
+After narrowing down our personas, we hit a wall. We had two drastically different concepts:
 
-### What We Learned
+:::concept-pair
+Concept 1 | A community-based app that centralizes event and group info for resources and knowledge learning | Dubjam-img3.svg | warm
+Concept 2 | A gamified experience that encourages in-person connections and rewards collaborations | Dubjam-img4.svg | cool
+:::
 
-- Emphasizing connection rather than increasing likes or follower counts.
-- Users are not looking for new best friends, but potential collaborators.
-- Users want easy access to encouraging information about local events.
-- A need for external motivation wasn't identified as a priority, and could push away users who are already motivated by the music itself.
+When we couldn't agree on a direction, users showed us what actually mattered. Testing revealed that:
 
-### Designing with That in Mind
+- Emphasizing connection rather than increasing likes or follower counts
+- Users are not looking for new best friends, but potential collaborators
+- Users want easy access to encouraging information about local events
+- A need for external motivation wasn't identified as a priority, and could push away users who are already motivated by the music itself
 
 With a clearer direction, we prioritized three key experiences:
 
-- **Meaningful collaboration:** Help musicians discover compatible collaborators, with events and groups acting as springboards for connection.
-- **Centralized info hub:** A centralized hub of information and communications dedicated to local musicians.
-- **Personalized discovery:** Personally recommended events, groups, and compatible collaborators to support the varied music population.
+:::priority-blocks
+Meaningful collaboration | Help musicians discover compatible collaborators, with events and groups acting as springboards for connection. | people
+Centralized info hub | A centralized hub of information and communications dedicated to local musicians. | info
+Personalized discovery | Personally recommended events, groups, and compatible collaborators to support the varied music population. | search
+:::
 
-To encourage group participation, we added multiple entry points that gently nudge users to explore groups. Knowing that joining a group is often the first step to meeting people, we also highlighted multiple ways to join groups, and then make connections to real users by exposing more user profiles.
+### Design system: Collaboration with a visual designer
 
-### Design System: Collaboration with a Visual Designer
+Musicians bring their own bold visual identity through event posters and promotional materials. The app needed a design system strong enough to feel intentional, but restrained enough not to compete. Working with a visual designer, I defined content structure and used an atomic design approach to keep components clear, flexible, and visually harmonious.
 
-One challenge was balancing information load with the bold, personality-packed posters musicians create. We didn't want the app's visual style to overshadow their work, yet it still needed a distinctive voice. At the same time, we aimed to reduce the cognitive load for users.
-
-Working with a visual designer, I defined each page's core content and structure, then specified the components we needed. Using an atomic design approach, we broke pages into smaller, reusable elements to keep things clear, flexible, and visually harmonious.
-
-**Typography:** Helvetica Neue · SF Mono
+:::image-stack
+../../img/design/dubjam/Dubjam-img5.svg
+../../img/design/dubjam/Dubjam-img6.svg
+:::
 
 ---
 
 ## Design
 
-### Discovery | Event | Search — Explore
+[ghost-button:← Curious how we got here?:#dp-research]
 
+:::dj-features
+== Explore | Discovery · Event · Search | left-wide | ../../img/design/dubjam/Dubjam-Discovery.mp4 | ../../img/design/dubjam/Dubjam-img8.svg
 - Personalized content recommendations based on profile
 - Search specific genres, events, groups, users, and posts
 - Centralized information hub
-
-### Group — Find Community
-
+== Find Community | Group | right | ../../img/design/dubjam/Dubjam-group.mp4
 - Organized group connected around a shared interest
 - Streamlined communication and information for group-relevant content
 - Groups vary in scale and purpose
-
-### Profile | Onboarding — Your Music Identity
-
+== Your Music Identity | Profile · Onboarding | full | ../../img/design/dubjam/Dubjam-onboarding.mp4 | ../../img/design/dubjam/Dubjam-calendar.mp4
 - Onboarding for a customized user experience
 - Tags to help personalize recommendations and learn about you at a glance
 - Calendars to manage events across groups and interests
+:::
 
 ---
 
@@ -168,6 +154,11 @@ Working with a visual designer, I defined each page's core content and structure
 We showcased DubJam at the DFA UW Spring Showcase, earning positive feedback from Qualtrics UX professionals and UW design faculty.
 
 Usability testing with four UW musicians backed this up, with an average 8.5/10 "Would recommend," confirming both its appeal and ease of use.
+
+:::img-pair
+../../img/design/dubjam/Dubjam-img10.svg
+../../img/design/dubjam/Dubjam-img11.svg
+:::
 
 ---
 

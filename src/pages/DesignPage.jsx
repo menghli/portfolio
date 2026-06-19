@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import './DesignPage.css'
 
-const _designImgModules = import.meta.glob('../img/design/*.svg', { eager: true })
-const DESIGN_IMG = Object.fromEntries(
-  Object.entries(_designImgModules).map(([path, mod]) => [path.split('/').pop(), mod.default])
-)
+const _designImgModules = import.meta.glob('../img/design/**/*.svg', { eager: true })
+const _designVideoModules = import.meta.glob('../img/design/**/*.mp4', { eager: true })
+const DESIGN_IMG = Object.fromEntries([
+  ...Object.entries(_designImgModules).map(([path, mod]) => [path.split('/').pop(), mod.default]),
+  ...Object.entries(_designVideoModules).map(([path, mod]) => [path.split('/').pop(), mod.default]),
+])
 function resolveImgSrc(src) {
   const basename = src?.split('/').pop()
   return (basename && DESIGN_IMG[basename]) || src
@@ -28,8 +30,8 @@ const NAV_ITEMS = [
   { id: 'overview',    label: 'OVERVIEW' },
   { id: 'solution',    label: 'SOLUTION PREVIEW' },
   { id: 'research',    label: 'RESEARCH' },
-  { id: 'exploration', label: 'EXPLORATION' },
-  { id: 'design',      label: 'DESIGN' },
+  { id: 'exploration', label: 'DESIGN DECISIONS' },
+  { id: 'design',      label: 'FINAL SOLUTION' },
   { id: 'outcome',     label: 'OUTCOME' },
   { id: 'reflections', label: 'REFLECTIONS' },
 ]
@@ -38,7 +40,7 @@ const SECTION_MAP = {
   overview:    ['Project Overview'],
   solution:    ['Solution Preview', 'Solution Overview', 'Solution'],
   research:    ['Research', 'Initial Research', 'How Might We'],
-  exploration: ['Exploration', 'Iteration 1', 'User Testing',
+  exploration: ['Design Decisions', 'Exploration', 'Iteration 1', 'User Testing',
                 'Defining the Experience and Ideation', 'Design System',
                 'Challenges We Faced During the Process'],
   design:      ['Design', 'Final Iteration', 'Final Solution'],
@@ -196,7 +198,21 @@ const mdComponents = {
   h1: () => null,
   h2: () => null,
   hr: () => null,
-  h3: ({ children }) => <h3 className="dp-h3">{processHighlights(children)}</h3>,
+  h3: ({ children }) => {
+    const rawText = Children.toArray(children)
+      .map(c => (typeof c === 'string' ? c : ''))
+      .join('')
+    const dfMatch = rawText.match(/^Design feature (\d+):\s*(.+)$/)
+    if (dfMatch) {
+      return (
+        <div className="dp-df-heading">
+          <span className="dp-df-badge">Feature {dfMatch[1]}</span>
+          <h3 className="dp-df-title">{dfMatch[2]}</h3>
+        </div>
+      )
+    }
+    return <h3 className="dp-h3">{processHighlights(children)}</h3>
+  },
   p: ({ children }) => {
     const arr = Children.toArray(children)
 
@@ -209,6 +225,35 @@ const mdComponents = {
             <a href="https://www.linkedin.com/in/menghl/" target="_blank" rel="noopener noreferrer" className="pill ghost">
               {label}
             </a>
+          </div>
+        )
+      }
+
+      const ghostMatch = arr[0].match(/^\[ghost-button:([^:]+)(?::(.+))?\]$/)
+      if (ghostMatch) {
+        const label = ghostMatch[1].trim()
+        const href = ghostMatch[2]?.trim() || '#'
+        return (
+          <div className="dp-inline-action">
+            <a href={href} className="pill ghost">{label}</a>
+          </div>
+        )
+      }
+    }
+
+    if (arr.length >= 2 && isValidElement(arr[0]) && arr[0].type === mdComponents.strong) {
+      const labelText = [].concat(arr[0].props.children).join('').replace(/:$/, '')
+      if (labelText) {
+        const rowSlug = labelText.toLowerCase().replace(/\s+/g, '-')
+        const bodyParts = arr.slice(1).map((node, i) =>
+          i === 0 && typeof node === 'string' ? node.replace(/^\s+/, '') : node
+        )
+        return (
+          <div className={`dp-is-row dp-is-row--${rowSlug}`}>
+            <div className="dp-is-header">
+              <span className="dp-is-label">{labelText}</span>
+            </div>
+            <p className="dp-is-body">{processHighlights(bodyParts)}</p>
           </div>
         )
       }
@@ -245,6 +290,259 @@ const mdComponents = {
   tr: ({ children }) => <tr>{children}</tr>,
   th: ({ children }) => <th className="dp-table-th">{children}</th>,
   td: ({ children }) => <td className="dp-table-td">{processHighlights(children)}</td>,
+}
+
+// ── Concept toggle ────────────────────────────────────────────────────────
+function parseConceptsBlock(content) {
+  const concepts = []
+  let current = null
+  for (const line of content.split('\n')) {
+    const t = line.trim()
+    if (t.startsWith('== ')) {
+      if (current) concepts.push(current)
+      current = { title: t.slice(3), body: '', items: [] }
+    } else if (t.startsWith('-- ') && current) {
+      const raw = t.slice(3)
+      const pipes = raw.split(' | ')
+      const itemText = pipes[0].trim()
+      const img = pipes[1]?.trim() || ''
+      const natural = (pipes[2]?.trim() || '') === 'natural'
+      const sep = itemText.indexOf(' · ')
+      if (sep > -1) {
+        current.items.push({ type: itemText.slice(0, sep).trim(), label: itemText.slice(sep + 3).trim(), img, natural })
+      } else {
+        current.items.push({ type: '', label: itemText, img, natural })
+      }
+    } else if (current) {
+      current.body = current.body ? current.body + ' ' + t : t
+    }
+  }
+  if (current) concepts.push(current)
+  return concepts.map(c => ({ ...c, body: c.body.trim() }))
+}
+
+function ConceptToggle({ concepts }) {
+  const [active, setActive] = useState(0)
+  const [dir, setDir] = useState(0)
+  const [panelKey, setPanelKey] = useState(0)
+
+  function go(idx) {
+    if (idx === active) return
+    setDir(idx > active ? 1 : -1)
+    setActive(idx)
+    setPanelKey(k => k + 1)
+  }
+
+  const concept = concepts[active]
+  const hasTypes = concept.items.some(item => item.type)
+  const isAsymmetric = !hasTypes && concept.items.length === 2
+
+  return (
+    <div className="dp-concepts">
+      <div className="dp-concepts-nav" role="tablist" aria-label="Design concepts">
+        <div
+          className="dp-concepts-indicator"
+          style={{ transform: `translateX(calc(${active} * 100%))` }}
+          aria-hidden="true"
+        />
+        {concepts.map((_, i) => (
+          <button
+            key={i}
+            role="tab"
+            className={`dp-concepts-tab${active === i ? ' is-active' : ''}`}
+            aria-selected={active === i}
+            onClick={() => go(i)}
+          >
+            Concept {i + 1}
+          </button>
+        ))}
+      </div>
+
+      <div
+        key={panelKey}
+        role="tabpanel"
+        className={`dp-concepts-panel${dir === 1 ? ' dp-concepts-panel--fwd' : dir === -1 ? ' dp-concepts-panel--bwd' : ''}`}
+      >
+        <h4 className="dp-concepts-heading">{concept.title}</h4>
+        {concept.body && <p className="dp-concepts-desc">{concept.body}</p>}
+        {concept.items.length > 0 && (
+          <div className={`dp-concepts-items${isAsymmetric ? ' dp-concepts-items--asym' : ''}`}>
+            {concept.items.map((item, i) => {
+              const isAccentType = item.type === 'After' || item.type === 'Idea 2'
+              const isAccentBg   = isAccentType && !item.img
+              const labelAbove   = !item.type || item.type === 'Before' || item.type === 'After'
+              const phClass = `dp-concepts-ph${isAccentBg ? ' dp-concepts-ph--cool' : ''}${item.natural ? ' dp-concepts-ph--natural' : ''}${item.img ? ' dp-concepts-ph--img' : ''}`
+              const phContent = item.img
+                ? <img src={resolveImgSrc(item.img)} alt={item.label} className="dp-concepts-img" />
+                : <span className="dp-concepts-ph-icon" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+                      <rect x="1" y="1" width="20" height="20" rx="2.5" stroke="currentColor" strokeWidth="1.2"/>
+                      <circle cx="7" cy="7" r="1.8" fill="currentColor" opacity="0.45"/>
+                      <path d="M1 16l6-5 4.5 3.5 3.5-3 7 5.5" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" opacity="0.45"/>
+                    </svg>
+                  </span>
+              return (
+                <div key={i} className="dp-concepts-item">
+                  {labelAbove ? (
+                    <>
+                      <div className="dp-concepts-item-header">
+                        {item.type && (
+                          <span className={`dp-concepts-tag${isAccentType ? ' dp-concepts-tag--accent' : ''}`}>
+                            {item.type}
+                          </span>
+                        )}
+                        {!item.type
+                          ? <div className="dp-concepts-caption">
+                              <span className="dp-concepts-num" aria-hidden="true">{i + 1}</span>
+                              <span className="dp-concepts-label">{item.label}</span>
+                            </div>
+                          : <span className="dp-concepts-label">{item.label}</span>
+                        }
+                      </div>
+                      <div className={phClass}>{phContent}</div>
+                    </>
+                  ) : (
+                    <>
+                      {item.type && (
+                        <span className={`dp-concepts-tag${isAccentType ? ' dp-concepts-tag--accent' : ''}`}>
+                          {item.type}
+                        </span>
+                      )}
+                      <div className={phClass}>{phContent}</div>
+                      <div className={`dp-concepts-caption${item.type ? ' dp-concepts-caption--center' : ''}`}>
+                        {!item.type && (
+                          <span className="dp-concepts-num" aria-hidden="true">{i + 1}</span>
+                        )}
+                        <span className="dp-concepts-label">{item.label}</span>
+                      </div>
+                    </>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// ── Image tab toggle ──────────────────────────────────────────────────────
+function ImageTabToggle({ tabs }) {
+  const [active, setActive] = useState(0)
+
+  return (
+    <div className="dp-itabs">
+      <div className="dp-itabs-nav" role="tablist">
+        <div
+          className="dp-itabs-indicator"
+          style={{ width: `calc((100% - 8px) / ${tabs.length})`, transform: `translateX(calc(${active} * 100%))` }}
+          aria-hidden="true"
+        />
+        {tabs.map((t, i) => (
+          <button
+            key={i}
+            role="tab"
+            className={`dp-itabs-tab${active === i ? ' is-active' : ''}`}
+            aria-selected={active === i}
+            onClick={() => setActive(i)}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+      <div className="dp-itabs-panel" role="tabpanel">
+        <div className="dp-itabs-frame">
+          {tabs.map((t, i) => (
+            <img
+              key={i}
+              src={resolveImgSrc(t.src)}
+              alt={t.caption}
+              className={`dp-itabs-img${active === i ? ' is-active' : ''}`}
+            />
+          ))}
+        </div>
+        <div className="dp-itabs-captions">
+          {tabs.map((t, i) => (
+            t.caption
+              ? <p key={i} className={`dp-itabs-caption${active === i ? ' is-active' : ''}`}>{t.caption}</p>
+              : null
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ── Feature tab toggle (image + bullet list per tab) ─────────────────────
+function parseFeatureTabsBlock(content) {
+  const tabs = []
+  let current = null
+  for (const line of content.split('\n')) {
+    const t = line.trim()
+    if (t.startsWith('== ')) {
+      if (current) tabs.push(current)
+      const rest = t.slice(3)
+      const pipeIdx = rest.indexOf('|')
+      current = {
+        label:   pipeIdx > -1 ? rest.slice(0, pipeIdx).trim() : rest.trim(),
+        src:     pipeIdx > -1 ? rest.slice(pipeIdx + 1).trim() : '',
+        bullets: [],
+      }
+    } else if (t.startsWith('- ') && current) {
+      current.bullets.push(t.slice(2))
+    }
+  }
+  if (current) tabs.push(current)
+  return tabs
+}
+
+function FeatureTabToggle({ tabs }) {
+  const [active, setActive] = useState(0)
+
+  return (
+    <div className="dp-itabs">
+      <div className="dp-itabs-nav" role="tablist" data-count={tabs.length}>
+        <div
+          className="dp-itabs-indicator"
+          style={{ width: `calc((100% - 8px) / ${tabs.length})`, transform: `translateX(calc(${active} * 100%))` }}
+          aria-hidden="true"
+        />
+        {tabs.map((t, i) => (
+          <button
+            key={i}
+            role="tab"
+            className={`dp-itabs-tab${active === i ? ' is-active' : ''}`}
+            aria-selected={active === i}
+            onClick={() => setActive(i)}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+      <div className="dp-itabs-panel" role="tabpanel">
+        <div className="dp-itabs-frame">
+          {tabs.map((t, i) => (
+            <img
+              key={i}
+              src={resolveImgSrc(t.src)}
+              alt={t.label}
+              className={`dp-itabs-img${active === i ? ' is-active' : ''}`}
+            />
+          ))}
+        </div>
+        <div className="dp-itabs-bullet-groups">
+          {tabs.map((t, i) => (
+            <ul key={i} className={`dp-fscreens-bullets dp-itabs-bullet-group${active === i ? ' is-active' : ''}`}>
+              {t.bullets.map((b, j) => (
+                <li key={j} className="dp-fscreens-bullet">{b}</li>
+              ))}
+            </ul>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
 }
 
 // ── Before / After image toggle ───────────────────────────────────────────
@@ -414,6 +712,65 @@ function SectionBlocks({ content }) {
       )
     }
 
+    if (block.type === 'priority-blocks') {
+      const ICONS = {
+        people: (
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        ),
+        info: (
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+          </svg>
+        ),
+        search: (
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        ),
+      }
+      const items = block.content.split('\n').filter(Boolean).map(line => {
+        const parts = line.split('|').map(s => s.trim())
+        return { title: parts[0], desc: parts[1], icon: parts[2] || 'info' }
+      })
+      return (
+        <div key={bi} className="dp-priority-blocks">
+          {items.map((item, i) => (
+            <div key={i} className="dp-priority-block">
+              <span className="dp-priority-icon">{ICONS[item.icon] || ICONS.info}</span>
+              <p className="dp-priority-title">{item.title}</p>
+              <p className="dp-priority-desc">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      )
+    }
+
+    if (block.type === 'concept-pair') {
+      const items = block.content.split('\n').filter(Boolean).map(line => {
+        const parts = line.split('|').map(s => s.trim())
+        return { tag: parts[0], desc: parts[1], img: parts[2], theme: parts[3] || 'warm' }
+      })
+      return (
+        <div key={bi} className="dp-concept-pair">
+          {items.map((item, i) => (
+            <div key={i} className={`dp-concept-card dp-concept-card--${item.theme}`}>
+              {item.img && (
+                <div className="dp-concept-img-wrap">
+                  <img src={resolveImgSrc(item.img)} alt={item.tag} className="dp-concept-img" />
+                </div>
+              )}
+              <div className="dp-concept-label-wrap">
+                <p className="dp-concept-desc"><strong>{item.tag}</strong>: {item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )
+    }
+
     if (block.type === 'compare') {
       const parts = block.content.split(/\n---\n/)
       const [beforeLabel, afterLabel] = (block.label || 'Before | After').split('|').map(s => s.trim())
@@ -440,6 +797,140 @@ function SectionBlocks({ content }) {
       return <ImageGallery key={bi} slides={slides} />
     }
 
+    if (block.type === 'concepts') {
+      const concepts = parseConceptsBlock(block.content)
+      if (!concepts.length) return null
+      return <ConceptToggle key={bi} concepts={concepts} />
+    }
+
+    if (block.type === 'feature-tabs') {
+      const tabs = parseFeatureTabsBlock(block.content)
+      return <FeatureTabToggle key={bi} tabs={tabs} />
+    }
+
+    if (block.type === 'image-tabs') {
+      const tabs = block.content.split('\n').filter(Boolean).map(line => {
+        const parts = line.split(' | ')
+        return { label: parts[0]?.trim(), src: parts[1]?.trim(), caption: parts[2]?.trim() || '' }
+      })
+      return <ImageTabToggle key={bi} tabs={tabs} />
+    }
+
+    if (block.type === 'image-box') {
+      const src = block.content.trim()
+      return (
+        <div key={bi} className="dp-image-box-outer">
+          {block.label && <p className="dp-image-box-label">{block.label}</p>}
+          <div className="dp-image-box">
+            <img src={resolveImgSrc(src)} alt="" className="dp-image-box-img" />
+          </div>
+        </div>
+      )
+    }
+
+    if (block.type === 'feature-screens') {
+      const lines = block.content.split('\n').filter(Boolean)
+      const [heroLine, ...rest] = lines
+      const heroSrc = heroLine?.trim()
+      const bullets = rest.filter(l => l.trimStart().startsWith('- ')).map(l => l.replace(/^\s*-\s*/, ''))
+      const gridItems = rest.filter(l => !l.trimStart().startsWith('- ')).map(line => {
+        const pipeIdx = line.indexOf('|')
+        return pipeIdx > -1
+          ? { src: line.slice(0, pipeIdx).trim(), label: line.slice(pipeIdx + 1).trim() }
+          : { src: line.trim(), label: '' }
+      })
+      return (
+        <div key={bi} className="dp-fscreens">
+          <div className="dp-fscreens-hero">
+            <img src={resolveImgSrc(heroSrc)} alt="" className="dp-fscreens-img" />
+          </div>
+          {bullets.length > 0 && (
+            <ul className="dp-fscreens-bullets">
+              {bullets.map((b, i) => (
+                <li key={i} className="dp-fscreens-bullet">{b}</li>
+              ))}
+            </ul>
+          )}
+          {gridItems.length > 0 && (
+            <div className="dp-fscreens-grid">
+              {gridItems.map((item, i) => (
+                <div key={i} className="dp-fscreens-item">
+                  <img src={resolveImgSrc(item.src)} alt={item.label} className="dp-fscreens-img" />
+                  {item.label && <p className="dp-fscreens-label">{item.label}</p>}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )
+    }
+
+    if (block.type === 'screengrid') {
+      const items = block.content.split('\n').filter(Boolean).map(line => {
+        const pipeIdx = line.indexOf('|')
+        return pipeIdx > -1
+          ? { src: line.slice(0, pipeIdx).trim(), label: line.slice(pipeIdx + 1).trim() }
+          : { src: line.trim(), label: '' }
+      })
+      return (
+        <div key={bi} className="dp-screengrid">
+          {items.map((item, i) => (
+            <div key={i} className="dp-screengrid-item">
+              <img src={resolveImgSrc(item.src)} alt={item.label} className="dp-screengrid-img" />
+              {item.label && <p className="dp-screengrid-label">{item.label}</p>}
+            </div>
+          ))}
+        </div>
+      )
+    }
+
+    if (block.type === 'insights') {
+      const items = block.content.split('\n').filter(Boolean).map(line => {
+        const pipeIdx = line.indexOf('|')
+        return pipeIdx > -1
+          ? { title: line.slice(0, pipeIdx).trim(), body: line.slice(pipeIdx + 1).trim() }
+          : { title: '', body: line.trim() }
+      })
+      return (
+        <div key={bi} className="dp-insights">
+          {items.map((item, i) => (
+            <div key={i} className="dp-insight" style={{ '--i': i }}>
+              <span className="dp-insight-num">{String(i + 1).padStart(2, '0')}</span>
+              <div className="dp-insight-content">
+                {item.title && <p className="dp-insight-title">{item.title}</p>}
+                {item.body  && <p className="dp-insight-body">{item.body}</p>}
+              </div>
+            </div>
+          ))}
+        </div>
+      )
+    }
+
+    if (block.type === 'img-pair') {
+      const [src1, src2] = block.content.split('\n').map(l => l.trim()).filter(Boolean)
+      return (
+        <div key={bi} className="dp-img-pair">
+          <div className="dp-img-pair-cell">
+            <img src={resolveImgSrc(src1)} alt="" className="dp-img-pair-img" />
+          </div>
+          <div className="dp-img-pair-cell">
+            <img src={resolveImgSrc(src2)} alt="" className="dp-img-pair-img" />
+          </div>
+        </div>
+      )
+    }
+
+    if (block.type === 'image-stack') {
+      const srcs = block.content.split('\n').map(l => l.trim()).filter(Boolean)
+      return (
+        <div key={bi} className="dp-image-stack">
+          {srcs.map((src, i) => (
+            <img key={i} src={resolveImgSrc(src)} alt="" className="dp-image-stack-img" />
+          ))}
+        </div>
+      )
+    }
+
     if (block.type === 'before-after') {
       const lines = block.content.split('\n')
       let previousSrc = '', newSrc = '', previousLabel = '', newLabel = ''
@@ -450,6 +941,89 @@ function SectionBlocks({ content }) {
         if (line.startsWith('NewLabel:')) newLabel = line.slice(9).trim()
       }
       return <ImageToggle key={bi} previousSrc={previousSrc} newSrc={newSrc} previousLabel={previousLabel} newLabel={newLabel} />
+    }
+
+    if (block.type === 'dj-features') {
+      const features = block.content.split(/^== /m).filter(Boolean).map(section => {
+        const lines = section.trim().split('\n')
+        const parts = lines[0].split('|').map(s => s.trim())
+        const title = parts[0]
+        const tag = parts[1] || ''
+        const layout = parts[2] || 'left-wide'
+        const mockupSrc = parts[3] || ''
+        const wideSrc = parts[4] || ''
+        const bullets = lines.slice(1).filter(l => l.trimStart().startsWith('- ')).map(l => l.replace(/^\s*-\s*/, ''))
+        return { title, tag, layout, mockupSrc, wideSrc, bullets }
+      })
+      const isVideo = s => s && /\.(mp4|mov|webm)$/i.test(s)
+      const DjMedia = ({ src, className }) => isVideo(src)
+        ? <video src={resolveImgSrc(src)} className={className} autoPlay muted loop playsInline />
+        : <img src={resolveImgSrc(src)} alt="" className={className} />
+      const DjMockup = ({ src }) => (
+        <div className="dp-dj-mockup">
+          {src
+            ? <DjMedia src={src} className="dp-dj-mockup-img" />
+            : <div className="dp-dj-mockup-screen" />}
+        </div>
+      )
+      return (
+        <div key={bi} className="dp-dj-features">
+          {features.map((f, i) => {
+            const { title, tag, layout, mockupSrc, wideSrc, bullets } = f
+            const desc = (
+              <div className="dp-dj-desc">
+                <div className="dp-dj-d1">
+                  <p className="dp-dj-tag">{tag}</p>
+                  <h3 className="dp-dj-title">{title}</h3>
+                </div>
+                <ul className="dp-dj-bullets">
+                  {bullets.map((b, j) => <li key={j}>{b}</li>)}
+                </ul>
+              </div>
+            )
+            const imgCol = (
+              <div className="dp-dj-img-col">
+                <DjMockup src={mockupSrc} />
+              </div>
+            )
+            if (layout === 'full') {
+              return (
+                <div key={i} className="dp-dj-feature dp-dj-feature--full" style={{ '--i': i }}>
+                  {desc}
+                  <div className="dp-dj-block-row">
+                    {[mockupSrc, wideSrc].map((src, j) => (
+                      <div key={j} className="dp-dj-block">
+                        {src && <DjMedia src={src} className="dp-dj-block-video" />}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )
+            }
+            if (layout === 'right') {
+              return (
+                <div key={i} className="dp-dj-feature dp-dj-feature--row" style={{ '--i': i }}>
+                  {imgCol}
+                  {desc}
+                </div>
+              )
+            }
+            return (
+              <div key={i} className="dp-dj-feature dp-dj-feature--left-wide" style={{ '--i': i }}>
+                <div className="dp-dj-feature--row">
+                  {desc}
+                  {imgCol}
+                </div>
+                {wideSrc && (
+                  <div className="dp-dj-wide">
+                    <img src={resolveImgSrc(wideSrc)} alt="" className="dp-dj-wide-img" />
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      )
     }
 
     if (block.type === 'goal') {
