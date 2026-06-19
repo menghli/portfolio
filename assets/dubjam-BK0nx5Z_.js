@@ -24,11 +24,11 @@ Cover: ../../img/design/DubJam-page-cover.svg
 
 ### Student Musicians Want to Connect but Can't Find Compatible Musicians or Relevant Resources
 
-This project was part of **Design for America** at the University of Washington, a national initiative that empowers student teams to use design for local social impact. Our team, all passionate about music, was personally motivated by one teammate's experience of struggling to find someone to practice with on campus. What began as an individual story quickly revealed a broader problem.
+This project was part of **Design for America** at the University of Washington, a national initiative that empowers student teams to use design for local social impact. Our team, all passionate about music, was personally motivated by one teammate's experience of struggling to find someone to practice with on campus. ==What began as an individual story quickly revealed a broader problem.==
 
 ### Project Goal
 
-Our goal was to design a mobile app that fosters collaboration and connection among musicians, starting with UW students and expanding to the broader Seattle music community. While there is no direct business goal, we were interested in validating this concept for exploring campus partnerships for launch and adoption, with potential for expansion to other universities or cities.
+Our goal was to design a mobile app that ==fosters collaboration and connection among musicians==, starting with UW students and expanding to the broader Seattle music community. While there is no direct business goal, we were interested in validating this concept for exploring campus partnerships for launch and adoption, with potential for expansion to other universities or cities.
 
 :::goal
 HMW: Help solo musicians connect with compatible collaborators, access relevant local resources and events, and build a supportive music community
@@ -52,7 +52,7 @@ NEXT STEP | Exploring partnerships with HuskyJam and UW's Student Activities Off
 
 ### What Existing Solutions Get Wrong — and What Musicians Actually Need
 
-We ran a **competitive analysis** of existing music apps, reviewed literature on music collaboration, and conducted **9 in-depth interviews** with UW students — including organization leaders, solo musicians, and band members. Five insights shaped our direction:
+We ran a **competitive analysis** of existing music apps, reviewed literature on music collaboration, and conducted **9 in-depth interviews** with UW students — including organization leaders, solo musicians, and band members. ==Four insights shaped our direction:==
 
 :::findings
 FRAGMENTED DISCOVERY | Students rely on non-dedicated platforms like Facebook and Reddit, making information discovery fragmented.
@@ -61,7 +61,7 @@ SOLVING FOR THE MISMATCH | Musicians struggle to find compatible musicians with 
 BUSY MUSICIANS, BUSY LIFE | People often juggle between music and other life commitments, making it challenging to coordinate. In-person casual collaboration is key, but using digital tools to connect increases opportunities.
 :::
 
-[ghost-button:See more research artifacts]
+[ghost-button:See more research artifacts:https://www.figma.com/board/kw1ZyUy2yWK4aoN2tZfQgw/Dubjam-Research--portfoliio-?node-id=0-1&t=95p2QCpeCBOW0zZv-1]
 
 ## How Might We
 
@@ -85,7 +85,7 @@ Our research showed that not all musicians are alike: some just want to jam for 
 
 ### Decision 2: We focused on the event experience and user flows first
 
-We noticed that most student musicians first show up as event attendees, not organizers. So instead of trying to design for everyone at once, we focused our efforts on creating a smooth and motivating experience for the everyday event-goer.
+We noticed that ==most student musicians first show up as event attendees, not organizers.== So instead of trying to design for everyone at once, we focused our efforts on creating a smooth and motivating experience for the everyday event-goer.
 
 We also accounted for other user flows, such as group moderators, and began defining how features might scale to support both public groups (open live house) and private groups (bands).
 
@@ -100,12 +100,12 @@ Concept 1 | A community-based app that centralizes event and group info for reso
 Concept 2 | A gamified experience that encourages in-person connections and rewards collaborations | Dubjam-img4.svg | cool
 :::
 
-When we couldn't agree on a direction, users showed us what actually mattered. Testing revealed that:
+When we couldn't agree on a direction, ==users showed us what actually mattered.== Testing revealed that:
 
 - Emphasizing connection rather than increasing likes or follower counts
 - Users are not looking for new best friends, but potential collaborators
 - Users want easy access to encouraging information about local events
-- A need for external motivation wasn't identified as a priority, and could push away users who are already motivated by the music itself
+- **A need for external motivation wasn't identified as a priority**, and could push away users who are already motivated by the music itself
 
 With a clearer direction, we prioritized three key experiences:
 
@@ -117,7 +117,7 @@ Personalized discovery | Personally recommended events, groups, and compatible c
 
 ### Design system: Collaboration with a visual designer
 
-Musicians bring their own bold visual identity through event posters and promotional materials. The app needed a design system strong enough to feel intentional, but restrained enough not to compete. Working with a visual designer, I defined content structure and used an atomic design approach to keep components clear, flexible, and visually harmonious.
+Musicians bring their own bold visual identity through event posters and promotional materials. The app needed a design system ==strong enough to feel intentional, but restrained enough not to compete.== Working with a visual designer, I defined content structure and used an atomic design approach to keep components clear, flexible, and visually harmonious.
 
 :::image-stack
 ../../img/design/dubjam/Dubjam-img5.svg
@@ -153,7 +153,7 @@ Musicians bring their own bold visual identity through event posters and promoti
 
 We showcased DubJam at the DFA UW Spring Showcase, earning positive feedback from Qualtrics UX professionals and UW design faculty.
 
-Usability testing with four UW musicians backed this up, with an average 8.5/10 "Would recommend," confirming both its appeal and ease of use.
+Usability testing with four UW musicians backed this up, with an average 8.5/10 "Would recommend," ==confirming both its appeal and ease of use.==
 
 :::img-pair
 ../../img/design/dubjam/Dubjam-img10.svg
@@ -166,5 +166,5 @@ Usability testing with four UW musicians backed this up, with an average 8.5/10 
 
 ### Navigating Team Disagreements
 
-With six team members, each with their own vision for the project, disagreements were inevitable. As the design lead, I often had to make tough calls. Early on, we'd get stuck in long debates that went nowhere. I realized I needed to shift from simply mediating to actively guiding decisions. I started digging into the "why" behind each opinion and backing up choices with research and clear reasoning. This not only helped us move forward faster but also built trust in the process — even when not everyone's idea made it into the final design.
+With six team members, each with their own vision for the project, disagreements were inevitable. As the design lead, I often had to make tough calls. Early on, we'd get stuck in long debates that went nowhere. I realized I needed to ==shift from simply mediating to actively guiding decisions.== I started digging into the "why" behind each opinion and backing up choices with research and clear reasoning. This not only helped us move forward faster but also ==built trust in the process== — even when not everyone's idea made it into the final design.
 `;export{e as default};
