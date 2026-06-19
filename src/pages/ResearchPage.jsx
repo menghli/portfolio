@@ -376,6 +376,7 @@ export default function ResearchPage({ slug }) {
 
   const meta        = parseMetaTable(parsed.sections['Project Meta'])
   const activeIndex = NAV_ITEMS.findIndex(({ id }) => id === activeSection)
+  const nextStudy   = { amazon: '/research/expertvoice', expertvoice: '/research/moomoo', moomoo: '/research/negotium', negotium: '/research/amazon' }[slug]
 
   return (
     <div className="rp-page">
@@ -476,8 +477,20 @@ export default function ResearchPage({ slug }) {
 
           {/* Footer CTA */}
           <div className="rp-footer-cta" style={{ marginTop: '120px' }}>
-            <Link to="/" className="pill ghost">← BACK TO PROJECTS</Link>
-            <Link to={({ amazon: '/research/expertvoice', expertvoice: '/research/moomoo', moomoo: '/research/negotium', negotium: '/research/amazon' })[slug]} className="pill ghost">VIEW NEXT CASE STUDY →</Link>
+            <button
+              className="pill ghost"
+              onClick={() => window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })}
+            >
+              Back to top ↑
+            </button>
+            <div className="about-cta-pair">
+              <Link to={nextStudy} className="pill filled">VIEW NEXT CASE STUDY</Link>
+              <Link to={nextStudy} className="pill icon-only">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter"/>
+                </svg>
+              </Link>
+            </div>
           </div>
 
         </main>

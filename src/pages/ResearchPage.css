@@ -349,15 +349,10 @@
 .rp-footer-cta {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0;
   padding-bottom: 120px;
 }
 
-.rp-footer-cta .pill {
-  background: transparent;
-  border: 1px solid #333333;
-  color: var(--text);
-}
 
 /* ── Inline action button (e.g. LinkedIn pill after a section) ─ */
 .rp-inline-action {

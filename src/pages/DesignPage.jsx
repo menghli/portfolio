@@ -233,9 +233,10 @@ const mdComponents = {
       if (ghostMatch) {
         const label = ghostMatch[1].trim()
         const href = ghostMatch[2]?.trim() || '#'
+        const isExternal = href.startsWith('http')
         return (
           <div className="dp-inline-action">
-            <a href={href} className="pill ghost">{label}</a>
+            <a href={href} className="pill ghost" {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{label}</a>
           </div>
         )
       }
@@ -1083,6 +1084,22 @@ function SectionBlocks({ content }) {
       )
     }
 
+    if (block.type === 'youtube') {
+      const raw = block.content.trim()
+      const ytMatch = raw.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([A-Za-z0-9_-]{11})/)
+      const videoId = ytMatch ? ytMatch[1] : raw
+      return (
+        <div key={bi} className="dp-youtube">
+          <iframe
+            src={`https://www.youtube.com/embed/${videoId}`}
+            title="DoryVR demo"
+            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+      )
+    }
+
     return null
   })
 }
@@ -1299,9 +1316,21 @@ export default function DesignPage({ slug }) {
           })}
 
           <div className="dp-footer-cta" style={{ marginTop: '120px' }}>
-            <Link to="/" className="pill ghost">← BACK TO PROJECTS</Link>
+            <button
+              className="pill ghost"
+              onClick={() => window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })}
+            >
+              Back to top ↑
+            </button>
             {NEXT_SLUG[slug] && (
-              <Link to={NEXT_SLUG[slug]} className="pill ghost">VIEW NEXT CASE STUDY →</Link>
+              <div className="about-cta-pair">
+                <Link to={NEXT_SLUG[slug]} className="pill filled">VIEW NEXT CASE STUDY</Link>
+                <Link to={NEXT_SLUG[slug]} className="pill icon-only">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter"/>
+                  </svg>
+                </Link>
+              </div>
             )}
           </div>
 

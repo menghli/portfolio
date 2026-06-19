@@ -38,9 +38,10 @@ HMW: Create a custom VR environment that enhances data storytelling, promotes pe
 
 ### Impact and Outcomes
 
-**User Testing:** Across 3 rounds of usability testing with Heinz College students, participants reported higher engagement and greater clarity when presenting complex data in VR. Students especially valued the interactive dashboards and the ability to switch between AR and VR modes to reduce motion sickness.
-
-**Next Step:** Following the course, our client expressed strong interest in integrating DoryVR into future VR communication classes as a teaching aid. We also documented design guidelines and a scalable system to support further development, ensuring that future teams can extend the platform for broader classroom and workplace applications.
+:::findings
+USER TESTING | 3 rounds of usability testing with Heinz College students; participants reported higher engagement and greater clarity presenting complex data in VR, and valued the AR/VR mode switching.
+NEXT STEP | Client plans to integrate DoryVR into future VR communication classes; design guidelines and a scalable system were documented to support future development.
+:::
 
 ---
 
@@ -51,6 +52,10 @@ HMW: Create a custom VR environment that enhances data storytelling, promotes pe
 - **Individual Dashboards**, giving users control over their slideshows and data while providing feedback on presentations
 - **Levels of Immersion**, allowing users to switch seamlessly between Virtual Reality and Augmented Reality
 - **Scalable and Interactive Data Visualization**, enabling dynamic data visualizations and engaging storytelling
+
+:::youtube
+https://youtu.be/79jqLshvO5Q?si=IKBw8BPBcMb2cTIf
+:::
 
 ---
 
