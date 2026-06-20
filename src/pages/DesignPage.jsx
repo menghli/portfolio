@@ -641,6 +641,256 @@ function ImageGallery({ slides }) {
   )
 }
 
+// ── Challenge Cards ───────────────────────────────────────────────
+function parseChallengeCards(content) {
+  const challenges = []
+  let current = null
+  let pendingList = []
+
+  const parseImgPair = (raw) =>
+    raw.split('+').map(s => {
+      const parts = s.trim().split('|').map(p => p.trim())
+      return { src: parts[0], label: parts[1] || '' }
+    })
+
+  const flushList = () => {
+    if (pendingList.length && current) {
+      current.body.push({ type: 'paragraph', text: pendingList.join('\n') })
+      pendingList = []
+    }
+  }
+
+  for (const line of content.split('\n')) {
+    const t = line.trim()
+    if (t.startsWith('== ')) {
+      flushList()
+      if (current) challenges.push(current)
+      current = { title: t.slice(3), body: [] }
+    } else if (t.startsWith('--side ') && current) {
+      flushList()
+      current.body.push({ type: 'img-row', images: parseImgPair(t.slice(7)) })
+    } else if (t.startsWith('--stack ') && current) {
+      flushList()
+      current.body.push({ type: 'img-stack', images: parseImgPair(t.slice(8)) })
+    } else if (t.startsWith('-- ') && current) {
+      flushList()
+      const parts = t.slice(3).split('|').map(s => s.trim())
+      current.body.push({ type: 'img-row', images: [{ src: parts[0], label: parts[1] || '' }] })
+    } else if (current && t.startsWith('* ')) {
+      pendingList.push(t)
+    } else if (current && t) {
+      flushList()
+      current.body.push({ type: 'paragraph', text: t })
+    } else if (current && !t) {
+      flushList()
+    }
+  }
+  flushList()
+  if (current) challenges.push(current)
+  return challenges
+}
+
+function ChallengeCards({ challenges }) {
+  const [active, setActive] = useState(0)
+  const [dir, setDir] = useState(0)
+  const [panelKey, setPanelKey] = useState(0)
+  const count = challenges.length
+  const wrapperRef = useRef(null)
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible')
+            obs.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0.8 }
+    )
+    const container = wrapperRef.current
+    if (container) {
+      container.querySelectorAll('.dp-highlight').forEach(el => obs.observe(el))
+    }
+    return () => obs.disconnect()
+  }, [panelKey])
+
+  function go(next, direction) {
+    if (next === active) return
+    setDir(direction)
+    setActive(next)
+    setPanelKey(k => k + 1)
+    wrapperRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+  const ch = challenges[active]
+  const colonIdx = ch.title.indexOf(': ')
+  const titleLabel = colonIdx > -1 ? ch.title.slice(0, colonIdx) : ''
+  const titleText  = colonIdx > -1 ? ch.title.slice(colonIdx + 2) : ch.title
+
+  return (
+    <div className="dp-cc-wrapper" ref={wrapperRef}>
+      <div className="dp-challenge-cards">
+      <div
+        key={panelKey}
+        className={`dp-cc-content${dir === 1 ? ' dp-cc-content--fwd' : dir === -1 ? ' dp-cc-content--bwd' : ''}`}
+      >
+        <div className="dp-cc-header">
+          {titleLabel && <span className="dp-cc-label">{titleLabel}</span>}
+          <h3 className="dp-cc-title">{titleText}</h3>
+        </div>
+        <div className="dp-cc-body-flow">
+          {ch.body.map((item, i) => {
+            if (item.type === 'paragraph') {
+              return (
+                <ReactMarkdown
+                  key={i}
+                  components={{
+                    p: ({ children }) => <p className="dp-cc-body">{processHighlights(children)}</p>,
+                    strong: ({ children }) => <strong className="dp-strong">{children}</strong>,
+                    li: ({ children }) => <li className="dp-list-item">{processHighlights(children)}</li>,
+                  }}
+                >{item.text}</ReactMarkdown>
+              )
+            }
+            const isStack = item.type === 'img-stack'
+            return (
+              <div key={i} className={isStack ? 'dp-cc-img-stack' : 'dp-cc-img-row'}>
+                {item.images.map((img, j) => (
+                  <div key={j} className="dp-cc-img-cell">
+                    <img src={resolveImgSrc(img.src)} alt={img.label || ''} className="dp-cc-img" />
+                    {img.label && <p className="dp-cc-img-label">{img.label}</p>}
+                  </div>
+                ))}
+              </div>
+            )
+          })}
+        </div>
+      </div>
+      </div>
+      <div className="dp-cc-nav">
+        <button
+          className="dp-cc-arrow"
+          onClick={() => go(((active - 1) + count) % count, -1)}
+          aria-label="Previous challenge"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{transform:'rotate(180deg)'}}>
+            <path d="M2.667 8H13.333M9 3.667L13.333 8L9 12.333" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </button>
+        <span className="dp-cc-counter">{String(active + 1).padStart(2, '0')} / {String(count).padStart(2, '0')}</span>
+        <button
+          className="dp-cc-arrow"
+          onClick={() => go((active + 1) % count, 1)}
+          aria-label="Next challenge"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2.667 8H13.333M9 3.667L13.333 8L9 12.333" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  )
+}
+
+// ── Design Sticky Scroll ───────────────────────────────────────────────────
+function parseDesignSticky(content) {
+  const features = []
+  let current = null
+  for (const line of content.split('\n')) {
+    const t = line.trim()
+    if (t.startsWith('== ')) {
+      if (current) features.push(current)
+      const parts = t.slice(3).split('|').map(s => s.trim())
+      current = { num: parts[0], title: parts[1] || '', body: '', placeholders: [] }
+    } else if (t.startsWith('-- ') && current) {
+      const rest = t.slice(3).trim()
+      const pipeIdx = rest.indexOf('|')
+      if (pipeIdx > -1) {
+        current.placeholders.push({ src: rest.slice(0, pipeIdx).trim(), caption: rest.slice(pipeIdx + 1).trim() })
+      } else {
+        current.placeholders.push({ src: '', caption: rest })
+      }
+    } else if (current && t) {
+      current.body += (current.body ? ' ' : '') + t
+    }
+  }
+  if (current) features.push(current)
+  return features
+}
+
+function DesignSticky({ features }) {
+  const sectionRef  = useRef(null)
+  const lastTextRef = useRef(null)
+
+  useEffect(() => {
+    const el       = sectionRef.current
+    const lastText = lastTextRef.current
+    if (!el) return
+    const page = el.closest('.dp-page')
+    if (!page) return
+
+    // Turn dark ON when section enters; turn dark OFF only when scrolled back above it
+    const sectionObs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        page.dataset.darkmode = 'true'
+      } else if (entry.boundingClientRect.top > 0) {
+        // Section is below viewport — user scrolled back up above the section
+        page.dataset.darkmode = 'false'
+      }
+    }, { threshold: 0 })
+    sectionObs.observe(el)
+
+    // Turn dark OFF when the last sticky text scrolls off the top of the viewport
+    const lastTextObs = lastText ? new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
+        page.dataset.darkmode = 'false'
+      }
+    }, { threshold: 0 }) : null
+    if (lastText && lastTextObs) lastTextObs.observe(lastText)
+
+    return () => {
+      sectionObs.disconnect()
+      lastTextObs?.disconnect()
+      delete page.dataset.darkmode
+    }
+  }, [])
+
+  return (
+    <div className="dp-ds-section" ref={sectionRef}>
+      {features.map((f, i) => (
+        <div key={i} className="dp-ds-feature">
+          <div className="dp-ds-text" ref={i === features.length - 1 ? lastTextRef : null}>
+            <span className="dp-ds-num">{f.num}</span>
+            <h3 className="dp-ds-title">{f.title}</h3>
+            <p className="dp-ds-body">{f.body}</p>
+          </div>
+          <div className="dp-ds-media">
+            {f.placeholders.map((item, j) => {
+              const src = item.src ? resolveImgSrc(item.src) : null
+              const isVideo = item.src && /\.(mp4|webm|mov)$/i.test(item.src)
+              const isImg   = item.src && /\.(svg|png|jpg|jpeg|webp|avif)$/i.test(item.src)
+              return (
+                <div key={j} className="dp-ds-item">
+                  {isVideo ? (
+                    <video className="dp-ds-media-el" src={src} autoPlay muted loop playsInline />
+                  ) : isImg ? (
+                    <img className="dp-ds-media-el" src={src} alt={item.caption || ''} />
+                  ) : (
+                    <div className="dp-ds-placeholder" aria-hidden="true" />
+                  )}
+                  {item.caption && <p className="dp-ds-caption">{item.caption}</p>}
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 // ── Section block renderer ─────────────────────────────────────────────────
 function SectionBlocks({ content }) {
   return parseBlocks(content).map((block, bi) => {
@@ -729,6 +979,21 @@ function SectionBlocks({ content }) {
         search: (
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        ),
+        layers: (
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+          </svg>
+        ),
+        chart: (
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+          </svg>
+        ),
+        expand: (
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
           </svg>
         ),
       }
@@ -1084,6 +1349,69 @@ function SectionBlocks({ content }) {
       )
     }
 
+    if (block.type === 'design-sticky') {
+      const features = parseDesignSticky(block.content)
+      if (!features.length) return null
+      return <DesignSticky key={bi} features={features} />
+    }
+
+    if (block.type === 'challenge-cards') {
+      const challenges = parseChallengeCards(block.content)
+      if (!challenges.length) return null
+      return <ChallengeCards key={bi} challenges={challenges} />
+    }
+
+    if (block.type === 'research-findings') {
+      const findings = []
+      let current = null
+      for (const line of block.content.split('\n')) {
+        const t = line.trim()
+        if (t.startsWith('== ')) {
+          if (current) findings.push(current)
+          const parts = t.slice(3).split('|').map(s => s.trim())
+          current = { num: parts[0], layout: parts[1] || 'full', title: '', body: '', img: '', caption: '' }
+        } else if (current && !current.title && t) {
+          current.title = t
+        } else if (current && current.title && !current.body && t) {
+          current.body = t
+        } else if (current && current.body && !current.img && t) {
+          const imgParts = t.split('|').map(s => s.trim())
+          current.img = imgParts[0]
+          current.caption = imgParts[1] || ''
+        }
+      }
+      if (current) findings.push(current)
+      return (
+        <div key={bi} className="dp-research-findings">
+          {findings.map((f, i) => {
+            if (f.layout === 'split') {
+              return (
+                <div key={i} className="dp-rf-finding dp-rf-finding--split">
+                  <div className="dp-rf-left">
+                    <img src={resolveImgSrc(f.img)} alt={f.caption || ''} className="dp-rf-img" />
+                    {f.caption && <p className="dp-rf-caption">{f.caption}</p>}
+                  </div>
+                  <div className="dp-rf-right">
+                    <span className="dp-rf-num">{f.num}</span>
+                    <h4 className="dp-rf-title">{f.title}</h4>
+                    <p className="dp-rf-body">{f.body}</p>
+                  </div>
+                </div>
+              )
+            }
+            return (
+              <div key={i} className="dp-rf-finding dp-rf-finding--full">
+                <span className="dp-rf-num">{f.num}</span>
+                <h4 className="dp-rf-title">{f.title}</h4>
+                <p className="dp-rf-body">{f.body}</p>
+                {f.img && <img src={resolveImgSrc(f.img)} alt="" className="dp-rf-img dp-rf-img--full" />}
+              </div>
+            )
+          })}
+        </div>
+      )
+    }
+
     if (block.type === 'youtube') {
       const raw = block.content.trim()
       const ytMatch = raw.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([A-Za-z0-9_-]{11})/)
@@ -1233,7 +1561,7 @@ export default function DesignPage({ slug }) {
   const activeIndex = NAV_ITEMS.findIndex(({ id }) => id === activeSection)
 
   return (
-    <div className="dp-page">
+    <div className="dp-page" data-slug={slug}>
 
       <nav className="nav dp-nav-bar">
         <div className="nav-logo">

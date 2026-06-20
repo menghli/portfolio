@@ -1,6 +1,6 @@
 import { StrictMode, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, useLocation } from 'react-router-dom'
+import { HashRouter, useLocation } from 'react-router-dom'
 import '../styles.css'
 import App from './App.jsx'
 
@@ -14,9 +14,9 @@ function ScrollToTop() {
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
+    <HashRouter>
       <ScrollToTop />
       <App />
-    </BrowserRouter>
+    </HashRouter>
   </StrictMode>,
 )
