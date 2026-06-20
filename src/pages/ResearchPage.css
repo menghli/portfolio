@@ -62,7 +62,7 @@
   top: 0;
   bottom: 0;
   width: 1px;
-  background: #DCDCDC;
+  background: var(--border-light);
 }
 
 /* Nav labels — Nav style: DM Mono Regular 12px, 18px line-height, +1.5px */
@@ -444,7 +444,7 @@
 
 /* ── Highlight sweep ─────────────────────────────────────────── */
 mark.rp-highlight {
-  background: linear-gradient(#F5E6A3, #F5E6A3) no-repeat 0% 58% / 0% 82%;
+  background: linear-gradient(var(--highlight), var(--highlight)) no-repeat 0% 58% / 0% 82%;
   color: inherit;
   font-weight: inherit;
   font-size: inherit;
@@ -464,5 +464,88 @@ mark.rp-highlight.is-visible {
   mark.rp-highlight.is-visible {
     animation: none;
     background-size: 100% 82%;
+  }
+}
+
+/* ============================================================
+   MOBILE  (≤ 767px)
+   ============================================================ */
+@media (max-width: 767px) {
+
+  /* ── Body wrapper: remove large top padding (sidebar no longer fixed) ── */
+  .rp-body {
+    padding: 0 0 80px;
+  }
+
+  /* ── Sidebar: collapse to a sticky back-link bar ── */
+  .rp-sidebar {
+    position: sticky;
+    top: 52px; /* mobile nav height */
+    left: auto;
+    width: auto;
+    background: var(--bg);
+    z-index: 50;
+    padding: 10px 20px;
+    border-bottom: 1px solid #e8e6e3;
+  }
+  .rp-sidebar-nav {
+    display: none;
+  }
+
+  /* ── Content column: full width ── */
+  .rp-content {
+    width: 100%;
+    padding: 32px 20px 0;
+  }
+
+  /* ── Header ── */
+  .rp-title {
+    font-size: clamp(22px, 5.5vw, 32px);
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .rp-subtitle {
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+  .rp-eyebrow {
+    margin-bottom: 16px;
+  }
+
+  /* ── Meta grid: two per row ── */
+  .rp-meta-grid {
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+  .rp-meta-col {
+    flex: 0 0 calc(50% - 6px);
+  }
+
+  /* ── Two-col images: stack on mobile ── */
+  .rp-img-two-col {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* ── Section spacing ── */
+  .rp-section + .rp-section {
+    margin-top: 64px;
+  }
+  .rp-section + .rp-section::before {
+    margin-bottom: 56px;
+  }
+
+  /* ── Body text ── */
+  .rp-h3 {
+    font-size: 18px;
+    margin-top: 28px;
+  }
+
+  /* ── Footer CTA ── */
+  .rp-footer-cta {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-bottom: 60px;
   }
 }

@@ -121,7 +121,7 @@ function expandTwoColBlocks(text) {
 function ArticleImageOneColumn({ src, alt }) {
   return (
     <div className="rp-img-one-col" data-rp-reveal="">
-      <img src={src} alt={alt || ''} className="rp-img" />
+      <img src={src} alt={alt || ''} className="rp-img" loading="lazy" />
       {alt && <p className="rp-img-caption">{alt}</p>}
     </div>
   )
@@ -131,11 +131,11 @@ function ArticleImageTwoColumn({ leftSrc, leftAlt, rightSrc, rightAlt }) {
   return (
     <div className="rp-img-two-col" data-rp-reveal="">
       <div className="rp-img-col">
-        <img src={leftSrc} alt={leftAlt || ''} className="rp-img" />
+        <img src={leftSrc} alt={leftAlt || ''} className="rp-img" loading="lazy" />
         {leftAlt && <p className="rp-img-caption">{leftAlt}</p>}
       </div>
       <div className="rp-img-col">
-        <img src={rightSrc} alt={rightAlt || ''} className="rp-img" />
+        <img src={rightSrc} alt={rightAlt || ''} className="rp-img" loading="lazy" />
         {rightAlt && <p className="rp-img-caption">{rightAlt}</p>}
       </div>
     </div>
@@ -174,6 +174,21 @@ const mdComponents = {
     // Detect special marker for LinkedIn button: [linkedin-button] or [linkedin-button:Custom text]
     const arr = Children.toArray(children)
     if (arr.length === 1 && typeof arr[0] === 'string') {
+      const linkMatch = arr[0].match(/^\[link-button:(.+?):(.+)\]$/)
+      if (linkMatch) {
+        return (
+          <div className="rp-inline-action" data-rp-reveal="">
+            <a
+              href={linkMatch[2]}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="pill ghost"
+            >
+              {linkMatch[1]}
+            </a>
+          </div>
+        )
+      }
       const match = arr[0].match(/^\[linkedin-button(?::(.+))?\]$/)
       if (match) {
         const label = match[1] || 'Read about specific findings here if you are interested!'
@@ -441,7 +456,7 @@ export default function ResearchPage({ slug }) {
           {/* Hero Image */}
           <div className="rp-hero" ref={heroRef}>
             {COVER_IMAGES[slug]
-              ? <img src={COVER_IMAGES[slug]} alt={`${parsed.title} cover`} className="rp-hero-img" />
+              ? <img src={COVER_IMAGES[slug]} alt={`${parsed.title} cover`} className="rp-hero-img" loading="eager" />
               : <div className="rp-hero-rect" />
             }
           </div>

@@ -83,7 +83,7 @@ Experts on ExpertVoice value insightful reviews, especially for time-sensitive d
 > "When I show I'm an expert, I want my voice to be heard, so I feel **validated in sharing my knowledge, helping others make informed decisions, and contributing to a trusted community.**"
 > 
 
-[linkedin-button]
+[link-button:Read about specific findings here if you are interested!:https://drive.google.com/file/d/1XpDmJ5lx9jbhia-K6eXK0E9m615-mkkr/view?usp=sharing]
 
 ---
 

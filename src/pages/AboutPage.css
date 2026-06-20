@@ -123,11 +123,11 @@
 
 .ap-row {
   padding: 12px 0;
-  border-bottom: 1px solid #E0DDDA;
+  border-bottom: 1px solid var(--border-warm);
 }
 
 .ap-row:first-child {
-  border-top: 1px solid #E0DDDA;
+  border-top: 1px solid var(--border-warm);
 }
 
 .ap-row-main {
@@ -393,5 +393,56 @@
   .js-anim [data-reveal="wipe"] {
     clip-path: none !important;
     transition: none !important;
+  }
+}
+
+/* ============================================================
+   MOBILE  (≤ 767px)
+   ============================================================ */
+@media (max-width: 767px) {
+
+  /* ── Main layout ── */
+  .ap-main {
+    padding: 40px 20px 0;
+  }
+  .ap-col {
+    max-width: 100%;
+  }
+
+  /* ── Opening ── */
+  .ap-opening {
+    padding-bottom: 48px;
+  }
+  .ap-title {
+    font-size: clamp(36px, 10vw, 52px);
+    margin-bottom: 14px;
+  }
+  .ap-subtitle {
+    font-size: 16px;
+    line-height: 24px;
+    max-width: 100%;
+  }
+  .ap-portrait {
+    width: 200px;
+    margin-top: 28px;
+  }
+
+  /* ── Sections ── */
+  .ap-section {
+    padding-top: 36px;
+    padding-bottom: 48px;
+  }
+  .ap-section--plain {
+    padding-top: 16px;
+    padding-bottom: 32px;
+  }
+
+  /* ── Experience rows: allow role text to wrap ── */
+  .ap-row-main {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .ap-row-date {
+    width: 100%;
   }
 }

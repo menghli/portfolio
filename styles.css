@@ -33,6 +33,9 @@ a {
   --accent-warm:  #F0ECE8;
   --accent-cool:  #EEE8F0;
   --border:       #333333;
+  --border-light: #DCDCDC;
+  --border-warm:  #E0DDDA;
+  --highlight:    #F5E6A3;
   --white80:      rgba(255, 255, 255, 0.8);
 }
 
@@ -49,7 +52,6 @@ body {
   color: var(--text);
   font-family: 'DM Sans', sans-serif;
   letter-spacing: 0.01em;
-  min-width: 1129px;
   height: 100%;
   cursor: none;
 }
@@ -137,13 +139,13 @@ body {
 }
 
 .about-cta-pair:hover .pill.filled {
-  background: #F5E6A3;
+  background: var(--highlight);
   color: #000;
   box-shadow: inset 0 0 0 1px var(--text);
 }
 
 .about-cta-pair:hover .pill.icon-only {
-  background: #F5E6A3;
+  background: var(--highlight);
   color: #000;
   border-color: var(--text);
 }
@@ -329,7 +331,7 @@ body {
   align-items: center;
   width: 100%;
   padding-top: 8px;
-  transition: transform 750ms ease;
+  transition: transform 750ms cubic-bezier(0.16, 1, 0.3, 1);
   animation: hero-enter-fade 900ms cubic-bezier(0.16, 1, 0.3, 1) 180ms backwards;
 }
 
@@ -464,6 +466,7 @@ body {
   transform: translateY(0);
   transition-delay: 300ms;
   height: calc(100% + 32px);
+  max-height: calc(100% + 32px);
 }
 
 /* ---- chat messages ---- */
@@ -568,6 +571,14 @@ body {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.chat-project-card:hover .chat-project-img {
+  opacity: 0.85;
+  transition: opacity 200ms ease;
 }
 
 .chat-project-img {
@@ -583,7 +594,7 @@ body {
   font-weight: 500;
   font-size: 13px;
   line-height: 18px;
-  color: #262626;
+  color: var(--text);
 }
 
 /* ============================================================
@@ -632,7 +643,7 @@ body {
   top: -2px;
   left: 24px;
   right: 24px;
-  border-top: 1.5px solid #333333;
+  border-top: 1.5px solid var(--border);
 }
 
 /* ---- design project cards ---- */
@@ -668,7 +679,7 @@ body {
   position: relative;
   width: 533px;
   height: 400px;
-  border: 1.5px solid #333;
+  border: 1.5px solid var(--border);
   border-radius: 20px;
   overflow: hidden;
   background: rgba(255, 255, 255, 0.8);
@@ -694,7 +705,7 @@ body {
   font-weight: 400;
   line-height: normal;
   letter-spacing: 0.2px;
-  color: #1a1a1a;
+  color: var(--dark);
   padding: 0 6px;
   opacity: 0;
   transition: opacity 400ms ease;
@@ -1005,4 +1016,225 @@ body {
   text-transform: uppercase;
   color: var(--text-sec);
   line-height: 18px;
+}
+
+/* ============================================================
+   MOBILE  (≤ 767px)
+   ============================================================ */
+@media (max-width: 767px) {
+
+  /* ── Navigation ── */
+  .nav {
+    padding: 0 20px;
+    height: 52px;
+  }
+  .nav-links {
+    gap: 16px;
+  }
+  .nav-links a {
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+
+  /* ── Ticker ── */
+  .ticker {
+    height: 28px;
+  }
+
+  /* ── Hero ──
+     28px ticker + 52px nav = 80px chrome; use 100svh so mobile browser
+     chrome shrink/grow doesn't cut content off.
+  */
+  .hero {
+    padding-bottom: 60px;
+    height: calc(100svh - 80px);
+  }
+  .hero-content {
+    width: 100%;
+    padding: 0 20px;
+  }
+  .hero-line-1,
+  .hero-line-2 {
+    font-size: clamp(28px, 7.5vw, 40px);
+    line-height: 1.1;
+  }
+  .hero-line-1 .serif {
+    font-size: clamp(28px, 7.5vw, 40px);
+    line-height: 1.1;
+  }
+  .hero-sub {
+    font-size: 15px;
+    line-height: 22px;
+  }
+  .hero-pills {
+    gap: 8px;
+  }
+  .pill {
+    padding: 7px 12px;
+    font-size: 11px;
+  }
+  .chat-bar {
+    height: 46px;
+    padding: 0 6px 0 18px;
+  }
+
+  /* ── Shared section heading ── */
+  .h2 {
+    font-size: clamp(22px, 5.5vw, 32px);
+    line-height: 1.2;
+    white-space: normal;
+  }
+  .section-head {
+    margin-bottom: 20px;
+  }
+  .section-divider {
+    left: 10px;
+    right: 10px;
+  }
+
+  /* ── Design section ── */
+  .section-design {
+    position: relative;
+    padding: 40px 20px;
+    height: auto;
+  }
+  .design-cards-row {
+    flex-direction: column;
+    overflow-x: visible;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .project-card-wrap {
+    width: 100%;
+  }
+  .project-card {
+    width: 100%;
+    height: 220px;
+  }
+  /* No hover on touch — show title always */
+  .project-card-title {
+    opacity: 1;
+  }
+
+  /* ── Research section ── */
+  .section-research {
+    position: relative;
+    padding: 40px 20px;
+    height: auto;
+  }
+  .research-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  /* Stack the two small cards vertically, full width */
+  .r-cards-stack {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .r-card--large {
+    width: 100%;
+    height: 220px;
+  }
+  .r-card--small {
+    width: 100%;
+    height: 180px;
+  }
+  .r-card--arch {
+    width: 100%;
+    height: 220px;
+    border-radius: 20px;
+  }
+  /* Always show overlay + gradient on touch */
+  .r-card-overlay {
+    opacity: 1;
+  }
+  .r-card--gradient-hover::after {
+    opacity: 1;
+  }
+  .r-card-title {
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .r-card .pill.ghost {
+    font-size: 10px;
+    padding: 5px 10px;
+  }
+
+  /* ── Testimonials ── */
+  .testimonials-header {
+    padding: 0 20px;
+    height: auto;
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+  .testimonials-body {
+    padding: 40px 20px;
+  }
+  .testimonial-quote {
+    font-size: 18px;
+    line-height: 28px;
+  }
+
+  /* ── About section ── */
+  .section-about {
+    padding: 48px 0 80px;
+  }
+  .about-head {
+    padding: 0 20px;
+    margin-bottom: 16px;
+  }
+  .about-head-left {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .about-ctas {
+    flex-wrap: wrap;
+    gap: 0;
+  }
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+  /* Right border between columns becomes bottom border when stacked */
+  .about-col--border {
+    border-right: none;
+    border-bottom: 1.5px solid var(--dark);
+  }
+  .col-img {
+    height: 200px;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    padding: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .footer .nav-links {
+    gap: 20px;
+  }
+
+  /* ── Chat project cards ── */
+  .chat-project-card {
+    flex: 0 0 160px;
+  }
+
+}
+
+/* ── Hover-only interactions: disable on touch devices ── */
+@media (hover: none) {
+  /* Design cards: title always visible on touch */
+  .project-card-title {
+    opacity: 1;
+  }
+  /* Research cards: overlay always visible on touch */
+  .r-card-overlay {
+    opacity: 1;
+  }
+  .r-card--gradient-hover::after {
+    opacity: 1;
+  }
 }

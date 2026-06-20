@@ -172,7 +172,7 @@ function processHighlights(children) {
 function ArticleImageOneColumn({ src, alt }) {
   return (
     <div className="dp-img-one-col">
-      <img src={resolveImgSrc(src)} alt={alt || ''} className="dp-img" />
+      <img src={resolveImgSrc(src)} alt={alt || ''} className="dp-img" loading="lazy" />
       {alt && <p className="dp-img-caption">{alt}</p>}
     </div>
   )
@@ -182,11 +182,11 @@ function ArticleImageTwoColumn({ leftSrc, leftAlt, rightSrc, rightAlt }) {
   return (
     <div className="dp-img-two-col">
       <div className="dp-img-col">
-        <img src={resolveImgSrc(leftSrc)} alt={leftAlt || ''} className="dp-img" />
+        <img src={resolveImgSrc(leftSrc)} alt={leftAlt || ''} className="dp-img" loading="lazy" />
         {leftAlt && <p className="dp-img-caption">{leftAlt}</p>}
       </div>
       <div className="dp-img-col">
-        <img src={resolveImgSrc(rightSrc)} alt={rightAlt || ''} className="dp-img" />
+        <img src={resolveImgSrc(rightSrc)} alt={rightAlt || ''} className="dp-img" loading="lazy" />
         {rightAlt && <p className="dp-img-caption">{rightAlt}</p>}
       </div>
     </div>
@@ -374,7 +374,7 @@ function ConceptToggle({ concepts }) {
               const labelAbove   = !item.type || item.type === 'Before' || item.type === 'After'
               const phClass = `dp-concepts-ph${isAccentBg ? ' dp-concepts-ph--cool' : ''}${item.natural ? ' dp-concepts-ph--natural' : ''}${item.img ? ' dp-concepts-ph--img' : ''}`
               const phContent = item.img
-                ? <img src={resolveImgSrc(item.img)} alt={item.label} className="dp-concepts-img" />
+                ? <img src={resolveImgSrc(item.img)} alt={item.label} className="dp-concepts-img" loading="lazy" />
                 : <span className="dp-concepts-ph-icon" aria-hidden="true">
                     <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
                       <rect x="1" y="1" width="20" height="20" rx="2.5" stroke="currentColor" strokeWidth="1.2"/>
@@ -460,6 +460,7 @@ function ImageTabToggle({ tabs }) {
               src={resolveImgSrc(t.src)}
               alt={t.caption}
               className={`dp-itabs-img${active === i ? ' is-active' : ''}`}
+              loading="lazy"
             />
           ))}
         </div>
@@ -529,6 +530,7 @@ function FeatureTabToggle({ tabs }) {
               src={resolveImgSrc(t.src)}
               alt={t.label}
               className={`dp-itabs-img${active === i ? ' is-active' : ''}`}
+              loading="lazy"
             />
           ))}
         </div>
@@ -575,11 +577,13 @@ function ImageToggle({ previousSrc, newSrc, previousLabel, newLabel }) {
             src={resolveImgSrc(previousSrc)}
             alt="Previous design"
             className={`dp-img-toggle-img${active === 'previous' ? ' is-active' : ''}`}
+            loading="lazy"
           />
           <img
             src={resolveImgSrc(newSrc)}
             alt="New design"
             className={`dp-img-toggle-img${active === 'new' ? ' is-active' : ''}`}
+            loading="lazy"
           />
         </div>
         {label && <p className="dp-img-toggle-caption">{label}</p>}
@@ -607,6 +611,7 @@ function ImageGallery({ slides }) {
               src={resolveImgSrc(slide.src)}
               alt={slide.label || `Slide ${i + 1}`}
               className={`dp-gallery-img${i === current ? ' is-active' : ''}`}
+              loading="lazy"
             />
           ))}
         </div>
@@ -759,7 +764,7 @@ function ChallengeCards({ challenges }) {
               <div key={i} className={isStack ? 'dp-cc-img-stack' : 'dp-cc-img-row'}>
                 {item.images.map((img, j) => (
                   <div key={j} className="dp-cc-img-cell">
-                    <img src={resolveImgSrc(img.src)} alt={img.label || ''} className="dp-cc-img" />
+                    <img src={resolveImgSrc(img.src)} alt={img.label || ''} className="dp-cc-img" loading="lazy" />
                     {img.label && <p className="dp-cc-img-label">{img.label}</p>}
                   </div>
                 ))}
@@ -1025,7 +1030,7 @@ function SectionBlocks({ content }) {
             <div key={i} className={`dp-concept-card dp-concept-card--${item.theme}`}>
               {item.img && (
                 <div className="dp-concept-img-wrap">
-                  <img src={resolveImgSrc(item.img)} alt={item.tag} className="dp-concept-img" />
+                  <img src={resolveImgSrc(item.img)} alt={item.tag} className="dp-concept-img" loading="lazy" />
                 </div>
               )}
               <div className="dp-concept-label-wrap">
@@ -1088,7 +1093,7 @@ function SectionBlocks({ content }) {
         <div key={bi} className="dp-image-box-outer">
           {block.label && <p className="dp-image-box-label">{block.label}</p>}
           <div className="dp-image-box">
-            <img src={resolveImgSrc(src)} alt="" className="dp-image-box-img" />
+            <img src={resolveImgSrc(src)} alt="" className="dp-image-box-img" loading="lazy" />
           </div>
         </div>
       )
@@ -1108,7 +1113,7 @@ function SectionBlocks({ content }) {
       return (
         <div key={bi} className="dp-fscreens">
           <div className="dp-fscreens-hero">
-            <img src={resolveImgSrc(heroSrc)} alt="" className="dp-fscreens-img" />
+            <img src={resolveImgSrc(heroSrc)} alt="" className="dp-fscreens-img" loading="lazy" />
           </div>
           {bullets.length > 0 && (
             <ul className="dp-fscreens-bullets">
@@ -1121,7 +1126,7 @@ function SectionBlocks({ content }) {
             <div className="dp-fscreens-grid">
               {gridItems.map((item, i) => (
                 <div key={i} className="dp-fscreens-item">
-                  <img src={resolveImgSrc(item.src)} alt={item.label} className="dp-fscreens-img" />
+                  <img src={resolveImgSrc(item.src)} alt={item.label} className="dp-fscreens-img" loading="lazy" />
                   {item.label && <p className="dp-fscreens-label">{item.label}</p>}
                 </div>
               ))}
@@ -1142,7 +1147,7 @@ function SectionBlocks({ content }) {
         <div key={bi} className="dp-screengrid">
           {items.map((item, i) => (
             <div key={i} className="dp-screengrid-item">
-              <img src={resolveImgSrc(item.src)} alt={item.label} className="dp-screengrid-img" />
+              <img src={resolveImgSrc(item.src)} alt={item.label} className="dp-screengrid-img" loading="lazy" />
               {item.label && <p className="dp-screengrid-label">{item.label}</p>}
             </div>
           ))}
@@ -1177,10 +1182,10 @@ function SectionBlocks({ content }) {
       return (
         <div key={bi} className="dp-img-pair">
           <div className="dp-img-pair-cell">
-            <img src={resolveImgSrc(src1)} alt="" className="dp-img-pair-img" />
+            <img src={resolveImgSrc(src1)} alt="" className="dp-img-pair-img" loading="lazy" />
           </div>
           <div className="dp-img-pair-cell">
-            <img src={resolveImgSrc(src2)} alt="" className="dp-img-pair-img" />
+            <img src={resolveImgSrc(src2)} alt="" className="dp-img-pair-img" loading="lazy" />
           </div>
         </div>
       )
@@ -1191,7 +1196,7 @@ function SectionBlocks({ content }) {
       return (
         <div key={bi} className="dp-image-stack">
           {srcs.map((src, i) => (
-            <img key={i} src={resolveImgSrc(src)} alt="" className="dp-image-stack-img" />
+            <img key={i} src={resolveImgSrc(src)} alt="" className="dp-image-stack-img" loading="lazy" />
           ))}
         </div>
       )
@@ -1224,7 +1229,7 @@ function SectionBlocks({ content }) {
       const isVideo = s => s && /\.(mp4|mov|webm)$/i.test(s)
       const DjMedia = ({ src, className }) => isVideo(src)
         ? <video src={resolveImgSrc(src)} className={className} autoPlay muted loop playsInline />
-        : <img src={resolveImgSrc(src)} alt="" className={className} />
+        : <img src={resolveImgSrc(src)} alt="" className={className} loading="lazy" />
       const DjMockup = ({ src }) => (
         <div className="dp-dj-mockup">
           {src
@@ -1282,7 +1287,7 @@ function SectionBlocks({ content }) {
                 </div>
                 {wideSrc && (
                   <div className="dp-dj-wide">
-                    <img src={resolveImgSrc(wideSrc)} alt="" className="dp-dj-wide-img" />
+                    <img src={resolveImgSrc(wideSrc)} alt="" className="dp-dj-wide-img" loading="lazy" />
                   </div>
                 )}
               </div>
@@ -1388,7 +1393,7 @@ function SectionBlocks({ content }) {
               return (
                 <div key={i} className="dp-rf-finding dp-rf-finding--split">
                   <div className="dp-rf-left">
-                    <img src={resolveImgSrc(f.img)} alt={f.caption || ''} className="dp-rf-img" />
+                    <img src={resolveImgSrc(f.img)} alt={f.caption || ''} className="dp-rf-img" loading="lazy" />
                     {f.caption && <p className="dp-rf-caption">{f.caption}</p>}
                   </div>
                   <div className="dp-rf-right">
@@ -1404,7 +1409,7 @@ function SectionBlocks({ content }) {
                 <span className="dp-rf-num">{f.num}</span>
                 <h4 className="dp-rf-title">{f.title}</h4>
                 <p className="dp-rf-body">{f.body}</p>
-                {f.img && <img src={resolveImgSrc(f.img)} alt="" className="dp-rf-img dp-rf-img--full" />}
+                {f.img && <img src={resolveImgSrc(f.img)} alt="" className="dp-rf-img dp-rf-img--full" loading="lazy" />}
               </div>
             )
           })}
@@ -1612,7 +1617,7 @@ export default function DesignPage({ slug }) {
 
           <div className="dp-hero" ref={heroRef}>
             {COVER_IMAGES[slug]
-              ? <img src={COVER_IMAGES[slug]} alt={`${parsed.title} cover`} className="dp-hero-img" />
+              ? <img src={COVER_IMAGES[slug]} alt={`${parsed.title} cover`} className="dp-hero-img" loading="eager" />
               : <div className="dp-hero-rect" />
             }
           </div>

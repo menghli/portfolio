@@ -25,6 +25,7 @@ import chatMd           from './content/chat-responses.md?raw'
 import backgroundImg    from './img/homepage/background.svg'
 import designImg        from './img/homepage/design.png'
 import outsideWorkImg   from './img/homepage/outside-of-work.avif'
+import playgroundImg    from './img/homepage/random.svg'
 
 const TYPEWRITER_SPEED = 18
 
@@ -77,15 +78,15 @@ const PILLS_WITH_CARDS = new Set(['What researcher are you?', 'What do you Desig
 
 const CHAT_PROJECT_CARDS = {
   'What researcher are you?': [
-    { img: amazonSmall,      title: 'PeripheralPulse Research' },
-    { img: expertvoiceSmall, title: 'ExpertVoice' },
-    { img: negotiumSmall,    title: 'Negotium' },
-    { img: moomooSmall,      title: 'Moomoo Earning Report' },
+    { img: amazonSmall,      title: 'PeripheralPulse Research', slug: '#/research/amazon'      },
+    { img: expertvoiceSmall, title: 'ExpertVoice',              slug: '#/research/expertvoice' },
+    { img: negotiumSmall,    title: 'Negotium',                 slug: '#/research/negotium'    },
+    { img: moomooSmall,      title: 'Moomoo Earning Report',    slug: '#/research/moomoo'      },
   ],
   'What do you Design?': [
-    { img: pinMiSmall,  title: 'Pin-MI' },
-    { img: dubjamSmall, title: 'DubJam' },
-    { img: doryVRSmall, title: 'DoryVR' },
+    { img: pinMiSmall,  title: 'Pin-MI',  slug: '#/design/pin-mi'  },
+    { img: dubjamSmall, title: 'DubJam',  slug: '#/design/dubjam'  },
+    { img: doryVRSmall, title: 'DoryVR',  slug: '#/design/dory-vr' },
   ],
 }
 
@@ -140,7 +141,7 @@ function HomePage() {
       const youMsg = document.createElement('div')
       youMsg.className = 'chat-msg chat-msg--you'
       youMsg.innerHTML =
-        `<img class="chat-avatar" src="${avatar2Img}" alt="You" />` +
+        `<img class="chat-avatar" src="${avatar2Img}" alt="You" loading="lazy" />` +
         '<div class="chat-body">' +
           '<span class="chat-label">YOU</span>' +
           '<p class="chat-text"></p>' +
@@ -164,7 +165,7 @@ function HomePage() {
           menghanMsg.style.opacity = '0'
           menghanMsg.style.transition = 'opacity 300ms ease'
           menghanMsg.innerHTML =
-            `<img class="chat-avatar" src="${avatar1Img}" alt="Menghan" />` +
+            `<img class="chat-avatar" src="${avatar1Img}" alt="Menghan" loading="lazy" />` +
             '<div class="chat-body">' +
               '<span class="chat-label chat-label--menghan">MENGHAN</span>' +
               '<span class="chat-typing">_</span>' +
@@ -189,10 +190,10 @@ function HomePage() {
               .join('')
             const cards = showCards ? (CHAT_PROJECT_CARDS[pillText] || []) : []
             const cardsHtml = cards.map(card =>
-              `<div class="chat-project-card">` +
-                `<img src="${card.img}" alt="" class="chat-project-img" />` +
+              `<a href="${card.slug}" class="chat-project-card">` +
+                `<img src="${card.img}" alt="" class="chat-project-img" loading="lazy" />` +
                 `<p class="chat-project-title">${card.title}</p>` +
-              `</div>`
+              `</a>`
             ).join('')
 
             const content = document.createElement('div')
@@ -237,6 +238,19 @@ function HomePage() {
     let rafId = null
 
     const onWheel = e => {
+      // Let chat project row scroll horizontally
+      const chatProjectRow = e.target.closest?.('.chat-project-row')
+      if (chatProjectRow) {
+        const maxScroll = chatProjectRow.scrollWidth - chatProjectRow.clientWidth
+        const atEnd = chatProjectRow.scrollLeft >= maxScroll - 1
+        const atStart = chatProjectRow.scrollLeft <= 0
+        if ((e.deltaY > 0 && !atEnd) || (e.deltaY < 0 && !atStart)) {
+          e.preventDefault()
+          chatProjectRow.scrollLeft += e.deltaY
+          return
+        }
+      }
+
       // Let chat thread scroll independently
       const thread = threadRef.current
       if (thread && thread.contains(e.target)) {
@@ -366,7 +380,7 @@ function HomePage() {
       const youMsg = document.createElement('div')
       youMsg.className = 'chat-msg chat-msg--you'
       youMsg.innerHTML =
-        `<img class="chat-avatar" src="${avatar2Img}" alt="You" />` +
+        `<img class="chat-avatar" src="${avatar2Img}" alt="You" loading="lazy" />` +
         '<div class="chat-body">' +
           '<span class="chat-label">YOU</span>' +
           '<p class="chat-text"></p>' +
@@ -386,7 +400,7 @@ function HomePage() {
           menghanMsg.style.opacity = '0'
           menghanMsg.style.transition = 'opacity 300ms ease'
           menghanMsg.innerHTML =
-            `<img class="chat-avatar" src="${avatar1Img}" alt="Menghan" />` +
+            `<img class="chat-avatar" src="${avatar1Img}" alt="Menghan" loading="lazy" />` +
             '<div class="chat-body">' +
               '<span class="chat-label chat-label--menghan">MENGHAN</span>' +
               '<span class="chat-typing">_</span>' +
@@ -480,7 +494,7 @@ function HomePage() {
           </Link>
         </div>
         <div className="nav-links">
-          <a href="#projects">PROJECTS</a>
+          <a href="#" onClick={(e) => { e.preventDefault(); lerpTargetRef.current = 0; }}>PROJECTS</a>
           <Link to="/about">ABOUT</Link>
           <a href="https://www.linkedin.com/in/menghl/" target="_blank" rel="noopener noreferrer">LINKEDIN</a>
         </div>
@@ -538,7 +552,7 @@ function HomePage() {
                   maxLength={200}
                   onKeyDown={e => { if (e.key === 'Enter') handleFreeTextSubmit() }}
                 />
-                <button className="chat-send" onClick={handleFreeTextSubmit}>
+                <button className="chat-send" onClick={handleFreeTextSubmit} aria-label="Send message">
                   <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
                     <path d="M1 5H14M14 5L10 1M14 5L10 9" stroke="white" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter"/>
                   </svg>
@@ -568,7 +582,7 @@ function HomePage() {
             {DESIGN_PROJECTS.map((project, i) => (
               <div className="project-card-wrap" key={i}>
                 <Link to={project.slug} className="project-card">
-                  <img src={project.img} alt="" className="project-card-img" />
+                  <img src={project.img} alt="" className="project-card-img" loading="lazy" />
                 </Link>
                 <p className="project-card-title">{project.title}</p>
               </div>
@@ -594,7 +608,7 @@ function HomePage() {
           </div>
           <div className="research-grid">
             <div className="r-card r-card--large r-card--light-text">
-              <img src={amazonSmall} alt="" className="r-card-bg" />
+              <img src={amazonSmall} alt="" className="r-card-bg" loading="lazy" />
               <div className="r-card-overlay r-card-overlay--spread">
                 <p className="r-card-title r-card-title--tr">Amazon IT: PeripheralPulse Research</p>
                 <Link to="/research/amazon" className="pill ghost">OPEN PROJECT</Link>
@@ -602,14 +616,14 @@ function HomePage() {
             </div>
             <div className="r-cards-stack">
               <div className="r-card r-card--small">
-                <img src={expertvoiceSmall} alt="" className="r-card-bg" />
+                <img src={expertvoiceSmall} alt="" className="r-card-bg" loading="lazy" />
                 <div className="r-card-overlay r-card-overlay--spread">
                   <p className="r-card-title r-card-title--tr">ExpertVoice</p>
                   <Link to="/research/expertvoice" className="pill ghost">OPEN PROJECT</Link>
                 </div>
               </div>
               <div className="r-card r-card--small r-card--light-text">
-                <img src={negotiumSmall} alt="" className="r-card-bg" />
+                <img src={negotiumSmall} alt="" className="r-card-bg" loading="lazy" />
                 <div className="r-card-overlay r-card-overlay--spread">
                   <p className="r-card-title r-card-title--tr">Negotium</p>
                   <Link to="/research/negotium" className="pill ghost">OPEN PROJECT</Link>
@@ -617,7 +631,7 @@ function HomePage() {
               </div>
             </div>
             <div className="r-card r-card--arch r-card--light-text r-card--gradient-hover">
-              <img src={moomooSmall} alt="" className="r-card-bg" />
+              <img src={moomooSmall} alt="" className="r-card-bg" loading="lazy" />
               <div className="r-card-overlay">
                 <p className="r-card-title">Testing Moomoo Earning Report</p>
                 <Link to="/research/moomoo" className="pill ghost">OPEN PROJECT</Link>
@@ -636,9 +650,9 @@ function HomePage() {
         <div className="testimonials-body">
           <div className="testimonial-glow" />
           <div className="testimonial-content">
-            <blockquote className="testimonial-quote">
+            <p className="testimonial-quote">
               I am a mixed-method UX researcher and product designer based in Seattle. I build thoughtful digital experiences across research and design, with contributions at Amazon, Work 365, ExpertVoice, and more.
-            </blockquote>
+            </p>
           </div>
         </div>
         <div className="logo-marquee-wrapper">
@@ -666,7 +680,7 @@ function HomePage() {
               <Link to="/about" className="pill ghost">Learn More</Link>
               <div className="about-cta-pair">
                 <a href="https://www.linkedin.com/in/menghl/" target="_blank" rel="noopener noreferrer" className="pill filled">COME SAY HI :)</a>
-                <a href="https://www.linkedin.com/in/menghl/" target="_blank" rel="noopener noreferrer" className="pill icon-only pill--white">
+                <a href="https://www.linkedin.com/in/menghl/" target="_blank" rel="noopener noreferrer" className="pill icon-only pill--white" aria-label="Open LinkedIn in new tab">
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                     <path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter"/>
                   </svg>
@@ -679,28 +693,28 @@ function HomePage() {
           <div className="about-col about-col--border">
             <span className="col-label">01. BACKGROUND</span>
             <div className="col-img-wrap">
-              <img src={backgroundImg} alt="" className="col-img" style={{ objectPosition: 'center 71%' }} />
+              <img src={backgroundImg} alt="" className="col-img" style={{ objectPosition: 'center 71%' }} loading="lazy" />
             </div>
             <p className="col-body">I studied cognitive science at CMU, then got my master&apos;s from the UW iSchool. Along the way I&apos;ve worked across enterprise IT, fintech, e-commerce, and education technology.</p>
           </div>
           <div className="about-col about-col--border">
             <span className="col-label">02. DESIGN APPROACH</span>
             <div className="col-img-wrap">
-              <img src={designImg} alt="" className="col-img" />
+              <img src={designImg} alt="" className="col-img" loading="lazy" />
             </div>
             <p className="col-body">I started out as a researcher and got curious about why findings don&apos;t always change what gets built. That&apos;s what pulled me into design.</p>
           </div>
           <div className="about-col about-col--border">
             <span className="col-label">03. OUTSIDE OF WORK</span>
             <div className="col-img-wrap">
-              <img src={outsideWorkImg} alt="" className="col-img" />
+              <img src={outsideWorkImg} alt="" className="col-img" loading="lazy" />
             </div>
             <p className="col-body">I&apos;ve been singing in choirs and a cappella groups since middle school. Outside of that I&apos;m usually baking, crocheting, or hunting for the best boba in town.</p>
           </div>
           <div className="about-col">
             <span className="col-label">04. PLAYGROUND</span>
             <div className="col-img-wrap">
-              <div className="col-img col-img--cool"></div>
+              <img src={playgroundImg} alt="" className="col-img" loading="lazy" />
             </div>
             <p className="col-body">Stuff I make when there&apos;s no brief: visual experiments, small tools, and typographic detours. More to come.</p>
           </div>
@@ -711,8 +725,7 @@ function HomePage() {
       <footer className="footer">
         <span className="footer-credit">Created by MENGHAN</span>
         <div className="nav-links">
-          <a href="#projects">PROJECTS</a>
-          <Link to="/about">ABOUT</Link>
+          <a href="#" onClick={(e) => { e.preventDefault(); lerpTargetRef.current = 0; }}>RETURN TO TOP</a>
           <a href="https://www.linkedin.com/in/menghl/" target="_blank" rel="noopener noreferrer">LINKEDIN</a>
         </div>
       </footer>

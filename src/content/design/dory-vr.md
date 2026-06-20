@@ -7,7 +7,7 @@ tag: Design
 
 Subtitle: Creating a custom XR environment to enhance data storytelling for graduate students
 Eyebrow: Product Lead · 2024 Spring
-Cover: ../../img/design/DoryVR-page-cover.svg
+Cover: ../../img/design/dory-vr/DoryVR-page-cover.svg
 
 ## Project Meta
 
@@ -141,7 +141,7 @@ Students struggle with visual clutter and information overload when presenting 3
 -- DoryVR_reflectionVR.mp4 | Students can watch videos and reflect on their presentation
 == 02 | Scalable interactive data
 Experience data beyond 2D screens as students interact with 3D scatter plots and spatial GIS maps. By dragging files from the dashboard, they can scale, highlight, and zoom, switching between a table view and a room view for a fully immersive experience.
--- DoryVR_switching.mp4 | Using dashboard to navigate to different modes
+-- DoryVR_Data_dash.mp4 | Using dashboard to navigate to different modes
 -- DoryVR_small viz.mp4 | Walk-through Experience Mode
 -- DoryVR_central.mp4 | Centralized Presentation Mode
 == 03 | Switching levels of immersion
