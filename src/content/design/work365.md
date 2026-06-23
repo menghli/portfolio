@@ -145,6 +145,13 @@ The onboarding assistant is a standalone web app built to address ==the above pr
 
 ![](../../img/design/work365/Work365-img11.svg)
 
+:::before-after
+Previous: Work365-video2.mp4
+New: Work365-video3.mp4
+PreviousBtn: Explain unfamiliar terminology
+NewBtn: Create a ticket flow
+:::
+
 Our 3 usability tests showed strongly positive feedback from both sponsors and early clients, with users highlighting the AI assistant and modular learning structure as the most valuable parts of the experience.
 
 ---

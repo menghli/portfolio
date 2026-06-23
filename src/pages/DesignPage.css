@@ -1180,6 +1180,19 @@
   margin-right: auto;
 }
 
+.dp-img-toggle-controls--wide {
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.dp-img-toggle-controls--wide .dp-img-toggle-btn {
+  padding: 8px 16px;
+  font-size: 11px;
+  letter-spacing: 0.6px;
+  text-align: center;
+}
+
 .dp-img-toggle-box {
   background: var(--accent-warm);
   border-radius: 12px;

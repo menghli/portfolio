@@ -556,7 +556,7 @@ function FeatureTabToggle({ tabs }) {
 // ── Before / After image toggle ───────────────────────────────────────────
 const isVideo = src => src && /\.(mp4|webm|mov)$/i.test(src)
 
-function ImageToggle({ previousSrc, newSrc, previousLabel, newLabel }) {
+function ImageToggle({ previousSrc, newSrc, previousLabel, newLabel, previousBtn = 'Previous', newBtn = 'New' }) {
   const [active, setActive] = useState('previous')
   const label = active === 'previous' ? previousLabel : newLabel
 
@@ -577,30 +577,32 @@ function ImageToggle({ previousSrc, newSrc, previousLabel, newLabel }) {
     return (
       <img
         src={resolveImgSrc(src)}
-        alt={which === 'previous' ? 'Previous design' : 'New design'}
+        alt={which === 'previous' ? previousBtn : newBtn}
         className={cls}
         loading="lazy"
       />
     )
   }
 
+  const hasCustomBtns = previousBtn !== 'Previous' || newBtn !== 'New'
+
   return (
     <div className="dp-img-toggle">
-      <div className="dp-img-toggle-controls" role="group" aria-label="Toggle design version">
+      <div className={`dp-img-toggle-controls${hasCustomBtns ? ' dp-img-toggle-controls--wide' : ''}`} role="group" aria-label="Toggle design version">
         <div className={`dp-img-toggle-indicator${active === 'new' ? ' is-right' : ''}`} aria-hidden="true" />
         <button
           className={`dp-img-toggle-btn${active === 'previous' ? ' is-active' : ''}`}
           onClick={() => setActive('previous')}
           aria-pressed={active === 'previous'}
         >
-          Previous
+          {previousBtn}
         </button>
         <button
           className={`dp-img-toggle-btn${active === 'new' ? ' is-active' : ''}`}
           onClick={() => setActive('new')}
           aria-pressed={active === 'new'}
         >
-          New
+          {newBtn}
         </button>
       </div>
       <div className="dp-img-toggle-box">
@@ -1399,13 +1401,16 @@ function SectionBlocks({ content }) {
     if (block.type === 'before-after') {
       const lines = block.content.split('\n')
       let previousSrc = '', newSrc = '', previousLabel = '', newLabel = ''
+      let previousBtn = 'Previous', newBtn = 'New'
       for (const line of lines) {
         if (line.startsWith('Previous:')) previousSrc = line.slice(9).trim()
         if (line.startsWith('New:')) newSrc = line.slice(4).trim()
         if (line.startsWith('PreviousLabel:')) previousLabel = line.slice(14).trim()
         if (line.startsWith('NewLabel:')) newLabel = line.slice(9).trim()
+        if (line.startsWith('PreviousBtn:')) previousBtn = line.slice(12).trim()
+        if (line.startsWith('NewBtn:')) newBtn = line.slice(7).trim()
       }
-      return <ImageToggle key={bi} previousSrc={previousSrc} newSrc={newSrc} previousLabel={previousLabel} newLabel={newLabel} />
+      return <ImageToggle key={bi} previousSrc={previousSrc} newSrc={newSrc} previousLabel={previousLabel} newLabel={newLabel} previousBtn={previousBtn} newBtn={newBtn} />
     }
 
     if (block.type === 'dj-features') {
