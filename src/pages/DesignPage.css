@@ -930,6 +930,10 @@
   border-radius: 12px;
 }
 
+.dp-image-stack--no-radius .dp-image-stack-img {
+  border-radius: 0;
+}
+
 /* ── Feature screens — hero + 2-col row ─────────────────────── */
 .dp-fscreens {
   margin: 36px 0;
@@ -1707,6 +1711,24 @@ mark.dp-highlight.is-visible {
 
 /* ── Per-element scroll reveals ────────────────────────────────── */
 @media (prefers-reduced-motion: no-preference) {
+  .dp-h3 {
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+      opacity  500ms cubic-bezier(0.16, 1, 0.3, 1) 60ms,
+      transform 500ms cubic-bezier(0.16, 1, 0.3, 1) 60ms;
+  }
+  .dp-h3.is-visible { opacity: 1; transform: none; }
+
+  .dp-para {
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity  480ms cubic-bezier(0.16, 1, 0.3, 1) 80ms,
+      transform 480ms cubic-bezier(0.16, 1, 0.3, 1) 80ms;
+  }
+  .dp-para.is-visible { opacity: 1; transform: none; }
+
   .dp-finding {
     opacity: 0;
     transform: translateX(-12px);

@@ -1386,7 +1386,7 @@ function SectionBlocks({ content }) {
     if (block.type === 'image-stack') {
       const srcs = block.content.split('\n').map(l => l.trim()).filter(Boolean)
       return (
-        <div key={bi} className="dp-image-stack">
+        <div key={bi} className={`dp-image-stack${block.label === 'no-radius' ? ' dp-image-stack--no-radius' : ''}`}>
           {srcs.map((src, i) => (
             <img key={i} src={resolveImgSrc(src)} alt="" className="dp-image-stack-img" loading="lazy" />
           ))}
@@ -1778,7 +1778,7 @@ export default function DesignPage({ slug }) {
     const content = contentRef.current
     if (!content) return
     content.querySelectorAll(
-      '.dp-finding, .dp-insight, .dp-priority-block, .dp-phase-col, .dp-dj-feature'
+      '.dp-h3, .dp-para, .dp-finding, .dp-insight, .dp-priority-block, .dp-phase-col, .dp-dj-feature'
     ).forEach(el => obs.observe(el))
     return () => obs.disconnect()
   }, [parsed])
