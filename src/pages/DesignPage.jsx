@@ -5,9 +5,11 @@ import './DesignPage.css'
 
 const _designImgModules = import.meta.glob('../img/design/**/*.svg', { eager: true })
 const _designVideoModules = import.meta.glob('../img/design/**/*.mp4', { eager: true })
+const _designGifModules = import.meta.glob('../img/design/**/*.gif', { eager: true })
 const DESIGN_IMG = Object.fromEntries([
   ...Object.entries(_designImgModules).map(([path, mod]) => [path.split('/').pop(), mod.default]),
   ...Object.entries(_designVideoModules).map(([path, mod]) => [path.split('/').pop(), mod.default]),
+  ...Object.entries(_designGifModules).map(([path, mod]) => [path.split('/').pop(), mod.default]),
 ])
 function resolveImgSrc(src) {
   const basename = src?.split('/').pop()
@@ -15,15 +17,17 @@ function resolveImgSrc(src) {
 }
 
 const COVER_IMAGES = {
-  'pin-mi':  DESIGN_IMG['Pin-MI-page-cover.svg'],
-  'dubjam':  DESIGN_IMG['Dubjam-page-cover.svg'],
-  'dory-vr': DESIGN_IMG['DoryVR-page-cover.svg'],
+  'pin-mi':   DESIGN_IMG['Pin-MI-page-cover.svg'],
+  'dubjam':   DESIGN_IMG['Dubjam-page-cover.svg'],
+  'dory-vr':  DESIGN_IMG['DoryVR-page-cover.svg'],
+  'work365':  DESIGN_IMG['Work365-page-cover.svg'],
 }
 
 const LOADERS = {
-  'pin-mi':  () => import('../content/design/pin-mi.md?raw'),
-  'dubjam':  () => import('../content/design/dubjam.md?raw'),
-  'dory-vr': () => import('../content/design/dory-vr.md?raw'),
+  'pin-mi':   () => import('../content/design/pin-mi.md?raw'),
+  'dubjam':   () => import('../content/design/dubjam.md?raw'),
+  'dory-vr':  () => import('../content/design/dory-vr.md?raw'),
+  'work365':  () => import('../content/design/work365.md?raw'),
 }
 
 const NAV_ITEMS = [
@@ -38,20 +42,21 @@ const NAV_ITEMS = [
 
 const SECTION_MAP = {
   overview:    ['Project Overview'],
-  solution:    ['Solution Preview', 'Solution Overview', 'Solution'],
+  solution:    ['Solution Preview'],
   research:    ['Research', 'Initial Research', 'How Might We'],
   exploration: ['Design Decisions', 'Exploration', 'Iteration 1', 'User Testing',
                 'Defining the Experience and Ideation', 'Design System',
                 'Challenges We Faced During the Process'],
-  design:      ['Design', 'Final Iteration', 'Final Solution'],
+  design:      ['Solution Overview', 'Design', 'Final Iteration', 'Final Solution'],
   outcome:     ['Outcomes', 'Outcome'],
   reflections: ['My Learnings', 'Reflections'],
 }
 
 const NEXT_SLUG = {
-  'pin-mi':  '/design/dubjam',
-  'dubjam':  '/design/dory-vr',
-  'dory-vr': '/design/pin-mi',
+  'pin-mi':   '/design/dubjam',
+  'dubjam':   '/design/dory-vr',
+  'dory-vr':  '/design/work365',
+  'work365':  '/design/pin-mi',
 }
 
 // ── Markdown parsing (identical to ResearchPage) ─────────────────────────
@@ -646,6 +651,89 @@ function ImageGallery({ slides }) {
   )
 }
 
+// ── Auto-scrolling gallery ────────────────────────────────────────
+function AutoGallery({ slides }) {
+  const doubled = [...slides, ...slides]
+  return (
+    <div className="dp-auto-gallery" aria-label="Research artifacts">
+      <div className="dp-auto-gallery-track">
+        {doubled.map((slide, i) => (
+          <div
+            key={i}
+            className="dp-auto-gallery-slide"
+            aria-hidden={i >= slides.length ? 'true' : undefined}
+          >
+            <div className="dp-auto-gallery-img-wrap">
+              <img
+                src={resolveImgSrc(slide.src)}
+                alt={slide.label || ''}
+                className="dp-auto-gallery-img"
+                loading="lazy"
+              />
+            </div>
+            {slide.label && (
+              <p className="dp-auto-gallery-label">{slide.label}</p>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// ── Decision Cards ────────────────────────────────────────────────
+function parseDecisionCards(content) {
+  const cards = []
+  let current = null
+  for (const line of content.split('\n')) {
+    const t = line.trim()
+    if (t.startsWith('== ')) {
+      if (current) cards.push(current)
+      current = { title: t.slice(3), body: '' }
+    } else if (current && t) {
+      current.body = current.body ? current.body + ' ' + t : t
+    }
+  }
+  if (current) cards.push(current)
+  return cards
+}
+
+function DecisionCards({ cards }) {
+  return (
+    <div className="dp-decision-cards">
+      {cards.map((card, i) => (
+        <article key={i} className="dp-decision-card">
+          <h4 className="dp-decision-title">{card.title}</h4>
+          <p className="dp-decision-body">{card.body}</p>
+        </article>
+      ))}
+    </div>
+  )
+}
+
+// ── Horizontal workflow timeline ──────────────────────────────────
+function Timeline({ items }) {
+  return (
+    <div className="dp-htl" role="list" aria-label="How we built it">
+      {items.map((item, i) => (
+        <div key={i} className="dp-htl-entry" role="listitem">
+          <div className={`dp-htl-step${i === items.length - 1 ? ' dp-htl-step--last' : ''}`}>
+            <span className="dp-htl-num">{String(i + 1).padStart(2, '0')}</span>
+            <p className="dp-htl-label">{item.title}</p>
+          </div>
+          {i < items.length - 1 && (
+            <div className="dp-htl-arrow" aria-hidden="true">
+              <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
+                <path d="M0 5H11.5M8 1.5L12 5L8 8.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  )
+}
+
 // ── Challenge Cards ───────────────────────────────────────────────
 function parseChallengeCards(content) {
   const challenges = []
@@ -703,22 +791,29 @@ function ChallengeCards({ challenges }) {
   const wrapperRef = useRef(null)
 
   useEffect(() => {
-    const obs = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible')
-            obs.unobserve(entry.target)
-          }
-        })
-      },
-      { threshold: 0.8 }
-    )
-    const container = wrapperRef.current
-    if (container) {
-      container.querySelectorAll('.dp-highlight').forEach(el => obs.observe(el))
+    let obs
+    const delay = panelKey === 0 ? 0 : 420
+    const timer = setTimeout(() => {
+      obs = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible')
+              obs.unobserve(entry.target)
+            }
+          })
+        },
+        { threshold: 0.5 }
+      )
+      const container = wrapperRef.current
+      if (container) {
+        container.querySelectorAll('.dp-highlight').forEach(el => obs.observe(el))
+      }
+    }, delay)
+    return () => {
+      clearTimeout(timer)
+      obs?.disconnect()
     }
-    return () => obs.disconnect()
   }, [panelKey])
 
   function go(next, direction) {
@@ -726,7 +821,10 @@ function ChallengeCards({ challenges }) {
     setDir(direction)
     setActive(next)
     setPanelKey(k => k + 1)
-    wrapperRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    const el = wrapperRef.current
+    if (el && el.getBoundingClientRect().top < 0) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
   }
 
   const ch = challenges[active]
@@ -949,9 +1047,15 @@ function SectionBlocks({ content }) {
     if (block.type === 'findings') {
       const items = block.content.split('\n').filter(Boolean).map(line => {
         const pipeIdx = line.indexOf('|')
-        return pipeIdx > -1
+        const raw = pipeIdx > -1
           ? { label: line.slice(0, pipeIdx).trim(), text: line.slice(pipeIdx + 1).trim() }
           : { label: '', text: line.trim() }
+        const dotIdx = raw.text.indexOf(' · ')
+        if (dotIdx === -1) return { ...raw, quote: null }
+        const mainText = raw.text.slice(0, dotIdx)
+        const quoteRaw = raw.text.slice(dotIdx + 3).trim()
+        const quote = quoteRaw.replace(/^\*(.+)\*$/, '$1').trim()
+        return { ...raw, text: mainText, quote }
       })
       return (
         <div key={bi} className="dp-findings">
@@ -961,7 +1065,10 @@ function SectionBlocks({ content }) {
                 <span className="dp-finding-num">{String(i + 1).padStart(2, '0')}</span>
                 <span className="dp-finding-label">{item.label}</span>
               </div>
-              <p className="dp-finding-text">{item.text}</p>
+              <div className="dp-finding-body">
+                <p className="dp-finding-text">{item.text}</p>
+                {item.quote && <p className="dp-finding-quote"><em>{item.quote}</em></p>}
+              </div>
             </div>
           ))}
         </div>
@@ -1001,18 +1108,33 @@ function SectionBlocks({ content }) {
             <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
           </svg>
         ),
+        learn: (
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          </svg>
+        ),
+        funnel: (
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+          </svg>
+        ),
+        eye: (
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+          </svg>
+        ),
       }
       const items = block.content.split('\n').filter(Boolean).map(line => {
         const parts = line.split('|').map(s => s.trim())
-        return { title: parts[0], desc: parts[1], icon: parts[2] || 'info' }
+        return { title: parts[0], desc: parts[1] || '', icon: parts[2] || 'info' }
       })
       return (
         <div key={bi} className="dp-priority-blocks">
           {items.map((item, i) => (
             <div key={i} className="dp-priority-block">
-              <span className="dp-priority-icon">{ICONS[item.icon] || ICONS.info}</span>
+              <div className="dp-priority-icon-circle">{ICONS[item.icon] || ICONS.info}</div>
               <p className="dp-priority-title">{item.title}</p>
-              <p className="dp-priority-desc">{item.desc}</p>
+              {item.desc && <p className="dp-priority-desc">{item.desc}</p>}
             </div>
           ))}
         </div>
@@ -1066,6 +1188,57 @@ function SectionBlocks({ content }) {
         return { src: line.slice(0, idx).trim(), label: line.slice(idx + 1).trim() }
       })
       return <ImageGallery key={bi} slides={slides} />
+    }
+
+    if (block.type === 'auto-gallery') {
+      const slides = block.content.split('\n').filter(Boolean).map(line => {
+        const idx = line.indexOf('|')
+        if (idx === -1) return { src: line.trim(), label: '' }
+        return { src: line.slice(0, idx).trim(), label: line.slice(idx + 1).trim() }
+      })
+      return <AutoGallery key={bi} slides={slides} />
+    }
+
+    if (block.type === 'decision-cards') {
+      const cards = parseDecisionCards(block.content)
+      if (!cards.length) return null
+      return <DecisionCards key={bi} cards={cards} />
+    }
+
+    if (block.type === 'timeline') {
+      const items = block.content.split('\n').filter(Boolean).map(line => {
+        const pipeIdx = line.indexOf('|')
+        return pipeIdx > -1
+          ? { title: line.slice(0, pipeIdx).trim(), body: line.slice(pipeIdx + 1).trim() }
+          : { title: line.trim(), body: '' }
+      })
+      return <Timeline key={bi} items={items} />
+    }
+
+    if (block.type === 'phase-split') {
+      const phases = block.content.split('\n').filter(Boolean).map(line => {
+        const pipeIdx = line.indexOf('|')
+        return pipeIdx > -1
+          ? { label: line.slice(0, pipeIdx).trim(), body: line.slice(pipeIdx + 1).trim() }
+          : { label: line.trim(), body: '' }
+      })
+      function renderPhasebody(text) {
+        const parts = text.split(/(\*\*[^*]+\*\*)/g)
+        return parts.map((p, i) => {
+          const m = p.match(/^\*\*([^*]+)\*\*$/)
+          return m ? <strong key={i}>{m[1]}</strong> : p
+        })
+      }
+      return (
+        <div key={bi} className="dp-phase-split">
+          {phases.map((phase, i) => (
+            <div key={i} className="dp-phase-col">
+              <div className="dp-phase-pill">{phase.label}</div>
+              <p className="dp-phase-body">{renderPhasebody(phase.body)}</p>
+            </div>
+          ))}
+        </div>
+      )
     }
 
     if (block.type === 'concepts') {
@@ -1200,6 +1373,10 @@ function SectionBlocks({ content }) {
           ))}
         </div>
       )
+    }
+
+    if (block.type === 'divider') {
+      return <div key={bi} className="dp-section-divider" />
     }
 
     if (block.type === 'before-after') {
@@ -1344,7 +1521,7 @@ function SectionBlocks({ content }) {
               )}
               {needs && (
                 <div className="dp-goal-meta-col">
-                  <span className="dp-goal-kicker">Key User Needs</span>
+                  <span className="dp-goal-kicker">Business Goal</span>
                   <p className="dp-goal-value">{needs}</p>
                 </div>
               )}
@@ -1413,6 +1590,23 @@ function SectionBlocks({ content }) {
               </div>
             )
           })}
+        </div>
+      )
+    }
+
+    if (block.type === 'image-aside') {
+      const pipIdx = block.label.indexOf('|')
+      const imgSrc   = pipIdx > -1 ? block.label.slice(0, pipIdx).trim() : block.label.trim()
+      const imgLabel = pipIdx > -1 ? block.label.slice(pipIdx + 1).trim() : ''
+      return (
+        <div key={bi} className="dp-image-aside">
+          <div className="dp-image-aside-text">
+            <ReactMarkdown components={mdComponents}>{block.content}</ReactMarkdown>
+          </div>
+          <figure className="dp-image-aside-fig">
+            <img src={resolveImgSrc(imgSrc)} alt={imgLabel || ''} className="dp-image-aside-img" loading="lazy" />
+            {imgLabel && <figcaption className="dp-image-aside-label">{imgLabel}</figcaption>}
+          </figure>
         </div>
       )
     }
@@ -1542,7 +1736,9 @@ export default function DesignPage({ slug }) {
       },
       { threshold: 0.8 }
     )
-    document.querySelectorAll('.dp-highlight').forEach(el => obs.observe(el))
+    document.querySelectorAll('.dp-highlight').forEach(el => {
+      if (!el.closest('.dp-cc-wrapper')) obs.observe(el)
+    })
     return () => obs.disconnect()
   }, [parsed])
 
@@ -1562,8 +1758,9 @@ export default function DesignPage({ slug }) {
     return () => observers.forEach(o => o.disconnect())
   }, [parsed])
 
-  const meta        = parseMetaTable(parsed.sections['Project Meta'])
-  const activeIndex = NAV_ITEMS.findIndex(({ id }) => id === activeSection)
+  const meta             = parseMetaTable(parsed.sections['Project Meta'])
+  const visibleNavItems  = NAV_ITEMS.filter(({ id }) => !!clean(getSectionContent(id, parsed.sections)))
+  const activeVisibleIdx = visibleNavItems.findIndex(({ id }) => id === activeSection)
 
   return (
     <div className="dp-page" data-slug={slug}>
@@ -1588,9 +1785,9 @@ export default function DesignPage({ slug }) {
             <span
               className="dp-dot"
               aria-hidden="true"
-              style={{ top: `${activeIndex * 48 + 21}px` }}
+              style={{ top: `${activeVisibleIdx * 48 + 21}px` }}
             />
-            {NAV_ITEMS.map(({ id, label }) => (
+            {visibleNavItems.map(({ id, label }) => (
               <a
                 key={id}
                 href={`#dp-${id}`}

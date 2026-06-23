@@ -15,6 +15,7 @@ import moomooSmall      from './img/homepage/Moomoo-small.svg'
 import pinMiSmall       from './img/homepage/Pin-MI-small.svg'
 import dubjamSmall      from './img/homepage/Dubjam-small.svg'
 import doryVRSmall      from './img/homepage/DoryVR-small.svg'
+import work365Small     from './img/homepage/Work365-small.svg'
 import logo1            from './img/homepage/logo1.svg'
 import logo2            from './img/homepage/logo2.svg'
 import logo3            from './img/homepage/logo3.svg'
@@ -69,7 +70,7 @@ function parseInlineMarkdown(text) {
 const PILL_RESPONSE_KEYS = {
   'What researcher are you?':  'WHAT RESEARCHER ARE YOU?',
   'Tell me about you':         'TELL ME ABOUT YOU',
-  'Book a Chat with me!':      'Book a Chat with me!',
+  'Let\'s chat!':              'Book a Chat with me!',
   'What do you Design?':       'WHAT DO YOU DESIGN?',
   'How do you use AI in work?':'HOW DO YOU USE AI IN YOUR WORK?',
 }
@@ -84,9 +85,10 @@ const CHAT_PROJECT_CARDS = {
     { img: moomooSmall,      title: 'Moomoo Earning Report',    slug: '#/research/moomoo'      },
   ],
   'What do you Design?': [
-    { img: pinMiSmall,  title: 'Pin-MI',  slug: '#/design/pin-mi'  },
-    { img: dubjamSmall, title: 'DubJam',  slug: '#/design/dubjam'  },
-    { img: doryVRSmall, title: 'DoryVR',  slug: '#/design/dory-vr' },
+    { img: work365Small, title: 'Work 365', slug: '#/design/work365'  },
+    { img: pinMiSmall,   title: 'Pin-MI',   slug: '#/design/pin-mi'   },
+    { img: dubjamSmall,  title: 'DubJam',   slug: '#/design/dubjam'   },
+    { img: doryVRSmall,  title: 'DoryVR',   slug: '#/design/dory-vr'  },
   ],
 }
 
@@ -106,9 +108,10 @@ const FALLBACK_RESPONSES = [
 ]
 
 const DESIGN_PROJECTS = [
-  { title: 'Redesigning the Experiential Learning of Interview Skills through Role-play', img: pinMiSmall,  slug: '/design/pin-mi'  },
-  { title: 'DubJam: How I Led a 0-to-1 Design to Foster Local Music Community',          img: dubjamSmall, slug: '/design/dubjam'  },
-  { title: 'DoryVR: Data Storytelling and Learning Tool in Mixed Reality',                img: doryVRSmall, slug: '/design/dory-vr' },
+  { title: 'Work 365: Redesigning a Complex B2B Platform for Learnability and Scale',     img: work365Small, slug: '/design/work365'  },
+  { title: 'Redesigning the Experiential Learning of Interview Skills through Role-play', img: pinMiSmall,   slug: '/design/pin-mi'   },
+  { title: 'DubJam: How I Led a 0-to-1 Design to Foster Local Music Community',          img: dubjamSmall,  slug: '/design/dubjam'   },
+  { title: 'DoryVR: Data Storytelling and Learning Tool in Mixed Reality',                img: doryVRSmall,  slug: '/design/dory-vr'  },
 ]
 
 const HERO_TEXTS = [
@@ -125,6 +128,9 @@ function HomePage() {
   const inputRef = useRef(null)
   const lerpTargetRef = useRef(0)
   const chatInitiatedRef = useRef(false)
+  const isChatRef = useRef(false)
+
+  useEffect(() => { isChatRef.current = isChat }, [isChat])
 
   const resetChat = useCallback(() => {
     setIsChat(false)
@@ -263,6 +269,11 @@ function HomePage() {
         }
       }
 
+      if (isChatRef.current) {
+        e.preventDefault()
+        return
+      }
+
       const cardsRow = document.querySelector('.design-cards-row')
       const section = document.querySelector('.section-design')
       if (cardsRow && section) {
@@ -355,7 +366,7 @@ function HomePage() {
   }, [])
 
   const handlePillClick = useCallback((text) => {
-    if (text === 'MY WORK') {
+    if (text === 'View projects ↓') {
       lerpTargetRef.current = window.innerHeight
       return
     }
@@ -529,15 +540,12 @@ function HomePage() {
 
             <div className="hero-interactive">
               <div className="hero-pills">
-                <button className="pill ghost" onClick={() => handlePillClick('MY WORK')}>
-                  MY WORK
-                  <svg className="pill-icon" width="6" height="10" viewBox="0 0 6 10" fill="none">
-                    <path d="M3 0V8M3 8L1 6M3 8L5 6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="square" strokeLinejoin="miter"/>
-                  </svg>
+                <button className="pill ghost" onClick={() => handlePillClick('View projects ↓')}>
+                  View projects ↓
                 </button>
                 <button className="pill ghost" onClick={() => handlePillClick('What researcher are you?')}>What researcher are you?</button>
                 <button className="pill ghost" onClick={() => handlePillClick('Tell me about you')}>Tell me about you</button>
-                <button className="pill ghost" onClick={() => handlePillClick('Book a Chat with me!')}>Book a Chat with me!</button>
+                <button className="pill ghost" onClick={() => handlePillClick('Let\'s chat!')}>Let's chat!</button>
                 <button className="pill ghost" onClick={() => handlePillClick('What do you Design?')}>What do you Design?</button>
                 <button className="pill ghost" onClick={() => handlePillClick('How do you use AI in work?')}>How do you use AI in work?</button>
                 <button className="pill ghost" onClick={() => handlePillClick('back to homepage')}>RESTART</button>
@@ -746,7 +754,8 @@ function App() {
       <Route path="/research/negotium"    element={<ResearchPage slug="negotium" />} />
       <Route path="/design/pin-mi"        element={<DesignPage slug="pin-mi" />} />
       <Route path="/design/dubjam"        element={<DesignPage slug="dubjam" />} />
-      <Route path="/design/dory-vr"       element={<DesignPage slug="dory-vr" />} />
+      <Route path="/design/dory-vr"        element={<DesignPage slug="dory-vr" />} />
+      <Route path="/design/work365"        element={<DesignPage slug="work365" />} />
     </Routes>
     </>
   )
