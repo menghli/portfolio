@@ -1131,7 +1131,7 @@ function SectionBlocks({ content }) {
       return (
         <div key={bi} className="dp-priority-blocks">
           {items.map((item, i) => (
-            <div key={i} className="dp-priority-block">
+            <div key={i} className="dp-priority-block" style={{ '--i': i }}>
               <div className="dp-priority-icon-circle">{ICONS[item.icon] || ICONS.info}</div>
               <p className="dp-priority-title">{item.title}</p>
               {item.desc && <p className="dp-priority-desc">{item.desc}</p>}
@@ -1232,7 +1232,7 @@ function SectionBlocks({ content }) {
       return (
         <div key={bi} className="dp-phase-split">
           {phases.map((phase, i) => (
-            <div key={i} className="dp-phase-col">
+            <div key={i} className="dp-phase-col" style={{ '--i': i }}>
               <div className="dp-phase-pill">{phase.label}</div>
               <p className="dp-phase-body">{renderPhasebody(phase.body)}</p>
             </div>
@@ -1739,6 +1739,25 @@ export default function DesignPage({ slug }) {
     document.querySelectorAll('.dp-highlight').forEach(el => {
       if (!el.closest('.dp-cc-wrapper')) obs.observe(el)
     })
+    return () => obs.disconnect()
+  }, [parsed])
+
+  useEffect(() => {
+    if (!parsed.title) return
+    const obs = new IntersectionObserver(
+      entries => entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible')
+          obs.unobserve(entry.target)
+        }
+      }),
+      { threshold: 0.12, rootMargin: '0px 0px -32px 0px' }
+    )
+    const content = contentRef.current
+    if (!content) return
+    content.querySelectorAll(
+      '.dp-finding, .dp-insight, .dp-priority-block, .dp-phase-col, .dp-dj-feature'
+    ).forEach(el => obs.observe(el))
     return () => obs.disconnect()
   }, [parsed])
 
