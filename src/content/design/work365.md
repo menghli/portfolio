@@ -1,9 +1,9 @@
-# Work 365: Redesigning a complex B2B platform for learnability and scale
+# Work 365: A UX strategy to reduce friction and scale onboarding
 
 Status: In progress
 tag: Design
 
-# Work 365: Redesigning a complex B2B platform for learnability and scale
+# Work 365: A UX strategy to reduce friction and scale onboarding
 
 Subtitle: A two-phase UX strategy to reduce friction and scale onboarding for a complex B2B platform
 Eyebrow: Capstone Project · 2026 Spring
@@ -109,7 +109,7 @@ The Smart Assist Panel is built directly into the existing interface, giving use
 
 :::before-after
 Previous: Work365-img7.svg
-New: Work365-img6.gif
+New: Work365-video1.mp4
 PreviousLabel: Users had to click through the full subscription list to make changes on items.
 NewLabel: The Smart Assist Panel surfaces expiring subscriptions proactively and supports inline editing without leaving the page.
 :::

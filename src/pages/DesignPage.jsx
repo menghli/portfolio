@@ -554,9 +554,36 @@ function FeatureTabToggle({ tabs }) {
 }
 
 // ── Before / After image toggle ───────────────────────────────────────────
+const isVideo = src => src && /\.(mp4|webm|mov)$/i.test(src)
+
 function ImageToggle({ previousSrc, newSrc, previousLabel, newLabel }) {
   const [active, setActive] = useState('previous')
   const label = active === 'previous' ? previousLabel : newLabel
+
+  function ToggleMedia({ src, which }) {
+    const cls = `dp-img-toggle-img${active === which ? ' is-active' : ''}`
+    if (isVideo(src)) {
+      return (
+        <video
+          src={resolveImgSrc(src)}
+          className={cls}
+          autoPlay
+          muted
+          loop
+          playsInline
+        />
+      )
+    }
+    return (
+      <img
+        src={resolveImgSrc(src)}
+        alt={which === 'previous' ? 'Previous design' : 'New design'}
+        className={cls}
+        loading="lazy"
+      />
+    )
+  }
+
   return (
     <div className="dp-img-toggle">
       <div className="dp-img-toggle-controls" role="group" aria-label="Toggle design version">
@@ -578,18 +605,8 @@ function ImageToggle({ previousSrc, newSrc, previousLabel, newLabel }) {
       </div>
       <div className="dp-img-toggle-box">
         <div className="dp-img-toggle-frame">
-          <img
-            src={resolveImgSrc(previousSrc)}
-            alt="Previous design"
-            className={`dp-img-toggle-img${active === 'previous' ? ' is-active' : ''}`}
-            loading="lazy"
-          />
-          <img
-            src={resolveImgSrc(newSrc)}
-            alt="New design"
-            className={`dp-img-toggle-img${active === 'new' ? ' is-active' : ''}`}
-            loading="lazy"
-          />
+          <ToggleMedia src={previousSrc} which="previous" />
+          <ToggleMedia src={newSrc} which="new" />
         </div>
         {label && <p className="dp-img-toggle-caption">{label}</p>}
       </div>
