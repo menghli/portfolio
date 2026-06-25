@@ -119,7 +119,7 @@ Personalized discovery | Personally recommended events, groups, and compatible c
 
 Musicians bring their own bold visual identity through event posters and promotional materials. The app needed a design system ==strong enough to feel intentional, but restrained enough not to compete.== Working with a visual designer, I defined content structure and used an atomic design approach to keep components clear, flexible, and visually harmonious.
 
-:::image-stack
+:::image-stack no-radius
 ../../img/design/dubjam/Dubjam-img5.svg
 ../../img/design/dubjam/Dubjam-img6.svg
 :::
