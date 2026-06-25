@@ -533,7 +533,7 @@ function HomePage() {
                     cursorCharacter="_"
                   />
                 </div>
-                <p className="hero-sub">I research and design meaningful, enjoyable experiences, driven by data and grounded in empathy. Currently Design @ Amazon</p>
+                <p className="hero-sub">I research and design meaningful, enjoyable experiences, driven by data and grounded in empathy. Currently @ Amazon</p>
               </div>
               <div className="chat-thread" ref={threadRef} aria-live="polite"></div>
             </div>
